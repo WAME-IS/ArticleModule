@@ -1,4 +1,0 @@
-services:
-	AdminMenu:
-		setup:
-			- setItem(App\ArticleModule\Admin\Extensions\AdminModule\Components\AdminMenuControlFactory())
