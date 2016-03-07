@@ -1,6 +1,4 @@
 services:
-    - App\ArticleModule\Presenters\AdminMenu\AdminMenuControl
-    #	- {class: App\UserModule\Presenters\AdminMenu\AdminMenuControl, tags: [run]}
-    AdminMenu:
-        setup:
-            - setItem(App\ArticleModule\Presenters\AdminMenu\AdminMenuControl)
+	AdminMenu:
+		setup:
+			- setItem(App\ArticleModule\Admin\Extensions\AdminModule\Components\AdminMenuControlFactory())
