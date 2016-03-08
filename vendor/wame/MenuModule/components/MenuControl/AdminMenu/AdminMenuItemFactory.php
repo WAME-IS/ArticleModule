@@ -1,8 +1,8 @@
 <?php
 
-namespace Wame\ArticleModule\Vendor\Wame\AdminModule\Components\AdminMenuControl;
+namespace Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuControl\AdminMenu;
 
-class AdminMenuControlFactory
+class AdminMenuItemFactory
 {	
 	/** @var \Nette\Application\LinkGenerator */
 	private $linkGenerator;
@@ -13,10 +13,10 @@ class AdminMenuControlFactory
 		$this->linkGenerator = $linkGenerator;
 	}
 
-	/** @return AdminMenuControl */
+	/** @return AdminMenuItem */
 	public function create() 
 	{
-		return new AdminMenuControl(
+		return new AdminMenuItem(
 			$this->linkGenerator
 		);
 	}

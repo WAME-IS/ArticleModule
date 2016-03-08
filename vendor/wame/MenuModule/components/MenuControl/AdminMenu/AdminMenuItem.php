@@ -1,10 +1,10 @@
 <?php
 
-namespace Wame\ArticleModule\Vendor\Wame\AdminModule\Components\AdminMenuControl;
+namespace Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuControl\AdminMenu;
 
-use Wame\AdminModule\Components\AdminMenuControl\Item;
+use Wame\MenuModule\Models\Item;
 
-class AdminMenuControl
+class AdminMenuItem
 {	
 	/** @var \Nette\Application\LinkGenerator */
 	private $linkGenerator;
@@ -21,11 +21,10 @@ class AdminMenuControl
 		$item->setLink($this->linkGenerator->link('Admin:Articles:', ['id' => null]));
 		$item->setIcon('fa fa-file-text');
 		
-		$item->addChild($this->articleCategoriesDefault());
-		$item->addChild($this->articleCategoryDefault());
-		$item->addSeparator();
-		$item->addChild($this->articlesDefault());
-		$item->addChild($this->articleDefault());
+		$item->addNode($this->articleCategoriesDefault());
+		$item->addNode($this->articleCategoryDefault());
+		$item->addNode($this->articlesDefault());
+		$item->addNode($this->articleDefault());
 		
 		return $item->getItem();
 	}
