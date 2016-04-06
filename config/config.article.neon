@@ -1,0 +1,2 @@
+services:
+    article.module: Wame\ArticleModule

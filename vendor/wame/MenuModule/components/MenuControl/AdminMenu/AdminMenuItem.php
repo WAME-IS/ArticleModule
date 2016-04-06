@@ -6,18 +6,21 @@ use Wame\MenuModule\Models\Item;
 
 class AdminMenuItem
 {	
-	/** @var \Nette\Application\LinkGenerator */
+	public $name = 'article';
+
+    /** @var \Nette\Application\LinkGenerator */
 	private $linkGenerator;
 	
 	public function __construct($linkGenerator)
 	{
 		$this->linkGenerator = $linkGenerator;
 	}
-	
+    
 	public function addItem()
 	{
 		$item = new Item();
-		$item->setTitle(_('Články'));
+        $item->insertBefore('users');
+		$item->setTitle(_('Articles'));
 		$item->setLink($this->linkGenerator->link('Admin:Articles:', ['id' => null]));
 		$item->setIcon('fa fa-file-text');
 		
@@ -32,7 +35,7 @@ class AdminMenuItem
 	private function articleCategoriesDefault()
 	{
 		$item = new Item();
-		$item->setTitle(_('Všetky kategórie'));
+		$item->setTitle(_('Categories'));
 		$item->setLink($this->linkGenerator->link('Admin:ArticleCategories:', ['id' => null]));
 		
 		return $item->getItem();
@@ -41,7 +44,7 @@ class AdminMenuItem
 	private function articleCategoryDefault()
 	{
 		$item = new Item();
-		$item->setTitle(_('Pridať kategóriu'));
+		$item->setTitle(_('Add category'));
 		$item->setLink($this->linkGenerator->link('Admin:ArticleCategory:', ['id' => null]));
 		
 		return $item->getItem();
@@ -50,7 +53,7 @@ class AdminMenuItem
 	private function articlesDefault()
 	{
 		$item = new Item();
-		$item->setTitle(_('Všetky články'));
+		$item->setTitle(_('Articles'));
 		$item->setLink($this->linkGenerator->link('Admin:Articles:', ['id' => null]));
 		
 		return $item->getItem();
@@ -59,7 +62,7 @@ class AdminMenuItem
 	private function articleDefault()
 	{
 		$item = new Item();
-		$item->setTitle(_('Pridať článok'));
+		$item->setTitle(_('Add article'));
 		$item->setLink($this->linkGenerator->link('Admin:Article:', ['id' => null]));
 		
 		return $item->getItem();
