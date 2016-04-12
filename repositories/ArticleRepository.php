@@ -49,7 +49,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 		];
 	}
 	
-	public function addArticle($values)
+	public function add($values)
 	{
 		$articleEntity = new ArticleEntity();
 		if ($values['publish_start_date']) {
@@ -63,7 +63,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 		$articleEntity->createUser = $this->userEntity;
 		$articleEntity->status = self::STATUS_PUBLISHED;
 		
-		return $this->entityManager->persist($articleEntity);
+		return $articleEntity;
 	}
 	
 }

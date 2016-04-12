@@ -23,7 +23,7 @@ class ArticleLangRepository extends \Wame\Core\Repositories\BaseRepository
 		$this->userEntity = $this->entityManager->getRepository(UserEntity::class)->findOneBy(['id' => $user->id]);
 	}
 	
-	public function addArticle($article, $values)
+	public function add($article, $values)
 	{		
 		$articleLangEntity = new ArticleLangEntity();
 		
@@ -36,7 +36,7 @@ class ArticleLangRepository extends \Wame\Core\Repositories\BaseRepository
 		$articleLangEntity->editDate = new \DateTime('now');
 		$articleLangEntity->editUser = $this->userEntity;
 		
-		$this->entityManager->persist($articleLangEntity);
+		return $articleLangEntity;
 	}
 	
 }
