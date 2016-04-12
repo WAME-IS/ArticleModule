@@ -18,7 +18,6 @@ class ArticleModule extends Plugin
 	public function onEnable() 
 	{
 		$this->permission->addResource('article');
-
 		$this->permission->addResourceAction('article', 'view');
 		$this->permission->allow('guest', 'article', 'view');
 		$this->permission->addResourceAction('article', 'add');

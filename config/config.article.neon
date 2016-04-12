@@ -1,2 +1,18 @@
 services:
-    article.module: Wame\ArticleModule
+	article.module: Wame\ArticleModule
+
+	- Wame\ArticleModule\Forms\ArticleForm
+
+	# Entities
+	- Wame\ArticleModule\Entities\ArticleEntity
+	- Wame\ArticleModule\Entities\ArticleLangEntity
+
+	# Repositories
+	- Wame\ArticleModule\Repositories\ArticleRepository
+	- Wame\ArticleModule\Repositories\ArticleLangRepository
+
+
+doctrine:
+	metadata:
+		Wame\ArticleModule\Entities: %appDir%/../vendor/wame/ArticleModule/entities
+		Wame\ArticleModule\Repositories: %appDir%/../vendor/wame/ArticleModule/repositories
