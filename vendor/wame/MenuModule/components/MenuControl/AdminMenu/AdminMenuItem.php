@@ -24,28 +24,8 @@ class AdminMenuItem
 		$item->setLink($this->linkGenerator->link('Admin:Articles:', ['id' => null]));
 		$item->setIcon('fa fa-file-text');
 		
-		$item->addNode($this->articleCategoriesDefault());
-		$item->addNode($this->articleCategoryDefault());
 		$item->addNode($this->articlesDefault());
 		$item->addNode($this->articleDefault());
-		
-		return $item->getItem();
-	}
-	
-	private function articleCategoriesDefault()
-	{
-		$item = new Item();
-		$item->setTitle(_('Categories'));
-		$item->setLink($this->linkGenerator->link('Admin:ArticleCategories:', ['id' => null]));
-		
-		return $item->getItem();
-	}
-	
-	private function articleCategoryDefault()
-	{
-		$item = new Item();
-		$item->setTitle(_('Add category'));
-		$item->setLink($this->linkGenerator->link('Admin:ArticleCategory:', ['id' => null]));
 		
 		return $item->getItem();
 	}
