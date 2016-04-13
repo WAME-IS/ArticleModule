@@ -5,7 +5,7 @@ namespace Wame\ArticleModule\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="wame_article_lang", indexes={@ORM\Index(name="article_id", columns={"article_id"})})
+ * @ORM\Table(name="wame_article_lang", indexes={@ORM\Index(name="article_id", columns={"article"})})
  * @ORM\Entity
  */
 class ArticleLangEntity extends \Wame\Core\Entities\BaseEntity 
@@ -14,8 +14,8 @@ class ArticleLangEntity extends \Wame\Core\Entities\BaseEntity
 	use \Wame\Core\Entities\Columns\EditDate;
 
 	/**
-     * @ManyToOne(targetEntity="ArticleEntity", inversedBy="articleLang")
-     * @JoinColumn(name="article_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ArticleEntity", inversedBy="lang")
+     * @ORM\JoinColumn(name="article_id", referencedColumnName="id", nullable=false)
      */
 	protected $article;
 	

@@ -48,12 +48,15 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	public function articleFormSucceeded(Form $form, $values)
 	{
 		if ($this->id) {
-			$this->articleRepository->setArticle($this->id, $values);
+			$this->articleRepository->set($this->id, $values);
 
 			$this->flashMessage(_('The article was successfully update'), 'success');
 		} else {
-			$article = $this->articleRepository->addArticle($values);
-			$this->articleLangRepository->addArticle($article, $values);
+			$article = $this->articleRepository->add($values);
+			$articleLang = $this->articleLangRepository->add($article, $values);
+			
+			$this->entityManager->persist($article);
+			$this->entityManager->persist($articleLang);
 
 			$this->flashMessage(_('The article was created successfully'), 'success');
 		}
