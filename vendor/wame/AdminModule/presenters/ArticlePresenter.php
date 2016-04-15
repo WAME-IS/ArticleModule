@@ -17,7 +17,6 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	protected function createComponentArticleForm()
 	{
 		$form = $this->articleForm->create();
-		$form->setRenderer(new \Tomaj\Form\Renderer\BootstrapVerticalRenderer);
 		
 		if ($this->action == 'edit' && is_numeric($this->id)) {
 			$defaults = $this->articleRepository->get(['id' => $this->id]);
