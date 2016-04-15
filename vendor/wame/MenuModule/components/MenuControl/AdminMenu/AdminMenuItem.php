@@ -23,7 +23,7 @@ class AdminMenuItem
 		$item->setTitle(_('Articles'));
 		$item->setLink($this->linkGenerator->link('Admin:Article:', ['id' => null]));
 		$item->setIcon('fa fa-file-text');
-
+		
 		$item->addNode($this->articlesDefault());
 		$item->addNode($this->articleDefault());
 		
