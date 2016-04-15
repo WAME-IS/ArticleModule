@@ -78,7 +78,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	 * @param array $values
 	 * @throws Exception\ArticleNotCreatedException
 	 */
-	public function add($values)
+	public function create($values)
 	{
 		$articleEntity = new ArticleEntity();
 		if ($values['publish_start_date']) {
@@ -117,7 +117,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	 * @param int $articleId
 	 * @param array $values
 	 */
-	public function set($articleId, $values)
+	public function update($articleId, $values)
 	{
 		$articleEntity = $this->articleEntity->findOneBy(['id' => $articleId]);
 		if ($values['publish_start_date']) {
