@@ -35,7 +35,7 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 				$form['publish_start_date']->setDefaultValue($this->formatDate($defaults->publishStartDate));
 			}
 			if ($defaults->publishEndDate) {
-				$form['publish_end_date']->setDefaultValue($defaults->publishEndDate->format('Y-m-d H:i:s'));
+				$form['publish_end_date']->setDefaultValue($this->formatDate($defaults->publishEndDate));
 			}
 		}
 		
