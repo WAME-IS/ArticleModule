@@ -1,4 +1,32 @@
 {block content}
 	<h1>{$siteTitle}</h1>
 	
-	{control articleForm}
+	<a n:if="count($articleEntity) > 0" class="btn btn-success ajax-modal pull-right" n:href=":Admin:Article:create, 'id' => null">
+		<span class="fa fa-plus"></span>
+		{_'Crate article'}
+	</a>
+
+	{if count($articleEntity) == 0}
+		<div class="lead text-muted">{_'You do not have crate any articles.'}</div>
+		<a class="btn btn-success" n:href=":Admin:Article:create, 'id' => null">{_'Create first article'}</a>
+	{else}
+		<table class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>{_'Title'}</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr n:foreach="$articleEntity as $article">
+					<td>
+						{$article->id}
+					</td>
+					<td>
+						{$article->langs[$lang]->title}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	{/if}

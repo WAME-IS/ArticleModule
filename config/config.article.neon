@@ -1,6 +1,17 @@
 services:
-	article.module: Wame\ArticleModule
+	PermissionObject:
+		setup:
+			- addResource('article')
+			- addResourceAction('article', 'view')
+			- allow('guest', 'article', 'view')
+			- addResourceAction('article', 'add')
+			- allow('moderator', 'article', 'add')
+			- addResourceAction('article', 'edit')
+			- allow('moderator', 'article', 'edit')
+			- addResourceAction('article', 'delete')
+			- allow('moderator', 'article', 'delete')
 
+	# Forms
 	- Wame\ArticleModule\Forms\ArticleForm
 
 	# Entities
@@ -9,7 +20,6 @@ services:
 
 	# Repositories
 	- Wame\ArticleModule\Repositories\ArticleRepository
-	- Wame\ArticleModule\Repositories\ArticleLangRepository
 
 
 doctrine:

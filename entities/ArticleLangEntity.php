@@ -14,7 +14,7 @@ class ArticleLangEntity extends \Wame\Core\Entities\BaseEntity
 	use \Wame\Core\Entities\Columns\EditDate;
 
 	/**
-     * @ORM\ManyToOne(targetEntity="ArticleEntity", inversedBy="lang")
+     * @ORM\ManyToOne(targetEntity="ArticleEntity", inversedBy="langs")
      * @ORM\JoinColumn(name="article_id", referencedColumnName="id", nullable=false)
      */
 	protected $article;

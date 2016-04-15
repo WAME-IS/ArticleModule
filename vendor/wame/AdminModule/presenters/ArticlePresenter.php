@@ -5,8 +5,6 @@ namespace App\AdminModule\Presenters;
 use Nette\Application\UI\Form;
 use Wame\ArticleModule\Forms\ArticleForm;
 use Wame\ArticleModule\Repositories\ArticleRepository;
-use Wame\ArticleModule\Repositories\ArticleLangRepository;
-use Wame\ArticleModule\Entities\ArticleEntity;
 
 class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 {	
@@ -16,25 +14,12 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	/** @var ArticleRepository @inject */
 	public $articleRepository;
 
-	/** @var ArticleLangRepository @inject */
-	public $articleLangRepository;
-
-	/** @var ArticleEntity */
-	private $articleEntity;
-
-	public function startup() 
-	{
-		parent::startup();
-		
-		$this->articleEntity = $this->entityManager->getRepository(ArticleEntity::class);
-	}
-	
 	protected function createComponentArticleForm()
 	{
 		$form = $this->articleForm->create();
 		$form->setRenderer(new \Tomaj\Form\Renderer\BootstrapVerticalRenderer);
 		
-		if ($this->id) {
+		if ($this->action == 'edit' && is_numeric($this->id)) {
 			$defaults = $this->articleEntity->findOneBy(['id' => $this->id]);
 
 			$form['title']->setDefaultValue($defaults->title);
@@ -47,29 +32,39 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	
 	public function articleFormSucceeded(Form $form, $values)
 	{
-		if ($this->id) {
+		
+		if ($this->action == 'edit') {
 			$this->articleRepository->set($this->id, $values);
 
 			$this->flashMessage(_('The article was successfully update'), 'success');
-		} else {
-			$article = $this->articleRepository->add($values);
-			$articleLang = $this->articleLangRepository->add($article, $values);
-			
-			$this->entityManager->persist($article);
-			$this->entityManager->persist($articleLang);
+		} elseif ($this->action == 'create') {
+			try {
+				$this->articleRepository->addArticle($values);
 
-			$this->flashMessage(_('The article was created successfully'), 'success');
+				$this->flashMessage(_('The article was created successfully'), 'success');
+			} catch (\Exception $e) {
+				$form->addError($e->getMessage());
+			}
 		}
 		
 		$this->redirect('this');
 	}
-	
+
 	public function renderDefault()
 	{
-		if ($this->id) {
-			$this->template->siteTitle = _('Edit article');
-		} else {
-			$this->template->siteTitle = _('Add new article');
-		}
+		$this->template->siteTitle = _('Articles');
+		$this->template->articleEntity = $this->articleRepository->getArticles(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
 	}
+	
+	public function renderCreate()
+	{
+		$this->template->siteTitle = _('Create new article');
+		$this->template->setFile(__DIR__ . '/templates/Article/edit.latte');
+	}
+	
+	public function renderEdit()
+	{
+		$this->template->siteTitle = _('Edit article');
+	}
+
 }

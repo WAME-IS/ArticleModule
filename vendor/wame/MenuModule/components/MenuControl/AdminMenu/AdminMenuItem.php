@@ -21,7 +21,7 @@ class AdminMenuItem
 		$item = new Item();
         $item->insertBefore('users');
 		$item->setTitle(_('Articles'));
-		$item->setLink($this->linkGenerator->link('Admin:Articles:', ['id' => null]));
+		$item->setLink($this->linkGenerator->link('Admin:Article:', ['id' => null]));
 		$item->setIcon('fa fa-file-text');
 
 		$item->addNode($this->articlesDefault());
@@ -34,7 +34,7 @@ class AdminMenuItem
 	{
 		$item = new Item();
 		$item->setTitle(_('Articles'));
-		$item->setLink($this->linkGenerator->link('Admin:Articles:', ['id' => null]));
+		$item->setLink($this->linkGenerator->link('Admin:Article:', ['id' => null]));
 		
 		return $item->getItem();
 	}
@@ -43,7 +43,7 @@ class AdminMenuItem
 	{
 		$item = new Item();
 		$item->setTitle(_('Add article'));
-		$item->setLink($this->linkGenerator->link('Admin:Article:', ['id' => null]));
+		$item->setLink($this->linkGenerator->link('Admin:Article:create', ['id' => null]));
 		
 		return $item->getItem();
 	}
