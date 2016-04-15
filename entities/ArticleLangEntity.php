@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ArticleLangEntity extends \Wame\Core\Entities\BaseEntity 
 {
-	use \Wame\Core\Entities\Columns\Identifier;
+ 	use \Wame\Core\Entities\Columns\Identifier;
 	use \Wame\Core\Entities\Columns\EditDate;
 
 	/**

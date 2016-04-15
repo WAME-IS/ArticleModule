@@ -20,14 +20,14 @@ class ArticleEntity extends \Wame\Core\Entities\BaseEntity
     protected $langs;
 	
 	/**
-	 * @ORM\Column(name="publish_start_date", type="datetime", nullable=false)
+	 * @ORM\Column(name="publish_start_date", type="datetime", nullable=true)
 	 */
-	protected $publishStartDate = null;
+	protected $publishStartDate;
 
 	/**
-	 * @ORM\Column(name="publish_end_date", type="datetime", nullable=false)
+	 * @ORM\Column(name="publish_end_date", type="datetime", nullable=true)
 	 */
-	protected $publishEndDate = null;
+	protected $publishEndDate;
 
 }
 
