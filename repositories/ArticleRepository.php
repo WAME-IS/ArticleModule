@@ -5,7 +5,6 @@ namespace Wame\ArticleModule\Repositories;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
 use Wame\UserModule\Entities\UserEntity;
-use Wame\ArticleModule\Exception;
 
 class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 {
@@ -107,7 +106,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 		$create = $this->entityManager->persist($articleEntity);
 
 		if (!$create) {
-			throw new Exception\ArticleNotCreatedException(_('Could not create the article'));
+			throw new \Wame\Core\Exception\RepositoryException(_('Could not create the article'));
 		}
 	}
 	
