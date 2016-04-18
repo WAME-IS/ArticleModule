@@ -5,7 +5,7 @@ namespace Wame\ArticleModule\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="wame_article_lang", indexes={@ORM\Index(name="article_id", columns={"article"})})
+ * @ORM\Table(name="wame_article_lang")
  * @ORM\Entity
  */
 class ArticleLangEntity extends \Wame\Core\Entities\BaseEntity 
