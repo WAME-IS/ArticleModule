@@ -17,12 +17,25 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	protected function createComponentArticleForm()
 	{
 		$form = $this->articleForm->create();
-		$form->setRenderer(new \Tomaj\Form\Renderer\BootstrapVerticalRenderer);
 		
 		if ($this->action == 'edit' && is_numeric($this->id)) {
-			$defaults = $this->articleEntity->findOneBy(['id' => $this->id]);
+			$defaults = $this->articleRepository->get(['id' => $this->id]);
+			$defaultsLang = $defaults->langs[$this->lang];
 
-			$form['title']->setDefaultValue($defaults->title);
+			$form->setDefaults([
+				'title' => $defaultsLang->title,
+				'slug' => $defaultsLang->slug,
+				'status' => $defaults->status,
+				'description' => $defaultsLang->description,
+				'text' => $defaultsLang->text
+			]);
+			
+			if ($defaults->publishStartDate) {
+				$form['publish_start_date']->setDefaultValue($this->formatDate($defaults->publishStartDate));
+			}
+			if ($defaults->publishEndDate) {
+				$form['publish_end_date']->setDefaultValue($this->formatDate($defaults->publishEndDate));
+			}
 		}
 		
 		$form->onSuccess[] = [$this, 'articleFormSucceeded'];
@@ -32,14 +45,17 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	
 	public function articleFormSucceeded(Form $form, $values)
 	{
-		
 		if ($this->action == 'edit') {
-			$this->articleRepository->set($this->id, $values);
+			try {
+				$this->articleRepository->set($this->id, $values);
 
-			$this->flashMessage(_('The article was successfully update'), 'success');
+				$this->flashMessage(_('The article was successfully update'), 'success');
+			} catch (\Exception $e) {
+				$form->addError($e->getMessage());
+			}
 		} elseif ($this->action == 'create') {
 			try {
-				$this->articleRepository->addArticle($values);
+				$this->articleRepository->add($values);
 
 				$this->flashMessage(_('The article was created successfully'), 'success');
 			} catch (\Exception $e) {
@@ -50,11 +66,13 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		$this->redirect('this');
 	}
 
+	
 	public function renderDefault()
 	{
 		$this->template->siteTitle = _('Articles');
-		$this->template->articleEntity = $this->articleRepository->getArticles(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
+		$this->template->articles = $this->articleRepository->getAll(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
 	}
+	
 	
 	public function renderCreate()
 	{
@@ -62,9 +80,25 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		$this->template->setFile(__DIR__ . '/templates/Article/edit.latte');
 	}
 	
+	
 	public function renderEdit()
 	{
 		$this->template->siteTitle = _('Edit article');
+	}
+	
+	
+	public function renderDelete()
+	{
+		$this->template->siteTitle = _('Deleting article');
+	}
+	
+	
+	public function handleDelete()
+	{
+		$this->articleRepository->delete(['id' => $this->id]);
+		
+		$this->flashMessage(_('Article has been successfully deleted'), 'success');
+		$this->redirect(':Admin:Article:', ['id' => null]);
 	}
 
 }

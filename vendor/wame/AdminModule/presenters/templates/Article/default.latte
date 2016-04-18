@@ -1,12 +1,12 @@
 {block content}
 	<h1>{$siteTitle}</h1>
 	
-	<a n:if="count($articleEntity) > 0" class="btn btn-success ajax-modal pull-right" n:href=":Admin:Article:create, 'id' => null">
+	<a n:if="count($articles) > 0" class="btn btn-success ajax-modal pull-right" n:href=":Admin:Article:create, 'id' => null">
 		<span class="fa fa-plus"></span>
 		{_'Crate article'}
 	</a>
 
-	{if count($articleEntity) == 0}
+	{if count($articles) == 0}
 		<div class="lead text-muted">{_'You do not have crate any articles.'}</div>
 		<a class="btn btn-success" n:href=":Admin:Article:create, 'id' => null">{_'Create first article'}</a>
 	{else}
@@ -15,16 +15,55 @@
 				<tr>
 					<th>#</th>
 					<th>{_'Title'}</th>
+					<th>{_'Published by'}</th>
+					<th>{_'Published at'}</th>
+					<th>{_'Creator'}</th>
+					<th>{_'Status'}</th>
+					<th></th>
 				</tr>
 			</thead>
 			
 			<tbody>
-				<tr n:foreach="$articleEntity as $article">
+				<tr n:foreach="$articles as $article">
 					<td>
 						{$article->id}
 					</td>
+					
 					<td>
-						{$article->langs[$lang]->title}
+						<a n:href=":Admin:Article:edit, 'id' => $article->id">{$article->langs[$lang]->title}</a>
+					</td>
+					
+					<td>
+						{if $article->publishStartDate}
+							{$article->publishStartDate|date:'d.m.Y, H:i'}
+						{else}
+							{$article->createDate|date:'d.m.Y, H:i'}
+						{/if}
+					</td>
+					
+					<td>
+						{if $article->publishEndDate}
+							{$article->publishEndDate|date:'d.m.Y, H:i'}
+						{else}
+							-
+						{/if}
+					</td>
+					
+					<td>
+						{$article->createUser->fullName}
+					</td>
+					
+					<td>
+						{if $article->status == 1}
+							<span class="label label-success">{_'Published'}</span>
+						{elseif $article->status == 2}
+							<span class="label label-danger">{_'Unpublished'}</span>
+						{/if}
+					</td>
+					
+					<td class="text-right">
+						<a class="btn btn-sm btn-warning" n:href=":Admin:Article:edit, 'id' => $article->id"><span class="fa fa-edit"></span></a>
+						<a class="btn btn-sm btn-danger ajax-modal" n:href=":Admin:Article:delete, 'id' => $article->id"><span class="fa fa-trash-o"></span></a>
 					</td>
 				</tr>
 			</tbody>
