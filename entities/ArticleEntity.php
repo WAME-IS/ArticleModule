@@ -30,4 +30,3 @@ class ArticleEntity extends \Wame\Core\Entities\BaseEntity
 	protected $publishEndDate;
 
 }
-
