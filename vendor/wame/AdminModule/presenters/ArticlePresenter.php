@@ -38,6 +38,7 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 			}
 		}
 		
+		
 		$form->onSuccess[] = [$this, 'articleFormSucceeded'];
 		
 		return $form;

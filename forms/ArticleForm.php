@@ -53,6 +53,8 @@ class ArticleForm extends Object
 
 		$form->addSubmit('submit', _('Submit'));
 		
+		$form->addCategoryPicker('categories', 'Categories')->setType('articles');
+		
 		return $form;
 	}
 
