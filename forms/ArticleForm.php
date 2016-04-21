@@ -47,8 +47,6 @@ class ArticleForm extends FormFactory
 
 		$form->addSubmit('submit', _('Submit'));
 		
-		$form->addCategoryPicker('categories', 'Categories')->setType('articles');
-		
 		return $form;
 	}
 
