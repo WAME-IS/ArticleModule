@@ -21,6 +21,10 @@ services:
 	# Repositories
 	- Wame\ArticleModule\Repositories\ArticleRepository
 
+	ArticleShow:
+		class: Wame\ArticleModule\Controls\ArticleShow
+		setup:
+			- injectRepository
 
 doctrine:
 	metadata:
