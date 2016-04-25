@@ -11,6 +11,9 @@ class BaseControl extends Control
 	/** @var ArticleRepository @inject */
 	public $articleRepository;
 	
+	/** @var ArticleRepository @inject */
+	public $articleLangRepository;
+	
 	protected $lang;
 	
 	public function injectRepository(\Nette\Http\Request $httpRequest, ArticleRepository $articleRepository)

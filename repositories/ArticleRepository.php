@@ -162,13 +162,23 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	 * @param array $criteria
 	 * @return ArticleEntity
 	 */
-	public function getAll($criteria = [])
+	public function getAll($criteria = [], $orderBy = null, $limit = null, $offset = null)
 	{
-		$articleEntity = $this->articleEntity->findBy($criteria);
+		$articleEntity = $this->articleEntity->findBy($criteria, $orderBy, $limit, $offset);
 
 		return $articleEntity;
 	}
 	
+	/**
+	 * Return count of articles
+	 * 
+	 * @param array $criteria	criteria
+	 * @return integer			count
+	 */
+	public function countBy($criteria = [])
+	{
+		return $this->articleEntity->countBy($criteria);
+	}
 	
 	/**
 	 * Delete articles by criteria

@@ -2,29 +2,43 @@
 
 namespace App\ArticleModule\Presenters;
 
-use Wame\ArticleModule\Controls\ArticleShow;
+use Wame\ArticleModule\Controls\ArticleControl;
+use Wame\ArticleModule\Repositories\ArticleRepository;
 
 class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 {
-	/** @var ArticleShow @inject */
-	public $articleShow;
+	/** @var ArticleRepository @inject */
+	public $articleRepository;
+	
+	/** @var ArticleControl @inject */
+	public $articleControl;
 	
 	/** @var integer */
 	protected $articleId;
 	
+	/** @var string */
+	protected $articleSlug;
+	
+	private $articles;
+	
 	public function renderDefault()
 	{
+		
 	}
 	
 	public function actionShow($id) {
 		$this->articleId = $id;
 	}
 	
-	public function createComponentArticleShow()
+	public function createComponentArticleControl()
 	{
-		$componentArticleShow = $this->articleShow;
-		$componentArticleShow->setId($this->articleId);
-		return $componentArticleShow;
+		$articleId = $this->getParameter('id');
+		$articleSlug = $this->getParameter('slug');
+		
+		$componentArticleControl = $this->articleControl;
+		$componentArticleControl->setId($articleId);
+		$componentArticleControl->setSlug($articleSlug);
+		return $componentArticleControl;
 	}
 
 }

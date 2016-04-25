@@ -12,7 +12,8 @@ services:
 			- allow('moderator', 'article', 'delete')
 
 	# Forms
-	- Wame\ArticleModule\Forms\ArticleForm
+	ArticleForm:
+		class: Wame\ArticleModule\Forms\ArticleForm
 
 	# Entities
 	- Wame\ArticleModule\Entities\ArticleEntity
@@ -21,8 +22,8 @@ services:
 	# Repositories
 	- Wame\ArticleModule\Repositories\ArticleRepository
 
-	ArticleShow:
-		class: Wame\ArticleModule\Controls\ArticleShow
+	ArticleControl:
+		class: Wame\ArticleModule\Controls\ArticleControl
 		setup:
 			- injectRepository
 
