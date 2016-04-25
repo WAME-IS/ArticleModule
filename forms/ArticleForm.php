@@ -2,29 +2,23 @@
 
 namespace Wame\ArticleModule\Forms;
 
-use Nette\Object;
 use Wame\Core\Forms\FormFactory;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 
-class ArticleForm extends Object
-{	
-	/** @var FormFactory */
-	private $formFactory;
-	
+class ArticleForm extends FormFactory
+{
 	/** @var array */
 	private $publishStatusList;
 	
 	public function __construct(
-		FormFactory $formFactory,
 		ArticleRepository $articleRepository
 	) {
-		$this->formFactory = $formFactory;
 		$this->publishStatusList = $articleRepository->getPublishStatusList();
 	}
 
 	public function create()
 	{
-		$form = $this->formFactory->createForm();
+		$form = $this->createForm();
 		
 		$form->addGroup(_('Basic info'));
 		
