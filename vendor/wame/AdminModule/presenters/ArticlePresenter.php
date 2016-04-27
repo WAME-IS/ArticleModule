@@ -4,41 +4,54 @@ namespace App\AdminModule\Presenters;
 
 use Nette\Application\UI\Form;
 use Wame\ArticleModule\Forms\ArticleForm;
+use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 
 class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 {	
-	/** @var ArticleForm @inject */
-	public $articleForm;
+//	/** @var ArticleForm @inject */
+//	public $articleForm;
+	
+	/** @var CreateArticleForm @inject */
+	public $createArticleForm;
 
 	/** @var ArticleRepository @inject */
 	public $articleRepository;
 
-	protected function createComponentArticleForm()
+//	protected function createComponentArticleForm()
+//	{
+//		$form = $this->articleForm->create();
+//		
+//		if ($this->action == 'edit' && is_numeric($this->id)) {
+//			$defaults = $this->articleRepository->get(['id' => $this->id]);
+//			$defaultsLang = $defaults->langs[$this->lang];
+//
+//			$form->setDefaults([
+//				'title' => $defaultsLang->title,
+//				'slug' => $defaultsLang->slug,
+//				'status' => $defaults->status,
+//				'description' => $defaultsLang->description,
+//				'text' => $defaultsLang->text
+//			]);
+//			
+//			if ($defaults->publishStartDate) {
+//				$form['publish_start_date']->setDefaultValue($this->formatDate($defaults->publishStartDate));
+//			}
+//			if ($defaults->publishEndDate) {
+//				$form['publish_end_date']->setDefaultValue($this->formatDate($defaults->publishEndDate));
+//			}
+//		}
+//		
+//		
+//		$form->onSuccess[] = [$this, 'articleFormSucceeded'];
+//		
+//		return $form;
+//	}
+	
+	protected function createComponentCreateArticleForm() 
 	{
-		$form = $this->articleForm->create();
-		
-		if ($this->action == 'edit' && is_numeric($this->id)) {
-			$defaults = $this->articleRepository->get(['id' => $this->id]);
-			$defaultsLang = $defaults->langs[$this->lang];
+		$form = $this->createArticleForm->create();
 
-			$form->setDefaults([
-				'title' => $defaultsLang->title,
-				'slug' => $defaultsLang->slug,
-				'status' => $defaults->status,
-				'description' => $defaultsLang->description,
-				'text' => $defaultsLang->text
-			]);
-			
-			if ($defaults->publishStartDate) {
-				$form['publish_start_date']->setDefaultValue($this->formatDate($defaults->publishStartDate));
-			}
-			if ($defaults->publishEndDate) {
-				$form['publish_end_date']->setDefaultValue($this->formatDate($defaults->publishEndDate));
-			}
-		}
-		
-		
 		$form->onSuccess[] = [$this, 'articleFormSucceeded'];
 		
 		return $form;
@@ -48,7 +61,7 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	{
 		if ($this->action == 'edit') {
 			try {
-				$this->articleRepository->set($this->id, $values);
+				$this->articleRepository->update($this->id, $values);
 
 				$this->flashMessage(_('The article was successfully update'), 'success');
 			} catch (\Exception $e) {
@@ -56,7 +69,9 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 			}
 		} elseif ($this->action == 'create') {
 			try {
-				$this->articleRepository->add($values);
+				$articleEntity = $this->articleRepository->create($values);
+				
+				$this->articleRepository->onCreate($form, $values, $articleEntity);
 
 				$this->flashMessage(_('The article was created successfully'), 'success');
 			} catch (\Exception $e) {
@@ -71,7 +86,7 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	public function renderDefault()
 	{
 		$this->template->siteTitle = _('Articles');
-		$this->template->articles = $this->articleRepository->getAll(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
+		$this->template->articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
 	}
 	
 	
