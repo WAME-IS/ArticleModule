@@ -1,22 +1,17 @@
-{foreach $articles as $article}
-	<article>
-		<header>
-			<h1>{$article->langs[$lang]->title}</h1>
-		</header>
+<article>
+	<header>
+		<h2><a href="{plink show, $article->id}">{$article->langs[$lang]->title}</a></h2>
+	</header>
 
-		<div id="author">{_'author'}: {$article->createUser->fullName}</div>
+	<div id="author">{_'author'}: {$article->createUser->fullName}</div>
 
-		<p id="description">{$article->langs[$lang]->description}</p>
+	<p id="description">{$article->langs[$lang]->description}</p>
 
-		<div>
-			{$article->langs[$lang]->text|noescape}
-		</div>
+	<div>
+		{$article->langs[$lang]->text|noescape}
+	</div>
 
-		<footer>
-			<p>{_'Published'}: {$article->publishStartDate|date:'d.m.Y, H:i'}</p>
-		</footer>
-	</article>
-{/foreach}
-
-
-	{control paginator}
+	<footer>
+		<p>{_'Published'}: {$article->publishStartDate|date:'d.m.Y, H:i'}</p>
+	</footer>
+</article>

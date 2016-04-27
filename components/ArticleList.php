@@ -2,7 +2,9 @@
 
 namespace Wame\ArticleModule\Controls;
 
-class ArticleControl extends BaseControl
+use Wame\ArticleModule\Controls\Article;
+
+class ArticleList extends BaseControl
 {	
 	/** @var integer */
 	private $count = 5;
@@ -13,32 +15,6 @@ class ArticleControl extends BaseControl
 	/** @var integer */
 	private $paginatorOffset;
 	
-	/** @var integer */
-	protected $id;
-	
-	/** @var string */
-	protected $slug;
-	
-	
-	/**
-	 * Set id
-	 * 
-	 * @param type $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
-	
-	/**
-	 * Set slug
-	 * 
-	 * @param type $slug
-	 */
-	public function setSlug($slug)
-	{
-		$this->slug = $slug;
-	}
 	
 	/**
 	 * Set items per page
@@ -61,40 +37,23 @@ class ArticleControl extends BaseControl
 	
 	protected function createComponentPaginator()
 	{
-		return new \NettePagination;
+		return new \Wame\Utils\Pagination;
 	}
+	
+//	protected function createComponentArticle()
+//	{
+//		return new Article;
+//	}
 
 	public function render()
 	{
-		$this->setTemplate('article');
+		$this->setTemplate('article_list');
 		
-		if($this->id) {
-			$articles = $this->getArticleById($this->id);
-		} else if($this->slug) {
-			$articles = $this->getArticleBySlug($this->slug);
-		} else {
-			$articles = $this->getArticles();
-		}
+		$articles = $this->getArticles();
 		
 		$this->template->articles = $articles;
 		$this->template->paginatorOffset = $this->paginatorOffset;
 		$this->template->render();
-	}
-	
-	private function getArticleById($id)
-	{
-		return $this->articleRepository->getAll([
-			'id' => $id,
-//				'status' => ArticleRepository::STATUS_PUBLISHED
-		]);
-	}
-	
-	private function getArticleBySlug($slug)
-	{
-		return $this->articleRepository->getAll([
-			'langs.slug' => $slug,
-//				'status' => ArticleRepository::STATUS_PUBLISHED
-		]);
 	}
 	
 	private function getArticles()
@@ -106,7 +65,7 @@ class ArticleControl extends BaseControl
 		$this->paginatorOffset = $paginator->offset;
 		$paginator->itemCount = $this->articleRepository->countBy();
 
-		return $this->articleRepository->getAll([
+		return $this->articleRepository->find([
 //				'status' => ArticleRepository::STATUS_PUBLISHED
 		], null, $paginator->itemsPerPage, $paginator->offset);
 	}

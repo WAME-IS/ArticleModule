@@ -11,7 +11,7 @@ class BaseControl extends Control
 	/** @var ArticleRepository @inject */
 	public $articleRepository;
 	
-	/** @var ArticleRepository @inject */
+	/** @var ArticleLangRepository @inject */
 	public $articleLangRepository;
 	
 	protected $lang;
@@ -22,6 +22,8 @@ class BaseControl extends Control
 //		$this->$httpRequest = $httpRequest;
 		$this->articleRepository = $articleRepository;
 		$this->lang = $this->articleRepository->lang;
+//		
+//		dump($this->lang); exit;
 	}
 	
 	public function setTemplate($templateName)
