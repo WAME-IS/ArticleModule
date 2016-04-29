@@ -51,37 +51,9 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	protected function createComponentCreateArticleForm() 
 	{
 		$form = $this->createArticleForm->create();
-
-		$form->onSuccess[] = [$this, 'articleFormSucceeded'];
 		
 		return $form;
 	}
-	
-	public function articleFormSucceeded(Form $form, $values)
-	{
-		if ($this->action == 'edit') {
-			try {
-				$this->articleRepository->update($this->id, $values);
-
-				$this->flashMessage(_('The article was successfully update'), 'success');
-			} catch (\Exception $e) {
-				$form->addError($e->getMessage());
-			}
-		} elseif ($this->action == 'create') {
-			try {
-				$articleEntity = $this->articleRepository->create($values);
-				
-				$this->articleRepository->onCreate($form, $values, $articleEntity);
-
-				$this->flashMessage(_('The article was created successfully'), 'success');
-			} catch (\Exception $e) {
-				$form->addError($e->getMessage());
-			}
-		}
-		
-		$this->redirect('this');
-	}
-
 	
 	public function renderDefault()
 	{

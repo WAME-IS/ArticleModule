@@ -4,6 +4,12 @@ namespace Wame\ArticleModule\Forms;
 
 use Wame\DynamicObject\Forms\BaseFormContainer;
 
+interface IDescriptionFormContainerFactory
+{
+	/** @return DescriptionFormContainer */
+	public function create();
+}
+
 class DescriptionFormContainer extends BaseFormContainer
 {
     public function render() 

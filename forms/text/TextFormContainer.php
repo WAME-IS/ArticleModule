@@ -4,6 +4,12 @@ namespace Wame\ArticleModule\Forms;
 
 use Wame\DynamicObject\Forms\BaseFormContainer;
 
+interface ITextFormContainerFactory
+{
+	/** @return TextFormContainer */
+	public function create();
+}
+
 class TextFormContainer extends BaseFormContainer
 {
     public function render() 

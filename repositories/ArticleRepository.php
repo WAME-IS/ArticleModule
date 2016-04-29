@@ -82,38 +82,18 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository implement
 	 * @param array $values
 	 * @throws Exception\ArticleNotCreatedException
 	 */
-	public function create($values)
+	public function create($articleLangEntity)
 	{
-		$articleEntity = new ArticleEntity();
-		if ($values['publish_start_date']) {
-			$articleEntity->publisStartDate = $this->formatDate($values['publish_start_date']);
-		}
-		if ($values['publish_end_date']) {
-			$articleEntity->publisEndDate = $this->formatDate($values['publish_end_date']);
-		}
-		$articleEntity->createDate = $this->formatDate('now');
-		$articleEntity->createUser = $this->userEntity;
-		$articleEntity->status = $values['status'];
+		// TODO: overit ci nezalezi na poradi
 
-		$articleLangEntity = new ArticleLangEntity();
-		$articleLangEntity->article = $articleEntity;
-		$articleLangEntity->lang = $this->lang;
-		$articleLangEntity->title = $values['title'];
-		$articleLangEntity->slug = $values['slug'];
-		$articleLangEntity->description = $values['description'];
-		$articleLangEntity->text = $values['text'];
-		$articleLangEntity->editDate = $this->formatDate('now');
-		$articleLangEntity->editUser = $this->userEntity;
-
+		$create = $this->entityManager->persist($articleLangEntity->article);
 		$this->entityManager->persist($articleLangEntity);
-
-		$create = $this->entityManager->persist($articleEntity);
-
+		$this->entityManager->flush();
 		if (!$create) {
 			throw new \Wame\Core\Exception\RepositoryException(_('Could not create the article'));
 		}
 		
-		return $articleEntity;
+		return $articleLangEntity->article;
 	}
 	
 	

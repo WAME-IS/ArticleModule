@@ -2,10 +2,15 @@
 
 namespace Wame\ArticleModule\Controls;
 
-use Wame\ArticleModule\Controls\Article;
+use Wame\ArticleModule\Repositories\ArticleRepository;
 
 class ArticleList extends BaseControl
 {	
+	const SORT_BY_NAME = 'name';
+	const SORT_BY_DATE = 'date';
+	const SORT_ASC = 'ASC';
+	const SORT_DESC = 'DESC';
+	
 	/** @var integer */
 	private $count = 5;
 	
@@ -14,6 +19,9 @@ class ArticleList extends BaseControl
 	
 	/** @var integer */
 	private $paginatorOffset;
+	
+	/** @var array */
+	private $orderBy = [];
 	
 	
 	/**
@@ -35,27 +43,35 @@ class ArticleList extends BaseControl
 		$this->count = $count;
 	}
 	
-	protected function createComponentPaginator()
+	// TODO: presunut do oddelenej casti, aby sortovanie mohlo byt vyuzivane viacerymi komponentami
+	/**
+	 * Set SortBy
+	 * 
+	 * @param type $name
+	 * @param type $sort
+	 */
+	public function setSortBy($name, $sort = self::SORT_ASC)
 	{
-		return new \Wame\Utils\Pagination;
+		switch($name) {
+			default:
+			case self::SORT_BY_NAME:
+				$newName = 'langs.title';
+				break;
+			case self::SORT_BY_DATE:
+				$newName = 'publishStartDate';
+				break;
+		}
+		
+		if($sort == self::SORT_ASC || $sort == self::SORT_DESC) {
+			$this->orderBy[$newName] = $sort;
+		}
 	}
 	
-//	protected function createComponentArticle()
-//	{
-//		return new Article;
-//	}
-
-	public function render()
-	{
-		$this->setTemplate('article_list');
-		
-		$articles = $this->getArticles();
-		
-		$this->template->articles = $articles;
-		$this->template->paginatorOffset = $this->paginatorOffset;
-		$this->template->render();
-	}
-	
+	/**
+	 * Get articles
+	 * 
+	 * @return array	articles
+	 */
 	private function getArticles()
 	{
 		$vp = $this['paginator'];
@@ -66,7 +82,31 @@ class ArticleList extends BaseControl
 		$paginator->itemCount = $this->articleRepository->countBy();
 
 		return $this->articleRepository->find([
-//				'status' => ArticleRepository::STATUS_PUBLISHED
-		], null, $paginator->itemsPerPage, $paginator->offset);
+				'status' => ArticleRepository::STATUS_PUBLISHED
+			], 
+			$this->orderBy, 
+			$paginator->itemsPerPage, 
+			$paginator->offset
+		);
+	}
+	
+	
+	protected function createComponentPaginator()
+	{
+		return new \Wame\Utils\Pagination;
+	}
+	
+	/**
+	 * Render
+	 */
+	public function render()
+	{
+		$this->setTemplate('article_list');
+		
+		$articles = $this->getArticles();
+		
+		$this->template->articles = $articles;
+		$this->template->paginatorOffset = $this->paginatorOffset;
+		$this->template->render();
 	}
 }

@@ -6,6 +6,12 @@ use Nette\Application\UI\Form;
 use Wame\DynamicObject\Forms\BaseFormContainer;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 
+interface IStatusFormContainerFactory
+{
+	/** @return StatusFormContainer */
+	public function create();
+}
+
 class StatusFormContainer extends BaseFormContainer
 {
 	protected $publishStatusList;
@@ -14,7 +20,7 @@ class StatusFormContainer extends BaseFormContainer
 	{
 		parent::__construct();
 		
-		$this->publishStatusList = $articleRepository->getStatusList();
+		$this->publishStatusList = $articleRepository->getPublishStatusList();
 	}
 	
     public function render() 

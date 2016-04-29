@@ -5,6 +5,12 @@ namespace Wame\ArticleModule\Forms;
 use Nette\Application\UI\Form;
 use Wame\DynamicObject\Forms\BaseFormContainer;
 
+interface ITitleFormContainerFactory
+{
+	/** @return TitleFormContainer */
+	public function create();
+}
+
 class TitleFormContainer extends BaseFormContainer
 {
     public function render() 
