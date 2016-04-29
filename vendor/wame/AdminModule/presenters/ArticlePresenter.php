@@ -2,56 +2,43 @@
 
 namespace App\AdminModule\Presenters;
 
-use Nette\Application\UI\Form;
-use Wame\ArticleModule\Forms\ArticleForm;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm;
+use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\EditArticleForm;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 
 class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 {	
-//	/** @var ArticleForm @inject */
-//	public $articleForm;
-	
 	/** @var CreateArticleForm @inject */
 	public $createArticleForm;
+	
+	/** @var EditArticleForm @inject */
+	public $editArticleForm;
 
 	/** @var ArticleRepository @inject */
 	public $articleRepository;
 
-//	protected function createComponentArticleForm()
-//	{
-//		$form = $this->articleForm->create();
-//		
-//		if ($this->action == 'edit' && is_numeric($this->id)) {
-//			$defaults = $this->articleRepository->get(['id' => $this->id]);
-//			$defaultsLang = $defaults->langs[$this->lang];
-//
-//			$form->setDefaults([
-//				'title' => $defaultsLang->title,
-//				'slug' => $defaultsLang->slug,
-//				'status' => $defaults->status,
-//				'description' => $defaultsLang->description,
-//				'text' => $defaultsLang->text
-//			]);
-//			
-//			if ($defaults->publishStartDate) {
-//				$form['publish_start_date']->setDefaultValue($this->formatDate($defaults->publishStartDate));
-//			}
-//			if ($defaults->publishEndDate) {
-//				$form['publish_end_date']->setDefaultValue($this->formatDate($defaults->publishEndDate));
-//			}
-//		}
-//		
-//		
-//		$form->onSuccess[] = [$this, 'articleFormSucceeded'];
-//		
-//		return $form;
-//	}
 	
+	/**
+	 * Create article
+	 * 
+	 * @return EditUserForm		form
+	 */
 	protected function createComponentCreateArticleForm() 
 	{
-		$form = $this->createArticleForm->create();
+		$form = $this->createArticleForm->build();
 		
+		return $form;
+	}
+	
+	/**
+	 * Edit article
+	 * 
+	 * @return EditUserForm		form
+	 */
+	protected function createComponentEditArticleForm() 
+	{
+		$form = $this->editArticleForm->setId($this->id)->build();
+
 		return $form;
 	}
 	
@@ -65,7 +52,6 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	public function renderCreate()
 	{
 		$this->template->siteTitle = _('Create new article');
-		$this->template->setFile(__DIR__ . '/templates/Article/edit.latte');
 	}
 	
 	

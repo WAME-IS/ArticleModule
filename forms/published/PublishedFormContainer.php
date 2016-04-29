@@ -29,4 +29,11 @@ class PublishedFormContainer extends BaseFormContainer
 		$form->addText('publish_end_date', _('Published to'));
     }
 	
+	public function setDefaultValues($object)
+	{
+		$form = $this->getForm();
+		
+//		$form['publish_start_date']->setDefaultValue($object->articleEntity->publishStartDate);
+//		$form['publish_end_date']->setDefaultValue($object->articleEntity->publishEndDate);
+	}
 }

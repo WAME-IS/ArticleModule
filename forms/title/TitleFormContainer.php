@@ -31,4 +31,10 @@ class TitleFormContainer extends BaseFormContainer
 				->addRule(Form::FILLED, _('Title can not be empty'));
     }
 	
+	public function setDefaultValues($object)
+	{
+		$form = $this->getForm();
+		
+		$form['title']->setDefaultValue($object->articleEntity->langs[$object->lang]->title);
+	}
 }

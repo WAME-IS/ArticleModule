@@ -11,24 +11,12 @@ services:
 			- addResourceAction('article', 'delete')
 			- allow('moderator', 'article', 'delete')
 
-	# Forms
-	ArticleForm:
-		class: Wame\ArticleModule\Forms\ArticleForm
-
 	# Entities
 	- Wame\ArticleModule\Entities\ArticleEntity
 	- Wame\ArticleModule\Entities\ArticleLangEntity
 
 	# Repositories
 	- Wame\ArticleModule\Repositories\ArticleRepository
-
-	# Factories
-	- Wame\ArticleModule\Forms\ITitleFormContainerFactory
-	- Wame\ArticleModule\Forms\IUrlFormContainerFactory
-	- Wame\ArticleModule\Forms\IPublishedFormContainerFactory
-	- Wame\ArticleModule\Forms\IStatusFormContainerFactory
-	- Wame\ArticleModule\Forms\IDescriptionFormContainerFactory
-	- Wame\ArticleModule\Forms\ITextFormContainerFactory
 
 	# Components
 	Article:
@@ -45,17 +33,6 @@ services:
 		class: Wame\ArticleModule\Controls\ArticleFilterControl
 		setup:
 			- injectRepository
-
-	# Create article in administration form
-	CreateArticleForm:
-		class: Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm
-		setup:
-			- addFormContainer(Wame\ArticleModule\Forms\TitleFormContainer(), 'TitleFormContainer', 99)
-			- addFormContainer(Wame\ArticleModule\Forms\UrlFormContainer(), 'UrlFormContainer', 98)
-			- addFormContainer(Wame\ArticleModule\Forms\PublishedFormContainer(), 'PublishedFormContainer', 97)
-			- addFormContainer(Wame\ArticleModule\Forms\StatusFormContainer(), 'StatusFormContainer', 96)
-			- addFormContainer(Wame\ArticleModule\Forms\DescriptionFormContainer(), 'DescriptionFormContainer', 95)
-			- addFormContainer(Wame\ArticleModule\Forms\TextFormContainer(), 'TextFormContainer', 94)
 
 doctrine:
 	metadata:

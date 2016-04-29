@@ -27,4 +27,10 @@ class DescriptionFormContainer extends BaseFormContainer
 		$form->addTextArea('description', _('Description'));
     }
 	
+	public function setDefaultValues($object)
+	{
+		$form = $this->getForm();
+		
+		$form['description']->setDefaultValue($object->articleEntity->langs[$object->lang]->description);
+	}
 }

@@ -37,4 +37,10 @@ class StatusFormContainer extends BaseFormContainer
 				->getSeparatorPrototype()->setName(null);
     }
 	
+	public function setDefaultValues($object)
+	{
+		$form = $this->getForm();
+		
+		$form['status']->setDefaultValue($object->articleEntity->status);
+	}
 }
