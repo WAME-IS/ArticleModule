@@ -6,8 +6,6 @@ use Wame\MenuModule\Models\Item;
 
 class AdminMenuItem
 {	
-	public $name = 'article';
-
     /** @var \Nette\Application\LinkGenerator */
 	private $linkGenerator;
 	
@@ -19,13 +17,13 @@ class AdminMenuItem
 	public function addItem()
 	{
 		$item = new Item();
-        $item->insertBefore('users');
+		$item->setName('article');
+		$item->setPriority(10);
 		$item->setTitle(_('Articles'));
 		$item->setLink($this->linkGenerator->link('Admin:Article:', ['id' => null]));
 		$item->setIcon('fa fa-file-text');
 		
 		$item->addNode($this->articlesDefault());
-		$item->addNode($this->articleDefault());
 		
 		return $item->getItem();
 	}
@@ -33,17 +31,9 @@ class AdminMenuItem
 	private function articlesDefault()
 	{
 		$item = new Item();
+		$item->setName('article-articles');
 		$item->setTitle(_('Articles'));
 		$item->setLink($this->linkGenerator->link('Admin:Article:', ['id' => null]));
-		
-		return $item->getItem();
-	}
-	
-	private function articleDefault()
-	{
-		$item = new Item();
-		$item->setTitle(_('Add article'));
-		$item->setLink($this->linkGenerator->link('Admin:Article:create', ['id' => null]));
 		
 		return $item->getItem();
 	}
