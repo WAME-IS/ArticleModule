@@ -1,0 +1,24 @@
+<div class="panel-group" id="articleCategory-accordion" role="tablist" aria-multiselectable="true">
+	{foreach $list as $year => $months}	
+		<div class="panel">
+			<p class="margin-bottom">
+				<strong class="text-medium">{_'Archive'}</strong>
+			</p>
+			{if count($list) > 1}
+				<div class="panel-heading" role="tab" id="heading-{$year}">
+					<a data-toggle="collapse" data-parent="#articleCategory-accordion" href="#collapse-{$year}" aria-expanded="true" aria-controls="collapse-{$year}">{$year}</a>
+				</div>
+			{/if}
+			<div id="collapse-{$year}" class="panel-collapse collapse{first} in{/first}" role="tabpanel" aria-labelledby="heading-{$year}">
+				<div class="panel-body">
+					{foreach $months as $month => $count}
+						<div>
+							<a class="link-dark" href="{plink 'this', 'id' => NULL, 'filter' => ['y' => $year, 'm' => $month]}">{$monthsList[$month]}</a>
+							<span class="badge pull-right">{$count}</span>
+						</div>
+					{/foreach}
+				</div>
+			</div>
+		</div>
+	{/foreach}
+</div>

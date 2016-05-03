@@ -89,23 +89,22 @@ class EditArticleForm extends FormFactory
 	 * @param array $values			values
 	 * @return ArticleEntity		article
 	 */
-	public function update($articleId, $values)
+	private function update($articleId, $values = [])
 	{
 		$articleEntity = $this->articleRepository->get(['id' => $articleId]);
-
 		if ($values['publish_start_date']) {
-			$articleEntity->publisStartDate = $this->formatDate($values['publish_start_date']);
+			$articleEntity->publishStartDate = $this->formatDate($values['publish_start_date']);
+		} else {
+			$articleEntity->publishStartDate = null;
 		}
 		if ($values['publish_end_date']) {
-			$articleEntity->publisEndDate = $this->formatDate($values['publish_end_date']);
+			$articleEntity->publishEndDate = $this->formatDate($values['publish_end_date']);
+		} else {
+			$articleEntity->publishEndDate = null;
 		}
-		$articleEntity->createDate = $this->formatDate('now');
-		$articleEntity->createUser = $this->userEntity;
 		$articleEntity->status = $values['status'];
-
-		$articleLangEntity = new ArticleLangEntity();
-		$articleLangEntity->article = $articleEntity;
-		$articleLangEntity->lang = $this->lang;
+		
+		$articleLangEntity = $this->entityManager->getRepository(ArticleLangEntity::class)->findOneBy(['article' => $articleEntity, 'lang' => $this->lang]);
 		$articleLangEntity->title = $values['title'];
 		$articleLangEntity->slug = $values['slug'];
 		$articleLangEntity->description = $values['description'];

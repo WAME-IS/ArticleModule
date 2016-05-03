@@ -5,6 +5,7 @@ namespace App\ArticleModule\Presenters;
 use Wame\ArticleModule\Controls\Article;
 use Wame\ArticleModule\Controls\ArticleList;
 use Wame\ArticleModule\Controls\ArticleFilterControl;
+use Wame\ArticleModule\Controls\ArticleArchiveControl;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 
 use Wame\HeadControl\MetaTitle;
@@ -24,11 +25,24 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	/** @var ArticleFilterControl @inject */
 	public $articleFilterControl;
 	
+	/** @var ArticleArchiveControl @inject */
+	public $articleArchiveControl;
+	
 	/** @var integer */
 	protected $articleId;
 	
 	/** @var string */
 	protected $articleSlug;
+	
+	
+	/** @persistent */
+    public $page;
+	
+	/** @persistent */
+    public $sort;
+	
+	/** @persistent */
+    public $filter = [];
 	
 	
 	public function renderDefault()
@@ -57,6 +71,7 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		$articleSlug = $this->getParameter('slug');
 		
 		$componentArticleControl = $this->articleControl;
+//		$componentArticleControl->setInList($inList);
 		$componentArticleControl->setId($articleId);
 		$componentArticleControl->setSlug($articleSlug);
 		return $componentArticleControl;
@@ -64,10 +79,16 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	
 	public function createComponentArticleList()
 	{
-		$sort = $this->getParameter('sort');
+		$sort = $this->sort;
 		
 		$componentArticleListControl = $this->articleListControl;
-		$componentArticleListControl->addComponent($this->createComponentArticle(), 'article');
+		
+		$articleComponent = $this->createComponentArticle();
+		$articleComponent->setInList(true);
+		
+		$componentArticleListControl->addComponent($articleComponent, 'article');
+		$componentArticleListControl->addComponent($this->createComponentArticleFilterControl(), 'articleFilter');
+		$componentArticleListControl->addComponent($this->createComponentArticleArchiveControl(), 'articleArchive');
 		$componentArticleListControl->setSortBy($sort);
 		return $componentArticleListControl;
 	}
@@ -76,5 +97,11 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	{
 		$componentArticleFilterControl = $this->articleFilterControl;
 		return $componentArticleFilterControl;
+	}
+	
+	public function createComponentArticleArchiveControl()
+	{
+		$componentArticleArchiveControl = $this->articleArchiveControl;
+		return $componentArticleArchiveControl;
 	}
 }

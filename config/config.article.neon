@@ -34,6 +34,11 @@ services:
 		setup:
 			- injectRepository
 
+	ArticleArchiveControl:
+		class: Wame\ArticleModule\Controls\ArticleArchiveControl
+		setup:
+			- injectRepository
+
 doctrine:
 	metadata:
 		Wame\ArticleModule\Entities: %appDir%/../vendor/wame/ArticleModule/entities
