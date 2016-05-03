@@ -2,18 +2,29 @@
 
 namespace Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuControl\AdminMenu;
 
+use Nette\Application\LinkGenerator;
 use Wame\MenuModule\Models\Item;
 
-class AdminMenuItem
+interface IAdminMenuItem
+{
+	/** @return AdminMenuItem */
+	public function create();
+}
+
+
+class AdminMenuItem implements \Wame\MenuModule\Models\IMenuItem
 {	
-    /** @var \Nette\Application\LinkGenerator */
+    /** @var LinkGenerator */
 	private $linkGenerator;
 	
-	public function __construct($linkGenerator)
-	{
+	
+	public function __construct(
+		LinkGenerator $linkGenerator
+	) {
 		$this->linkGenerator = $linkGenerator;
 	}
-    
+
+	
 	public function addItem()
 	{
 		$item = new Item();
@@ -27,6 +38,7 @@ class AdminMenuItem
 		
 		return $item->getItem();
 	}
+	
 	
 	private function articlesDefault()
 	{
