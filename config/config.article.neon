@@ -29,16 +29,6 @@ services:
 		setup:
 			- injectRepository
 
-	ArticleFilterControl:
-		class: Wame\ArticleModule\Controls\ArticleFilterControl
-		setup:
-			- injectRepository
-
-	ArticleArchiveControl:
-		class: Wame\ArticleModule\Controls\ArticleArchiveControl
-		setup:
-			- injectRepository
-
 doctrine:
 	metadata:
 		Wame\ArticleModule\Entities: %appDir%/../vendor/wame/ArticleModule/entities

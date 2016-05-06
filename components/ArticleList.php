@@ -4,6 +4,11 @@ namespace Wame\ArticleModule\Controls;
 
 use Wame\ArticleModule\Repositories\ArticleRepository;
 
+use Wame\FilterModule\Type\StatusFilter;
+use Wame\FilterModule\Type\AuthorFilter;
+use Wame\FilterModule\Type\DateFilter;
+use Wame\FilterModule\Type\OrderByFilter;
+
 class ArticleList extends BaseControl
 {	
 	const SORT_BY_NAME = 'name';
@@ -23,6 +28,12 @@ class ArticleList extends BaseControl
 	/** @var array */
 	private $orderBy = [];
 	
+	private $filterBuilder;
+	
+	
+	public function __construct(\Wame\FilterModule\FilterBuilder $filterBuilder) {
+		$this->filterBuilder = $filterBuilder;
+	}
 	
 	/**
 	 * Set items per page
@@ -70,51 +81,37 @@ class ArticleList extends BaseControl
 //		}
 	}
 	
-	/**
-	 * Get articles
-	 * 
-	 * @return array	articles
-	 */
 	private function getArticles()
 	{
-//		dump($this->presenter->getParameter('filter'));
+		$filterBuilder = clone $this->filterBuilder;
+		$filterBuilder->setEntity(\Wame\ArticleModule\Entities\ArticleEntity::class);
+
+		$filterBuilder->addFilter(new StatusFilter(ArticleRepository::STATUS_PUBLISHED));
+		$filterBuilder->addFilter(new AuthorFilter());
+		$filterBuilder->addFilter(new DateFilter());
 		
-		$filter = [];
-		$filter['status'] = ArticleRepository::STATUS_PUBLISHED;
-		
-		$filterParam = $this->presenter->getParameter('filter');
-		
-		if($filterParam) {
-			$filter['year'] = $filterParam['y'];
-			$filter['month'] = $filterParam['m'];
-		}
-		
-		$filter['orderBy'] = $this->orderBy;
+		$filterOrderBy = new OrderByFilter();
+		$filterOrderBy->addOrder('name', 'title', \Wame\ArticleModule\Entities\ArticleLangEntity::class);
+		$filterOrderBy->addOrder('date', 'createDate');
+		$filterBuilder->addFilter($filterOrderBy);
 		
 		$vp = $this['paginator'];
 		$vp->setCount($this->count);
 		$paginator = $vp->getPaginator();
 		$paginator->itemsPerPage = $this->itemsPerPage;
 		$this->paginatorOffset = $paginator->offset;
-		$paginator->itemCount = $this->articleRepository->countByFilter($filter);
-//		$paginator->itemCount = $this->articleRepository->countBy();
 		
+		$paginator->itemCount = $filterBuilder->build()->count();
 		
-		$filter['limit'] = $paginator->itemsPerPage;
-		$filter['offset'] = $paginator->offset;
-
-//		return $this->articleRepository->find([
-//				'status' => ArticleRepository::STATUS_PUBLISHED
-//			], 
-//			$this->orderBy, 
-//			$paginator->itemsPerPage, 
-//			$paginator->offset
-//		);
+		// Page filter
+		$filterPage = new \Wame\FilterModule\Type\PageFilter();
+		$filterPage->setOffset($paginator->offset);
+		$filterPage->setLimit($paginator->itemsPerPage);
+		$filterBuilder->addFilter($filterPage);
 		
-		return $this->articleRepository->findByFilter($filter);
+		return $filterBuilder->build()->get();
 	}
-	
-	
+
 	protected function createComponentPaginator()
 	{
 		return new \Wame\Utils\Pagination;

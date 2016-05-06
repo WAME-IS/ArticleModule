@@ -82,6 +82,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository /*impleme
 		$qb->select('a')->from(ArticleEntity::class, 'a');
 		$this->addOrderByFilter($qb, $filter);
 		$this->addDateFilter($qb, $filter);
+		$this->addAuthorFilter($qb, $filter);
 		$this->addStatusFilter($qb, $filter);
 		$this->addPagerFilter($qb, $filter);
 		
@@ -93,6 +94,8 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository /*impleme
 		$qb = $this->entityManager->createQueryBuilder();
 		$qb->select('COUNT(1)')->from(ArticleEntity::class, 'a');
 		$this->addDateFilter($qb, $filter);
+		$this->addAuthorFilter($qb, $filter);
+		$this->addStatusFilter($qb, $filter);
 		
 		return $qb->getQuery()->getSingleScalarResult();
 	}
@@ -106,6 +109,14 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository /*impleme
 			$qb->andWhere('a.createDate BETWEEN :initialDate AND :finalDate')
 					->setParameter('initialDate', $initialDate)
 					->setParameter('finalDate', $finalDate);
+		}
+	}
+	
+	private function addAuthorFilter($qb, $filter)
+	{
+		if(array_key_exists('author', $filter)) {
+			$qb->andWhere('a.createUser = :author')
+					->setParameter('author', $filter['author']);
 		}
 	}
 	

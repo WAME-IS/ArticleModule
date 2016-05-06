@@ -4,8 +4,10 @@ namespace App\ArticleModule\Presenters;
 
 use Wame\ArticleModule\Controls\Article;
 use Wame\ArticleModule\Controls\ArticleList;
-use Wame\ArticleModule\Controls\ArticleFilterControl;
-use Wame\ArticleModule\Controls\ArticleArchiveControl;
+use Wame\FilterModule\Controls\SortControl;
+use Wame\FilterModule\Controls\FilterDateControl;
+use Wame\FilterModule\Controls\FilterAuthorControl;
+use Wame\FilterModule\Controls\FilterCheckboxControl;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 
 use Wame\HeadControl\MetaTitle;
@@ -22,11 +24,17 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	/** @var ArticleList @inject */
 	public $articleListControl;
 	
-	/** @var ArticleFilterControl @inject */
-	public $articleFilterControl;
+	/** @var SortControl @inject */
+	public $sortControl;
 	
-	/** @var ArticleArchiveControl @inject */
-	public $articleArchiveControl;
+	/** @var FilterDateControl @inject */
+	public $filterDateControl;
+	
+	/** @var FilterAuthorControl @inject */
+	public $filterAuthorControl;
+	
+	/** @var FilterCheckboxControl @inject */
+	public $filterCheckboxControl;
 	
 	/** @var integer */
 	protected $articleId;
@@ -39,10 +47,19 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
     public $page;
 	
 	/** @persistent */
+    public $orderBy;
+	
+	/** @persistent */
     public $sort;
 	
 	/** @persistent */
-    public $filter = [];
+    public $year;
+	
+	/** @persistent */
+    public $month;
+	
+	/** @persistent */
+    public $author;
 	
 	
 	public function renderDefault()
@@ -87,21 +104,55 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		$articleComponent->setInList(true);
 		
 		$componentArticleListControl->addComponent($articleComponent, 'article');
-		$componentArticleListControl->addComponent($this->createComponentArticleFilterControl(), 'articleFilter');
-		$componentArticleListControl->addComponent($this->createComponentArticleArchiveControl(), 'articleArchive');
+		$componentArticleListControl->addComponent($this->createComponentSortControl(), 'sort');
+		$componentArticleListControl->addComponent($this->createComponentFilterDateControl(), 'filterDate');
+		$componentArticleListControl->addComponent($this->createComponentFilterAuthorControl(), 'filterAuthor');
+		$componentArticleListControl->addComponent($this->createComponentFilterCheckboxControl(), 'filterCheckbox');
 		$componentArticleListControl->setSortBy($sort);
 		return $componentArticleListControl;
 	}
 	
-	public function createComponentArticleFilterControl()
+	public function createComponentSortControl()
 	{
-		$componentArticleFilterControl = $this->articleFilterControl;
-		return $componentArticleFilterControl;
+		$sortControl = $this->sortControl;
+		return $sortControl;
 	}
 	
-	public function createComponentArticleArchiveControl()
+	public function createComponentFilterDateControl()
 	{
-		$componentArticleArchiveControl = $this->articleArchiveControl;
-		return $componentArticleArchiveControl;
+		$articles = $this->articleRepository->find([
+			'status' => ArticleRepository::STATUS_PUBLISHED
+		]);
+		
+		$filterDateControl = $this->filterDateControl;
+		$filterDateControl->setItems($articles);
+		return $filterDateControl;
+	}
+	
+	public function createComponentFilterAuthorControl()
+	{
+		$articles = $this->articleRepository->find([
+			'status' => ArticleRepository::STATUS_PUBLISHED
+		]);
+		
+		$filterAuthorControl = $this->filterAuthorControl;
+		$filterAuthorControl->setItems($articles);
+		
+		return $filterAuthorControl;
+	}
+	
+	public function createComponentFilterCheckboxControl()
+	{
+		$articles = $this->articleRepository->find([
+			'status' => ArticleRepository::STATUS_PUBLISHED
+		]);
+		
+		$filterCheckboxControl = $this->filterCheckboxControl;
+		$filterCheckboxControl->setItems($articles);
+		$filterCheckboxControl->setSelect('id', 'nick', 'createUser');
+		$filterCheckboxControl->setTitle('Authors');
+		$filterCheckboxControl->setName('author');
+		
+		return $filterCheckboxControl;
 	}
 }

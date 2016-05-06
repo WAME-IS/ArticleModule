@@ -1,9 +1,13 @@
-{control articleFilter}
+{control sort}
 
 {foreach $articles as $article}
 	{control article $article}
 {/foreach}
 
-{control articleArchive}
+{control filterDate}
+
+{control filterAuthor}
+
+{control filterCheckbox}
 
 {control paginator}
