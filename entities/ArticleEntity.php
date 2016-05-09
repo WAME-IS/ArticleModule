@@ -28,5 +28,11 @@ class ArticleEntity extends \Wame\Core\Entities\BaseEntity
 	 * @ORM\Column(name="publish_end_date", type="datetime", nullable=true)
 	 */
 	protected $publishEndDate;
+	
+	
+//	public function getPublishStartDate()
+//	{
+//		return $this->publishStartDate;
+//	}
 
 }

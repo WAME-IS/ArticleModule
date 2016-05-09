@@ -40,7 +40,7 @@ class ArticleLangEntity extends \Wame\Core\Entities\BaseEntity
 	protected $description;
 
 	/**
-	 * @ORM\Column(name="text", type="string", nullable=false)
+	 * @ORM\Column(name="text", type="text", length=65535, nullable=false)
 	 */
 	protected $text;
 

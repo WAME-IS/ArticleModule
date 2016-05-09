@@ -12,6 +12,8 @@ class Article extends BaseControl
 	/** @var string */
 	protected $slug;
 	
+	private $inList = false;
+	
 	/** @var ArticleEntity */
 	protected $articleEntity;
 	
@@ -38,10 +40,24 @@ class Article extends BaseControl
 		$this->slug = $slug;
 	}
 	
+	/**
+	 * Set if in list
+	 * 
+	 * @param boolean $inList
+	 */
+	public function setInList($inList)
+	{
+		$this->inList = $inList;
+	}
+	
 
 	public function render(ArticleEntity $articleEntity = null)
 	{
-		$this->setTemplate('article');
+		if($this->inList) {
+			$this->setTemplate('article');
+		} else {
+			$this->setTemplate('article_detail');
+		}
 		
 		if($articleEntity) {
 			$this->article = $articleEntity;

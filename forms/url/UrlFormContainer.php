@@ -5,6 +5,12 @@ namespace Wame\ArticleModule\Forms;
 use Nette\Application\UI\Form;
 use Wame\DynamicObject\Forms\BaseFormContainer;
 
+interface IUrlFormContainerFactory
+{
+	/** @return UrlFormContainer */
+	public function create();
+}
+
 class UrlFormContainer extends BaseFormContainer
 {
     public function render() 
@@ -21,4 +27,10 @@ class UrlFormContainer extends BaseFormContainer
 				->setType('text');
     }
 	
+	public function setDefaultValues($object)
+	{
+		$form = $this->getForm();
+		
+		$form['slug']->setDefaultValue($object->articleEntity->langs[$object->lang]->slug);
+	}
 }
