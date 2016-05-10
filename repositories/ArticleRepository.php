@@ -5,6 +5,7 @@ namespace Wame\ArticleModule\Repositories;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
 use Wame\UserModule\Entities\UserEntity;
+use Wame\Core\Exception\RepositoryException;
 
 class ArticleRepository extends \Wame\Core\Repositories\BaseRepository /*implements \Wame\Core\Repositories\Icrud*/
 {
@@ -210,6 +211,38 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository /*impleme
 	{
 		$articleEntity = $this->entity->find($criteria);
 		$articleEntity->status = $status;
+	}
+	
+	
+	/**
+	 * Get article by criteria
+	 * return article or exception
+	 * 
+	 * @param array $criteria
+	 * @return ArticleEntity
+	 * @throws RepositoryException
+	 */
+	public function getArticle($criteria)
+	{
+		$article = $this->get($criteria);
+		
+		if (!$article) {
+			throw new RepositoryException(_('Article not found.'));
+		}
+		
+		if ($article->status != self::STATUS_PUBLISHED) {
+			throw new RepositoryException(_('Article is unpublished or removed.'));
+		}
+		
+		if ($article->publishStartDate != null && strtotime($article->publishStartDate) < time()) {
+			throw new RepositoryException(_('Article has not been published.'));
+		}
+		
+		if ($article->publishEndDate != null && strtotime($article->publishEndDate) > time()) {
+			throw new RepositoryException(_('Out of time of article publication.'));
+		}
+		
+		return $article;
 	}
 	
 }
