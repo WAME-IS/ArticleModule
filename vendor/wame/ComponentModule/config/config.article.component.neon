@@ -1,4 +1,0 @@
-services:
-	ComponentManager:
-		setup:
-			- addComponent(Wame\ArticleModule\Vendor\Wame\ComponentModule\ArticleComponent())

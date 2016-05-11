@@ -7,7 +7,7 @@
 	</a>
 
 	{if count($articles) == 0}
-		<div class="lead text-muted">{_'You do not have crate any articles.'}</div>
+		<div class="lead text-muted">{_'You do not have create any articles.'}</div>
 		<a class="btn btn-success" n:href=":Admin:Article:create, 'id' => null">{_'Create first article'}</a>
 	{else}
 		{control articleGrid}

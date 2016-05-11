@@ -5,6 +5,7 @@ namespace App\AdminModule\Presenters;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\EditArticleForm;
 use Wame\ArticleModule\Repositories\ArticleRepository;
+use Wame\MenuModule\Forms\MenuItemForm;
 
 use Wame\DataGridControl\DataGridControl;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid;
@@ -30,12 +31,14 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	
 	/** @var ArticleGrid @inject */
 	public $articleGrid;
-	
+
+	/** @var MenuItemForm @inject */
+	public $menuItemForm;
 	
 	/**
 	 * Create article
 	 * 
-	 * @return EditUserForm		form
+	 * @return CreateArticleForm	form
 	 */
 	protected function createComponentCreateArticleForm() 
 	{
@@ -43,6 +46,7 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		
 		return $form;
 	}
+	
 	
 	/**
 	 * Edit article
@@ -77,6 +81,25 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		return $grid;
 	}
 	
+	
+	/**
+	 * Menu item form
+	 * 
+	 * @return MenuItemForm
+	 */
+	protected function createComponentArticleMenuItemForm()
+	{
+		$form = $this->menuItemForm
+						->setActionForm('articleMenuItemForm')
+						->setType('article')
+						->setId($this->id)
+						->addFormContainer(new \Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuManager\Forms\ArticleFormContainer(), 'ArticleFormContainer', 50)
+						->build();
+
+		return $form;
+	}
+	
+	
 	public function renderDefault()
 	{
 		$this->template->siteTitle = _('Articles');
@@ -99,6 +122,16 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	public function renderDelete()
 	{
 		$this->template->siteTitle = _('Deleting article');
+	}
+	
+	
+	public function renderMenuItem()
+	{
+		if ($this->id) {
+			$this->template->siteTitle = _('Edit article item in menu');
+		} else {
+			$this->template->siteTitle = _('Add article item to menu');
+		}
 	}
 	
 	
