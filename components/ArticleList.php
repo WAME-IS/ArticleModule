@@ -8,6 +8,10 @@ use Wame\FilterModule\Type\StatusFilter;
 use Wame\FilterModule\Type\AuthorFilter;
 use Wame\FilterModule\Type\DateFilter;
 use Wame\FilterModule\Type\OrderByFilter;
+use Wame\FilterModule\Type\IdFilter;
+
+use Wame\ArticleModule\Entities\ArticleEntity;
+use Wame\ArticleModule\Entities\ArticleLangEntity;
 
 class ArticleList extends BaseControl
 {	
@@ -22,8 +26,10 @@ class ArticleList extends BaseControl
 	/** @var integer */
 	private $itemsPerPage = 2;
 	
-	/** @var integer */
-	private $paginatorOffset;
+	private $paginator;
+	
+//	/** @var integer */
+//	private $paginatorOffset;
 	
 	/** @var array */
 	private $orderBy = [];
@@ -81,40 +87,71 @@ class ArticleList extends BaseControl
 //		}
 	}
 	
+	public function setFilters()
+	{
+		
+	}
+	
+	// TODO: presunut do repository
 	private function getArticles()
 	{
-		$filterBuilder = clone $this->filterBuilder;
-		$filterBuilder->setEntity(\Wame\ArticleModule\Entities\ArticleEntity::class);
+		$allArticles = $this->articleRepository->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
+		
+		$filterBuilder = $this->filterBuilder;
+		$filterBuilder->setEntity(ArticleEntity::class);
 
-		$filterBuilder->addFilter(new StatusFilter(ArticleRepository::STATUS_PUBLISHED));
-		$filterBuilder->addFilter(new AuthorFilter());
-		$filterBuilder->addFilter(new DateFilter());
+		$filterBuilder->addFilter(new StatusFilter());
+		
+		$authorFilter = new AuthorFilter();
+		$authorFilter->setItems($allArticles);
+		$filterBuilder->addFilter($authorFilter);
+		
+		$dateFilter = new DateFilter();
+		$dateFilter->setItems($allArticles);
+		$filterBuilder->addFilter($dateFilter);
+		
+//		$filterBuilder->addFilter(new DateFilter());
 		
 		$filterOrderBy = new OrderByFilter();
-		$filterOrderBy->addOrder('name', 'title', \Wame\ArticleModule\Entities\ArticleLangEntity::class);
-		$filterOrderBy->addOrder('date', 'createDate');
+		$filterOrderBy
+				->addOrder('name', 'title', ArticleLangEntity::class)
+				->addOrder('id', 'id')
+				->addOrder('date', 'createDate');
 		$filterBuilder->addFilter($filterOrderBy);
+
+		$filterBuilder->addFilter(new IdFilter());
 		
-		$vp = $this['paginator'];
-		$vp->setCount($this->count);
-		$paginator = $vp->getPaginator();
-		$paginator->itemsPerPage = $this->itemsPerPage;
-		$this->paginatorOffset = $paginator->offset;
-		
-		$paginator->itemCount = $filterBuilder->build()->count();
+		$this->setPaginator($filterBuilder->build()->count());
 		
 		// Page filter
 		$filterPage = new \Wame\FilterModule\Type\PageFilter();
-		$filterPage->setOffset($paginator->offset);
-		$filterPage->setLimit($paginator->itemsPerPage);
+		$filterPage->setOffset($this->paginator->offset)
+				->setLimit($this->paginator->itemsPerPage);
 		$filterBuilder->addFilter($filterPage);
 		
 		return $filterBuilder->build()->get();
+	}
+	
+	private function setPaginator($itemCount)
+	{
+		$vp = $this['paginator'];
+		$vp->setCount($this->count);
+		$this->paginator = $vp->getPaginator();
+		$this->paginator->itemsPerPage = $this->itemsPerPage;
+//		$this->paginatorOffset = $this->paginator->offset;
+		
+		$this->paginator->itemCount = $itemCount;
 	}
 
 	protected function createComponentPaginator()
 	{
 		return new \Wame\Utils\Pagination;
+	}
+	
+	protected function createComponentFilter()
+	{
+		$filterControl = new \Wame\FilterModule\Controls\FilterControl($this->filterBuilder);
+		return $filterControl;
 	}
 	
 	/**
@@ -127,7 +164,7 @@ class ArticleList extends BaseControl
 		$articles = $this->getArticles();
 		
 		$this->template->articles = $articles;
-		$this->template->paginatorOffset = $this->paginatorOffset;
+		$this->template->paginatorOffset = $this->paginator->offset;
 		$this->template->render();
 	}
 }

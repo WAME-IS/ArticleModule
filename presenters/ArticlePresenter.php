@@ -42,6 +42,8 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	/** @var string */
 	protected $articleSlug;
 	
+	private $filterBuilder;
+	
 	
 	/** @persistent */
     public $page;
@@ -61,6 +63,12 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	/** @persistent */
     public $author;
 	
+	
+	public function __construct(\Wame\FilterModule\FilterBuilder $filterBuilder) {
+		parent::__construct();
+		
+		$this->filterBuilder = $filterBuilder;
+	}
 	
 	public function renderDefault()
 	{
@@ -88,7 +96,6 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		$articleSlug = $this->getParameter('slug');
 		
 		$componentArticleControl = $this->articleControl;
-//		$componentArticleControl->setInList($inList);
 		$componentArticleControl->setId($articleId);
 		$componentArticleControl->setSlug($articleSlug);
 		return $componentArticleControl;
@@ -105,9 +112,7 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		
 		$componentArticleListControl->addComponent($articleComponent, 'article');
 		$componentArticleListControl->addComponent($this->createComponentSortControl(), 'sort');
-		$componentArticleListControl->addComponent($this->createComponentFilterDateControl(), 'filterDate');
-		$componentArticleListControl->addComponent($this->createComponentFilterAuthorControl(), 'filterAuthor');
-		$componentArticleListControl->addComponent($this->createComponentFilterCheckboxControl(), 'filterCheckbox');
+//		$componentArticleListControl->addComponent($this->createComponentFilterDateControl(), 'filterDate');
 		$componentArticleListControl->setSortBy($sort);
 		return $componentArticleListControl;
 	}
@@ -118,41 +123,14 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		return $sortControl;
 	}
 	
-	public function createComponentFilterDateControl()
-	{
-		$articles = $this->articleRepository->find([
-			'status' => ArticleRepository::STATUS_PUBLISHED
-		]);
-		
-		$filterDateControl = $this->filterDateControl;
-		$filterDateControl->setItems($articles);
-		return $filterDateControl;
-	}
-	
-	public function createComponentFilterAuthorControl()
-	{
-		$articles = $this->articleRepository->find([
-			'status' => ArticleRepository::STATUS_PUBLISHED
-		]);
-		
-		$filterAuthorControl = $this->filterAuthorControl;
-		$filterAuthorControl->setItems($articles);
-		
-		return $filterAuthorControl;
-	}
-	
-	public function createComponentFilterCheckboxControl()
-	{
-		$articles = $this->articleRepository->find([
-			'status' => ArticleRepository::STATUS_PUBLISHED
-		]);
-		
-		$filterCheckboxControl = $this->filterCheckboxControl;
-		$filterCheckboxControl->setItems($articles);
-		$filterCheckboxControl->setSelect('id', 'nick', 'createUser');
-		$filterCheckboxControl->setTitle('Authors');
-		$filterCheckboxControl->setName('author');
-		
-		return $filterCheckboxControl;
-	}
+//	public function createComponentFilterDateControl()
+//	{
+//		$articles = $this->articleRepository->find([
+//			'status' => ArticleRepository::STATUS_PUBLISHED
+//		]);
+//		
+//		$filterDateControl = $this->filterDateControl;
+//		$filterDateControl->setItems($articles);
+//		return $filterDateControl;
+//	}
 }

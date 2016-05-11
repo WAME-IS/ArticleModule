@@ -6,6 +6,11 @@ use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\EditArticleForm;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 
+use Wame\DataGridControl\DataGridControl;
+use Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid;
+
+use Kdyby\Doctrine\EntityManager;
+
 class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 {	
 	/** @var CreateArticleForm @inject */
@@ -16,7 +21,16 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 
 	/** @var ArticleRepository @inject */
 	public $articleRepository;
-
+	
+	/** @var EntityManager @inject */
+	public $entityManager;
+	
+	/** @var DataGridControl @inject */
+	public $gridControl;
+	
+	/** @var ArticleGrid @inject */
+	public $articleGrid;
+	
 	
 	/**
 	 * Create article
@@ -40,6 +54,27 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		$form = $this->editArticleForm->setId($this->id)->build();
 
 		return $form;
+	}
+	
+//	public function renderDefault()
+//	{
+//		$this->template->siteTitle = _('Articles');
+//		$this->template->articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
+//	}
+	
+	public function createComponentArticleGrid()
+	{
+		$grid = $this->gridControl;
+
+		$articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
+		$grid->setDataSource($articles);
+//		$grid->setLang($this->lang); // TODO: presunut logiku do komponenty
+		
+		$grid->setProvider($this->articleGrid);
+		
+
+		
+		return $grid;
 	}
 	
 	public function renderDefault()
@@ -74,5 +109,4 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		$this->flashMessage(_('Article has been successfully deleted'), 'success');
 		$this->redirect(':Admin:Article:', ['id' => null]);
 	}
-
 }

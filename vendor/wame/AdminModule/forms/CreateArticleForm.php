@@ -29,7 +29,6 @@ class CreateArticleForm extends FormFactory
 	}
 	
 	
-	// TODO: premenovat na build / generate?
 	public function build()
 	{
 		$form = $this->createForm();
@@ -94,5 +93,4 @@ class CreateArticleForm extends FormFactory
 		
 		return $this->articleRepository->create($articleLangEntity);
 	}
-
 }
