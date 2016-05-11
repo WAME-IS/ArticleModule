@@ -69,7 +69,7 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	public function createComponentArticleGrid()
 	{
 		$grid = $this->gridControl;
-
+		$grid->setName('article');
 		$articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
 		$grid->setDataSource($articles);
 //		$grid->setLang($this->lang); // TODO: presunut logiku do komponenty
