@@ -169,6 +169,12 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	}
 	
 	
+	/**
+	 * Set article
+	 * 
+	 * @param int $articleId
+	 * @param array $values
+	 */
 	public function update($articleLangEntity)
 	{
 		
@@ -217,4 +223,5 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 		
 		return $article;
 	}
+
 }
