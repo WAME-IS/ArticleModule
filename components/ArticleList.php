@@ -161,7 +161,10 @@ class ArticleList extends BaseControl
 	{
 		$this->setTemplate('article_list');
 		
-		$articles = $this->getArticles();
+//		$articles = $this->getArticles();
+		$articles = $this->articleRepository->findFiltered($this->filterBuilder);
+		
+//		$articles = $this->articleRepository->find();
 		
 		$this->template->articles = $articles;
 		$this->template->paginatorOffset = $this->paginator->offset;
