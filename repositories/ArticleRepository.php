@@ -223,8 +223,25 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 		
 		return $article;
 	}
-
 	
+	/**
+	 * @api {get} /article/:id
+	 * @param int $id
+	 */
+	public function getArticleById($id) {
+		return $this->getArticle([
+			'id' => $id
+		]);
+	}
+	
+	/**
+	 * @api {get} /article/
+	 * @param int $id
+	 */
+	public function find($criteria = array(), $orderBy = null, $limit = null, $offset = null) {
+		return parent::find($criteria, $orderBy, $limit, $offset);
+	}
+
 	public function findFiltered($filterBuilder, $offset, $limit)
 	{
 		$allArticles = $this->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
