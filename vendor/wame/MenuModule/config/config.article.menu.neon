@@ -1,0 +1,11 @@
+services:
+	AdminMenu:
+		setup:
+			- setService(Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuControl\AdminMenu\AdminMenuItem())
+
+	MenuManager:
+		setup:
+			- addMenuItemType(Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuManager\Forms\ArticleMenuItem(), 'article')
+
+	# Events
+	- {class: Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuManager\Events\MenuItemListener, tags: [run]}

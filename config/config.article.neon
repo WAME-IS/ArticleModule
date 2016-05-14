@@ -11,9 +11,6 @@ services:
 			- addResourceAction('article', 'delete')
 			- allow('moderator', 'article', 'delete')
 
-	# Forms
-	- Wame\ArticleModule\Forms\ArticleForm
-
 	# Entities
 	- Wame\ArticleModule\Entities\ArticleEntity
 	- Wame\ArticleModule\Entities\ArticleLangEntity
@@ -21,6 +18,28 @@ services:
 	# Repositories
 	- Wame\ArticleModule\Repositories\ArticleRepository
 
+	# Components
+	Article:
+		class: Wame\ArticleModule\Controls\Article
+		setup:
+			- injectRepository
+
+	ArticleList:
+		class: Wame\ArticleModule\Controls\ArticleList
+		setup:
+			- injectRepository
+
+	ArticleGrid:
+		class: Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid
+		setup:
+			- addColumn(Wame\DataGridControl\IdGridColumn())
+			- addColumn(Wame\DataGridControl\TitleGridColumn())
+			- addColumn(Wame\DataGridControl\PublishedGridColumn())
+			- addColumn(Wame\DataGridControl\CreatorGridColumn())
+			- addColumn(Wame\DataGridControl\StatusGridColumn())
+			- addColumn(Wame\DataGridControl\CreateGridColumn())
+			- addColumn(Wame\DataGridControl\EditGridAction())
+			- addColumn(Wame\DataGridControl\DeleteGridAction())
 
 doctrine:
 	metadata:

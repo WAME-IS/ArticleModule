@@ -2,82 +2,138 @@
 
 namespace App\AdminModule\Presenters;
 
-use Nette\Application\UI\Form;
-use Wame\ArticleModule\Forms\ArticleForm;
+use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm;
+use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\EditArticleForm;
 use Wame\ArticleModule\Repositories\ArticleRepository;
+use Wame\MenuModule\Forms\MenuItemForm;
+
+use Wame\DataGridControl\DataGridControl;
+use Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid;
+
+use Wame\GalleryModule\Controls\GalleryPickerControl;
+use Wame\GalleryModule\Controls\GalleryPicker2Control;
+
+
+use Kdyby\Doctrine\EntityManager;
 
 class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 {	
-	/** @var ArticleForm @inject */
-	public $articleForm;
+	/** @var CreateArticleForm @inject */
+	public $createArticleForm;
+	
+	/** @var EditArticleForm @inject */
+	public $editArticleForm;
 
 	/** @var ArticleRepository @inject */
 	public $articleRepository;
+	
+	/** @var EntityManager @inject */
+	public $entityManager;
+	
+	/** @var DataGridControl @inject */
+	public $gridControl;
+	
+	/** @var ArticleGrid @inject */
+	public $articleGrid;
 
-	protected function createComponentArticleForm()
+	/** @var MenuItemForm @inject */
+	public $menuItemForm;
+	
+	/** @var GalleryPickerControl @inject */
+	public $galleryPickerControl;
+	
+	/** @var GalleryPicker2Control @inject */
+	public $galleryPicker2Control;
+	
+	/**
+	 * Create article
+	 * 
+	 * @return CreateArticleForm	form
+	 */
+	protected function createComponentCreateArticleForm() 
 	{
-		$form = $this->articleForm->create();
-		
-		if ($this->action == 'edit' && is_numeric($this->id)) {
-			$defaults = $this->articleRepository->get(['id' => $this->id]);
-			$defaultsLang = $defaults->langs[$this->lang];
-
-			$form->setDefaults([
-				'title' => $defaultsLang->title,
-				'slug' => $defaultsLang->slug,
-				'status' => $defaults->status,
-				'description' => $defaultsLang->description,
-				'text' => $defaultsLang->text
-			]);
-			
-			if ($defaults->publishStartDate) {
-				$form['publish_start_date']->setDefaultValue($this->formatDate($defaults->publishStartDate));
-			}
-			if ($defaults->publishEndDate) {
-				$form['publish_end_date']->setDefaultValue($this->formatDate($defaults->publishEndDate));
-			}
-		}
-		
-		$form->onSuccess[] = [$this, 'articleFormSucceeded'];
+		$form = $this->createArticleForm->build();
 		
 		return $form;
 	}
 	
-	public function articleFormSucceeded(Form $form, $values)
+	
+	/**
+	 * Edit article
+	 * 
+	 * @return EditUserForm		form
+	 */
+	protected function createComponentEditArticleForm() 
 	{
-		if ($this->action == 'edit') {
-			try {
-				$this->articleRepository->set($this->id, $values);
+		$form = $this->editArticleForm->setId($this->id)->build();
 
-				$this->flashMessage(_('The article was successfully update'), 'success');
-			} catch (\Exception $e) {
-				$form->addError($e->getMessage());
-			}
-		} elseif ($this->action == 'create') {
-			try {
-				$this->articleRepository->add($values);
-
-				$this->flashMessage(_('The article was created successfully'), 'success');
-			} catch (\Exception $e) {
-				$form->addError($e->getMessage());
-			}
-		}
-		
-		$this->redirect('this');
+		return $form;
 	}
+	
+//	public function renderDefault()
+//	{
+//		$this->template->siteTitle = _('Articles');
+//		$this->template->articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
+//	}
+	
+	public function createComponentArticleGrid()
+	{
+		$grid = $this->gridControl;
+		$grid->setName('article');
+		$articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
+		$grid->setDataSource($articles);
+//		$grid->setLang($this->lang); // TODO: presunut logiku do komponenty
+		
+		$grid->setProvider($this->articleGrid);
+		
 
+		
+		return $grid;
+	}
+	
+	// TODO: presunut do dynamic forms!!!
+	public function createComponentGalleryPicker()
+	{
+		$control = $this->galleryPickerControl;
+		$control->setItem(0);
+		return $control;
+	}
+	
+	public function createComponentGalleryPicker2()
+	{
+		$control = $this->galleryPicker2Control;
+		return $control;
+	}
+	
+	
+	/**
+	 * Menu item form
+	 * 
+	 * @return MenuItemForm
+	 */
+	protected function createComponentArticleMenuItemForm()
+	{
+		$form = $this->menuItemForm
+						->setActionForm('articleMenuItemForm')
+						->setType('article')
+						->setId($this->id)
+						->addFormContainer(new \Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuManager\Forms\ArticleFormContainer(), 'ArticleFormContainer', 50)
+						->build();
+
+		return $form;
+	}
+	
 	
 	public function renderDefault()
 	{
 		$this->template->siteTitle = _('Articles');
-		$this->template->articles = $this->articleRepository->getAll(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
+		$this->template->articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
 	}
 	
 	
 	public function renderCreate()
 	{
 		$this->template->siteTitle = _('Create new article');
-		$this->template->setFile(__DIR__ . '/templates/Article/edit.latte');
 	}
 	
 	
@@ -93,6 +149,16 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	}
 	
 	
+	public function renderMenuItem()
+	{
+		if ($this->id) {
+			$this->template->siteTitle = _('Edit article item in menu');
+		} else {
+			$this->template->siteTitle = _('Add article item to menu');
+		}
+	}
+	
+	
 	public function handleDelete()
 	{
 		$this->articleRepository->delete(['id' => $this->id]);
@@ -100,5 +166,4 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		$this->flashMessage(_('Article has been successfully deleted'), 'success');
 		$this->redirect(':Admin:Article:', ['id' => null]);
 	}
-
 }
