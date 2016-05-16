@@ -2,13 +2,15 @@
 
 namespace Wame\ArticleModule\Entities;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM,
+	Wame\Core\Entities\BaseEntity,
+	Wame\RestApiModule\DataConverter\Annotations\noApi;
 
 /**
  * @ORM\Table(name="wame_article_lang")
  * @ORM\Entity
  */
-class ArticleLangEntity extends \Wame\Core\Entities\BaseEntity 
+class ArticleLangEntity extends BaseEntity 
 {
  	use \Wame\Core\Entities\Columns\Identifier;
 	use \Wame\Core\Entities\Columns\EditDate;
