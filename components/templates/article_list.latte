@@ -1,13 +1,13 @@
-{control sort}
-
+<div class="pull-left">
 {foreach $articles as $article}
 	{control article $article}
 {/foreach}
+</div>
 
-{control filterDate}
+<div class="pull-right">
+	{control filter}
+</div>
 
-{control filterAuthor}
-
-{control filterCheckbox}
+<div class="clearfix"></div>
 
 {control paginator}

@@ -5,15 +5,16 @@ namespace Wame\ArticleModule\Repositories;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
 use Wame\UserModule\Entities\UserEntity;
+use Wame\Core\Exception\RepositoryException;
 
-class ArticleRepository extends \Wame\Core\Repositories\BaseRepository /*implements \Wame\Core\Repositories\Icrud*/
+class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 {
 	const STATUS_REMOVE = 0;
 	const STATUS_PUBLISHED = 1;
 	const STATUS_UNPUBLISHED = 2;
 	
-	/** @var ArticleEntity */
-	private $articleEntity;
+//	/** @var ArticleEntity */
+//	private $articleEntity;
 	
 	/** @var UserEntity */
 	private $userEntity;
@@ -27,12 +28,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository /*impleme
 	) {
 		parent::__construct($container, $entityManager, $translator, $user, ArticleEntity::CLASS);
 		
-//		dump('ArticleRepository construct'); exit;
-		
-//		$this->entity = $this->entityManager->getRepository(ArticleEntity::class);
 		$this->userEntity = $this->entityManager->getRepository(UserEntity::class)->findOneBy(['id' => $user->id]);
-		
-		
 	}
 	
 	
@@ -76,94 +72,92 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository /*impleme
 		];
 	}
 	
-	public function findByFilter($filter = [])
-	{
-		$qb = $this->entityManager->createQueryBuilder();
-		$qb->select('a')->from(ArticleEntity::class, 'a');
-		$this->addOrderByFilter($qb, $filter);
-		$this->addDateFilter($qb, $filter);
-		$this->addAuthorFilter($qb, $filter);
-		$this->addStatusFilter($qb, $filter);
-		$this->addPagerFilter($qb, $filter);
-		
-		return $qb->getQuery()->getResult();
-	}
+//	public function findByFilter($filter = [])
+//	{
+//		$qb = $this->entityManager->createQueryBuilder();
+//		$qb->select('a')->from(ArticleEntity::class, 'a');
+//		$this->addOrderByFilter($qb, $filter);
+//		$this->addDateFilter($qb, $filter);
+//		$this->addAuthorFilter($qb, $filter);
+//		$this->addStatusFilter($qb, $filter);
+//		$this->addPagerFilter($qb, $filter);
+//		
+//		return $qb->getQuery()->getResult();
+//	}
+//	
+//	public function countByFilter($filter = [])
+//	{
+//		$qb = $this->entityManager->createQueryBuilder();
+//		$qb->select('COUNT(1)')->from(ArticleEntity::class, 'a');
+//		$this->addDateFilter($qb, $filter);
+//		$this->addAuthorFilter($qb, $filter);
+//		$this->addStatusFilter($qb, $filter);
+//		
+//		return $qb->getQuery()->getSingleScalarResult();
+//	}
 	
-	public function countByFilter($filter = [])
-	{
-		$qb = $this->entityManager->createQueryBuilder();
-		$qb->select('COUNT(1)')->from(ArticleEntity::class, 'a');
-		$this->addDateFilter($qb, $filter);
-		$this->addAuthorFilter($qb, $filter);
-		$this->addStatusFilter($qb, $filter);
-		
-		return $qb->getQuery()->getSingleScalarResult();
-	}
-	
-	private function addDateFilter($qb, $filter)
-	{
-		if(array_key_exists('year', $filter) && array_key_exists('month', $filter)) {
-			$initialDate = (new \DateTime())->setDate($filter['year'], $filter['month'], 1);
-			$finalDate = (new \DateTime())->setDate($filter['year'], $filter['month']+1, 1);
-			
-			$qb->andWhere('a.createDate BETWEEN :initialDate AND :finalDate')
-					->setParameter('initialDate', $initialDate)
-					->setParameter('finalDate', $finalDate);
-		}
-	}
-	
-	private function addAuthorFilter($qb, $filter)
-	{
-		if(array_key_exists('author', $filter)) {
-			$qb->andWhere('a.createUser = :author')
-					->setParameter('author', $filter['author']);
-		}
-	}
-	
-	private function addStatusFilter($qb, $filter)
-	{
-		if(array_key_exists('status', $filter)) {
-			$qb->andWhere('a.status = :status')
-					->setParameter('status', $filter['status']);
-		}
-	}
-	
-	private function addOrderByFilter($qb, $filter)
-	{
-		if(array_key_exists('orderBy', $filter)) {
-			switch($filter['orderBy']) {
-				default:
-				case 'name':
-					$qb->innerJoin(ArticleLangEntity::class, 'l');
-					$qb->orderBy('l.title', 'ASC');
-					break;
-				case 'date':
-					$qb->orderBy('a.createDate', 'ASC');
-					break;
-			}
-		}
-	}
-	
-	private function addPagerFilter($qb, $filter)
-	{
-		if(array_key_exists('offset', $filter) && array_key_exists('limit', $filter))
-		{
-			$qb->setFirstResult($filter['offset'])
-				->setMaxResults($filter['limit']);
-		}
-	}
+//	private function addDateFilter($qb, $filter)
+//	{
+//		if(array_key_exists('year', $filter) && array_key_exists('month', $filter)) {
+//			$initialDate = (new \DateTime())->setDate($filter['year'], $filter['month'], 1);
+//			$finalDate = (new \DateTime())->setDate($filter['year'], $filter['month']+1, 1);
+//			
+//			$qb->andWhere('a.createDate BETWEEN :initialDate AND :finalDate')
+//					->setParameter('initialDate', $initialDate)
+//					->setParameter('finalDate', $finalDate);
+//		}
+//	}
+//	
+//	private function addAuthorFilter($qb, $filter)
+//	{
+//		if(array_key_exists('author', $filter)) {
+//			$qb->andWhere('a.createUser = :author')
+//					->setParameter('author', $filter['author']);
+//		}
+//	}
+//	
+//	private function addStatusFilter($qb, $filter)
+//	{
+//		if(array_key_exists('status', $filter)) {
+//			$qb->andWhere('a.status = :status')
+//					->setParameter('status', $filter['status']);
+//		}
+//	}
+//	
+//	private function addOrderByFilter($qb, $filter)
+//	{
+//		if(array_key_exists('orderBy', $filter)) {
+//			switch($filter['orderBy']) {
+//				default:
+//				case 'name':
+//					$qb->innerJoin(ArticleLangEntity::class, 'l');
+//					$qb->orderBy('l.title', 'ASC');
+//					break;
+//				case 'date':
+//					$qb->orderBy('a.createDate', 'ASC');
+//					break;
+//			}
+//		}
+//	}
+//	
+//	private function addPagerFilter($qb, $filter)
+//	{
+//		if(array_key_exists('offset', $filter) && array_key_exists('limit', $filter))
+//		{
+//			$qb->setFirstResult($filter['offset'])
+//				->setMaxResults($filter['limit']);
+//		}
+//	}
 	
 	
 	/**
 	 * Add article
 	 * 
-	 * @param array $values
+	 * @param ArticleLangEntity $articleLangEntity		article lang entity
 	 * @throws Exception\ArticleNotCreatedException
 	 */
 	public function create($articleLangEntity)
 	{
-		// TODO: overit ci nezalezi na poradi
-
 		$create = $this->entityManager->persist($articleLangEntity->article);
 		$this->entityManager->persist($articleLangEntity);
 		$this->entityManager->flush();
@@ -175,41 +169,17 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository /*impleme
 	}
 	
 	
+	/**
+	 * Set article
+	 * 
+	 * @param int $articleId
+	 * @param array $values
+	 */
 	public function update($articleLangEntity)
 	{
 		
 		return $articleLangEntity->article;
 	}
-	
-//	/**
-//	 * Set article
-//	 * 
-//	 * @param int $articleId
-//	 * @param array $values
-//	 */
-//	public function update($articleId, $values)
-//	{
-//		$articleEntity = $this->entity->findOneBy(['id' => $articleId]);
-//		if ($values['publish_start_date']) {
-//			$articleEntity->publishStartDate = $this->formatDate($values['publish_start_date']);
-//		} else {
-//			$articleEntity->publishStartDate = null;
-//		}
-//		if ($values['publish_end_date']) {
-//			$articleEntity->publishEndDate = $this->formatDate($values['publish_end_date']);
-//		} else {
-//			$articleEntity->publishEndDate = null;
-//		}
-//		$articleEntity->status = $values['status'];
-//		
-//		$articleLangEntity = $this->entityManager->getRepository(ArticleLangEntity::class)->findOneBy(['article' => $articleEntity, 'lang' => $this->lang]);
-//		$articleLangEntity->title = $values['title'];
-//		$articleLangEntity->slug = $values['slug'];
-//		$articleLangEntity->description = $values['description'];
-//		$articleLangEntity->text = $values['text'];
-//		$articleLangEntity->editDate = $this->formatDate('now');
-//		$articleLangEntity->editUser = $this->userEntity;
-//	}
 	
 	/**
 	 * Delete articles by criteria
@@ -222,5 +192,90 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository /*impleme
 		$articleEntity = $this->entity->find($criteria);
 		$articleEntity->status = $status;
 	}
+
+	/**
+	 * Get article by criteria
+	 * return article or exception
+	 * 
+	 * @param array $criteria
+	 * @return ArticleEntity
+	 * @throws RepositoryException
+	 */
+	public function getArticle($criteria)
+	{
+		$article = $this->get($criteria);
+		
+		if (!$article) {
+			throw new RepositoryException(_('Article not found.'));
+		}
+		
+		if ($article->status != self::STATUS_PUBLISHED) {
+			throw new RepositoryException(_('Article is unpublished or removed.'));
+		}
+		
+		if ($article->publishStartDate != null && strtotime($article->publishStartDate) < time()) {
+			throw new RepositoryException(_('Article has not been published.'));
+		}
+		
+		if ($article->publishEndDate != null && strtotime($article->publishEndDate) > time()) {
+			throw new RepositoryException(_('Out of time of article publication.'));
+		}
+		
+		return $article;
+	}
 	
+	/**
+	 * @api {get} /article/:id
+	 * @param int $id
+	 */
+	public function getArticleById($id) {
+		return $this->getArticle([
+			'id' => $id
+		]);
+	}
+	
+	/**
+	 * @api {get} /article/
+	 * @param int $id
+	 */
+	public function find($criteria = array(), $orderBy = null, $limit = null, $offset = null) {
+		return parent::find($criteria, $orderBy, $limit, $offset);
+	}
+
+	public function findFiltered($filterBuilder, $offset, $limit)
+	{
+		$allArticles = $this->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
+
+		$filterBuilder->setEntity(ArticleEntity::class);
+
+		$filterBuilder->addFilter(new \Wame\FilterModule\Type\StatusFilter());
+		
+		$authorFilter = new \Wame\FilterModule\Type\AuthorFilter();
+		$authorFilter->setItems($allArticles);
+		$filterBuilder->addFilter($authorFilter);
+		
+		$dateFilter = new \Wame\FilterModule\Type\DateFilter();
+		$dateFilter->setItems($allArticles);
+		$filterBuilder->addFilter($dateFilter);
+		
+		$filterOrderBy = new \Wame\FilterModule\Type\OrderByFilter();
+		$filterOrderBy
+				->addOrder('name', 'title', ArticleLangEntity::class)
+				->addOrder('id', 'id')
+				->addOrder('date', 'createDate');
+		$filterBuilder->addFilter($filterOrderBy);
+
+		$filterBuilder->addFilter(new \Wame\FilterModule\Type\IdFilter());
+		
+		$this->setPaginator($filterBuilder->build()->count());
+		
+		// Page filter
+		$filterPage = new \Wame\FilterModule\Type\PageFilter();
+		$filterPage->setOffset($this->paginator->offset)
+				->setLimit($this->paginator->itemsPerPage);
+		$filterBuilder->addFilter($filterPage);
+		
+		return $filterBuilder->build()->get();
+	}
+
 }

@@ -5,6 +5,16 @@ namespace App\AdminModule\Presenters;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\EditArticleForm;
 use Wame\ArticleModule\Repositories\ArticleRepository;
+use Wame\MenuModule\Forms\MenuItemForm;
+
+use Wame\DataGridControl\DataGridControl;
+use Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid;
+
+use Wame\GalleryModule\Controls\GalleryPickerControl;
+use Wame\GalleryModule\Controls\GalleryPicker2Control;
+
+
+use Kdyby\Doctrine\EntityManager;
 
 class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 {	
@@ -16,12 +26,29 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 
 	/** @var ArticleRepository @inject */
 	public $articleRepository;
+	
+	/** @var EntityManager @inject */
+	public $entityManager;
+	
+	/** @var DataGridControl @inject */
+	public $gridControl;
+	
+	/** @var ArticleGrid @inject */
+	public $articleGrid;
 
+	/** @var MenuItemForm @inject */
+	public $menuItemForm;
+	
+	/** @var GalleryPickerControl @inject */
+	public $galleryPickerControl;
+	
+	/** @var GalleryPicker2Control @inject */
+	public $galleryPicker2Control;
 	
 	/**
 	 * Create article
 	 * 
-	 * @return EditUserForm		form
+	 * @return CreateArticleForm	form
 	 */
 	protected function createComponentCreateArticleForm() 
 	{
@@ -29,6 +56,7 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		
 		return $form;
 	}
+	
 	
 	/**
 	 * Edit article
@@ -41,6 +69,60 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 
 		return $form;
 	}
+	
+//	public function renderDefault()
+//	{
+//		$this->template->siteTitle = _('Articles');
+//		$this->template->articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
+//	}
+	
+	public function createComponentArticleGrid()
+	{
+		$grid = $this->gridControl;
+		$grid->setName('article');
+		$articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
+		$grid->setDataSource($articles);
+//		$grid->setLang($this->lang); // TODO: presunut logiku do komponenty
+		
+		$grid->setProvider($this->articleGrid);
+		
+
+		
+		return $grid;
+	}
+	
+	// TODO: presunut do dynamic forms!!!
+	public function createComponentGalleryPicker()
+	{
+		$control = $this->galleryPickerControl;
+		$control->setItem(0);
+		return $control;
+	}
+	
+	public function createComponentGalleryPicker2()
+	{
+		$control = $this->galleryPicker2Control;
+		return $control;
+	}
+	
+	
+	/**
+	 * Menu item form
+	 * 
+	 * @return MenuItemForm
+	 */
+	protected function createComponentArticleMenuItemForm()
+	{
+		$form = $this->menuItemForm
+						->setActionForm('articleMenuItemForm')
+						->setType('article')
+						->setId($this->id)
+						->addFormContainer(new \Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuManager\Forms\ArticleFormContainer(), 'ArticleFormContainer', 50)
+						->build();
+
+		return $form;
+	}
+	
 	
 	public function renderDefault()
 	{
@@ -67,6 +149,16 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	}
 	
 	
+	public function renderMenuItem()
+	{
+		if ($this->id) {
+			$this->template->siteTitle = _('Edit article item in menu');
+		} else {
+			$this->template->siteTitle = _('Add article item to menu');
+		}
+	}
+	
+	
 	public function handleDelete()
 	{
 		$this->articleRepository->delete(['id' => $this->id]);
@@ -74,5 +166,4 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		$this->flashMessage(_('Article has been successfully deleted'), 'success');
 		$this->redirect(':Admin:Article:', ['id' => null]);
 	}
-
 }
