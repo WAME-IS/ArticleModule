@@ -20,7 +20,6 @@ class ArticleLangEntity extends BaseEntity
 	use Columns\Title;
 
 	/**
-	 * @noApi
      * @ORM\ManyToOne(targetEntity="ArticleEntity", inversedBy="langs")
      * @ORM\JoinColumn(name="article_id", referencedColumnName="id", nullable=false)
      */
