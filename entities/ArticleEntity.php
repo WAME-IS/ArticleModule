@@ -2,19 +2,20 @@
 
 namespace Wame\ArticleModule\Entities;
 
-use DateTime,
-	Doctrine\ORM\Mapping as ORM,
-	Wame\Core\Entities\BaseEntity;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use Wame\Core\Entities\BaseEntity;
+use Wame\Core\Entities\Columns;
 
 /**
  * @ORM\Table(name="wame_article")
  * @ORM\Entity
  */
-class ArticleEntity extends BaseEntity {
-
-	use \Wame\Core\Entities\Columns\Identifier;
-	use \Wame\Core\Entities\Columns\CreateDate;
-	use \Wame\Core\Entities\Columns\Status;
+class ArticleEntity extends BaseEntity 
+{
+	use Columns\Identifier;
+	use Columns\CreateDate;
+	use Columns\Status;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="ArticleLangEntity", mappedBy="article")
@@ -32,9 +33,35 @@ class ArticleEntity extends BaseEntity {
 	 * @ORM\Column(name="publish_end_date", type="datetime", nullable=true)
 	 */
 	protected $publishEndDate;
+	
+	
+	/** get ************************************************************/
 
-//	public function getPublishStartDate()
-//	{
-//		return $this->publishStartDate;
-//	}
+	public function getPublishStartDate()
+	{
+		return $this->publishStartDate;
+	}
+
+	public function getPublishEndDate()
+	{
+		return $this->publishEndDate;
+	}
+
+	
+	/** set ************************************************************/
+
+	public function setPublishStartDate($publishStartDate)
+	{
+		$this->publishStartDate = $publishStartDate;
+		 
+		return $this;
+	}
+
+	public function setPublishEndDate($publishEndDate)
+	{
+		$this->publishEndDate = $publishEndDate;
+		 
+		return $this;
+	}
+	
 }
