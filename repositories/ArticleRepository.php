@@ -177,7 +177,6 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	 */
 	public function update($articleLangEntity)
 	{
-		
 		return $articleLangEntity->article;
 	}
 	
@@ -193,55 +192,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 		$articleEntity->status = $status;
 	}
 
-	/**
-	 * Get article by criteria
-	 * return article or exception
-	 * 
-	 * @param array $criteria
-	 * @return ArticleEntity
-	 * @throws RepositoryException
-	 */
-	public function getArticle($criteria)
-	{
-		$article = $this->get($criteria);
-		
-		if (!$article) {
-			throw new RepositoryException(_('Article not found.'));
-		}
-		
-		if ($article->status != self::STATUS_PUBLISHED) {
-			throw new RepositoryException(_('Article is unpublished or removed.'));
-		}
-		
-		if ($article->publishStartDate != null && strtotime($article->publishStartDate) < time()) {
-			throw new RepositoryException(_('Article has not been published.'));
-		}
-		
-		if ($article->publishEndDate != null && strtotime($article->publishEndDate) > time()) {
-			throw new RepositoryException(_('Out of time of article publication.'));
-		}
-		
-		return $article;
-	}
 	
-	/**
-	 * @api {get} /article/:id
-	 * @param int $id
-	 */
-	public function getArticleById($id) {
-		return $this->getArticle([
-			'id' => $id
-		]);
-	}
-	
-	/**
-	 * @api {get} /article/
-	 * @param int $id
-	 */
-	public function find($criteria = array(), $orderBy = null, $limit = null, $offset = null) {
-		return parent::find($criteria, $orderBy, $limit, $offset);
-	}
-
 	public function findFiltered($filterBuilder, $offset, $limit)
 	{
 		$allArticles = $this->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
@@ -276,6 +227,86 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 		$filterBuilder->addFilter($filterPage);
 		
 		return $filterBuilder->build()->get();
+	}
+
+	/**
+	 * Get article by criteria
+	 * return article or exception
+	 * 
+	 * @param array $criteria
+	 * @return ArticleEntity
+	 * @throws RepositoryException
+	 */
+	public function getArticle($criteria)
+	{
+		$article = $this->get($criteria);
+		
+		if (!$article) {
+			throw new RepositoryException(_('Article not found.'));
+		}
+		
+		if ($article->status != self::STATUS_PUBLISHED) {
+			throw new RepositoryException(_('Article is unpublished or removed.'));
+		}
+		
+		if ($article->publishStartDate != null && strtotime($article->publishStartDate) < time()) {
+			throw new RepositoryException(_('Article has not been published.'));
+		}
+		
+		if ($article->publishEndDate != null && strtotime($article->publishEndDate) > time()) {
+			throw new RepositoryException(_('Out of time of article publication.'));
+		}
+		
+		return $article;
+	}
+	
+	
+	/** api ************************************************************/
+	
+	/**
+	 * @api {get} /article/:id Get article by id
+	 * @param int $id
+	 */
+	public function getArticleById($id) 
+	{
+		return $this->getArticle(['id' => $id]);
+	}
+	
+	
+	/**
+	 * @api {get} /article/ Get all articles
+	 * @param int $id
+	 */
+	public function find($criteria = array(), $orderBy = null, $limit = null, $offset = null) 
+	{
+		return parent::find($criteria, $orderBy, $limit, $offset);
+	}
+	
+	
+	/**
+	 * @api {get} /article-search/ Search articles
+	 * @param array $columns
+	 * @param string $phrase
+	 * @param string $select
+	 */
+	public function findLike($columns = [], $phrase = null, $select = '*') 
+	{
+		$search = $this->entityManager->createQueryBuilder()
+				->select($select)
+				->from(ArticleEntity::class, 'a')
+				->leftJoin(ArticleLangEntity::class, 'langs', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.id = langs.article')
+				->andWhere('a.status = :status')
+				->setParameter('status', self::STATUS_PUBLISHED)
+				->andWhere('langs.lang = :lang')
+				->setParameter('lang', $this->lang);
+		
+		foreach ($columns as $column) {
+			$search->andWhere($column . ' LIKE :phrase');
+		}
+		
+		$search->setParameter('phrase', '%' . $phrase . '%');
+
+		return $search->getQuery()->getResult();
 	}
 
 }
