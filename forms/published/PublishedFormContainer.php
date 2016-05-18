@@ -33,7 +33,7 @@ class PublishedFormContainer extends BaseFormContainer
 	{
 		$form = $this->getForm();
 		
-//		$form['publish_start_date']->setDefaultValue($object->articleEntity->publishStartDate);
-//		$form['publish_end_date']->setDefaultValue($object->articleEntity->publishEndDate);
+		$form['publish_start_date']->setDefaultValue($this->formatDate($object->articleEntity->publishStartDate));
+		$form['publish_end_date']->setDefaultValue($this->formatDate($object->articleEntity->publishEndDate));
 	}
 }
