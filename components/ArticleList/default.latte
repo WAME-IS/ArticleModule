@@ -1,0 +1,17 @@
+<div class="pull-left">
+{foreach $articles as $article}
+	{control article $article}
+{/foreach}
+</div>
+
+{if $filterVisible}
+	<div class="pull-right">
+		{control filter}
+	</div>
+{/if}
+
+<div class="clearfix"></div>
+
+{if $paginatorVisible}
+	{control paginator}
+{/if}

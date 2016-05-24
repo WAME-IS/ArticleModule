@@ -19,15 +19,14 @@ services:
 	- Wame\ArticleModule\Repositories\ArticleRepository
 
 	# Components
-	Article:
-		class: Wame\ArticleModule\Controls\Article
-		setup:
-			- injectRepository
-
-	ArticleList:
-		class: Wame\ArticleModule\Controls\ArticleList
-		setup:
-			- injectRepository
+	- Wame\ArticleModule\Components\IArticleControlFactory
+	- Wame\ArticleModule\Components\IArticleListControlFactory
+	- Wame\ArticleModule\Components\IArticleNewsControlFactory
+	
+#	Article:
+#		class: Wame\ArticleModule\Controls\Article
+#		setup:
+#			- injectRepository
 
 	ArticleGrid:
 		class: Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid

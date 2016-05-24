@@ -1,0 +1,21 @@
+<article>
+	<header>
+		<h1>{$article->langs[$lang]->title}</h1>
+	</header>
+
+	<div id="author">{_'author'}: {$article->createUser->fullName}</div>
+
+	<p id="description">{$article->langs[$lang]->description}</p>
+
+	<div>
+		{$article->langs[$lang]->text|noescape}
+	</div>
+
+	<footer>
+		<p>{_'Published'}: {$article->publishStartDate|date:'d.m.Y, H:i'}</p>
+	</footer>
+	
+	{control tagList}
+	
+	{control categoryList 1}
+</article>
