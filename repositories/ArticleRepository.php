@@ -4,7 +4,6 @@ namespace Wame\ArticleModule\Repositories;
 
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
-use Wame\UserModule\Entities\UserEntity;
 use Wame\Core\Exception\RepositoryException;
 
 class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
@@ -13,12 +12,6 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	const STATUS_PUBLISHED = 1;
 	const STATUS_UNPUBLISHED = 2;
 	
-//	/** @var ArticleEntity */
-//	private $articleEntity;
-	
-	/** @var UserEntity */
-	private $userEntity;
-	
 	
 	public function __construct(
 		\Nette\DI\Container $container, 
@@ -26,9 +19,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 		\h4kuna\Gettext\GettextSetup $translator, 
 		\Nette\Security\User $user
 	) {
-		parent::__construct($container, $entityManager, $translator, $user, ArticleEntity::CLASS);
-		
-		$this->userEntity = $this->entityManager->getRepository(UserEntity::class)->findOneBy(['id' => $user->id]);
+		parent::__construct($container, $entityManager, $translator, $user, ArticleEntity::class);
 	}
 	
 	
@@ -277,7 +268,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	 * @api {get} /article/ Get all articles
 	 * @param int $id
 	 */
-	public function find($criteria = array(), $orderBy = null, $limit = null, $offset = null) 
+	public function find($criteria = [], $orderBy = [], $limit = null, $offset = null) 
 	{
 		return parent::find($criteria, $orderBy, $limit, $offset);
 	}
