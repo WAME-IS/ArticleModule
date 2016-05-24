@@ -23,7 +23,7 @@ interface IArticleListControlFactory
 }
 
 
-class ArticleListControl extends \App\Core\Components\BaseControl
+class ArticleListControl extends \Wame\Core\Components\BaseControl
 {	
 	const SORT_BY_NAME = 'name';
 	const SORT_BY_DATE = 'date';

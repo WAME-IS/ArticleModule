@@ -12,7 +12,7 @@ interface IArticleControlFactory
 }
 
 
-class ArticleControl extends \App\Core\Components\BaseControl
+class ArticleControl extends \Wame\Core\Components\BaseControl
 {	
 	/** @var integer */
 	protected $id;
