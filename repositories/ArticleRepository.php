@@ -193,7 +193,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	}
 
 	
-	public function findFiltered($filterBuilder, $offset, $limit)
+	public function findFiltered($filterBuilder, $paginator)
 	{
 		$allArticles = $this->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
 
@@ -218,12 +218,19 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 
 		$filterBuilder->addFilter(new \Wame\FilterModule\Type\IdFilter());
 		
-		$this->setPaginator($filterBuilder->build()->count());
+//		$this->setPaginator($filterBuilder->build()->count());
+		
+		// Paginator
+//		$paginator = $vp->getPaginator();
+//		$paginator->itemsPerPage = $this->itemsPerPage;
+		$paginator->getPaginator()->itemCount = $filterBuilder->build()->count();
+		
+//		$this->paginator->offset, $this->paginator->itemsPerPage
 		
 		// Page filter
 		$filterPage = new \Wame\FilterModule\Type\PageFilter();
-		$filterPage->setOffset($this->paginator->offset)
-				->setLimit($this->paginator->itemsPerPage);
+		$filterPage->setOffset($paginator->getPaginator()->offset)
+				->setLimit($paginator->getPaginator()->itemsPerPage);
 		$filterBuilder->addFilter($filterPage);
 		
 		return $filterBuilder->build()->get();

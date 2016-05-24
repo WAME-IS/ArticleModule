@@ -72,10 +72,10 @@ class CreateArticleForm extends FormFactory
 	{
 		$articleEntity = new ArticleEntity();
 		if ($values['publish_start_date']) {
-			$articleEntity->publisStartDate = $this->formatDate($values['publish_start_date']);
+			$articleEntity->publishStartDate = $this->formatDate($values['publish_start_date']);
 		}
 		if ($values['publish_end_date']) {
-			$articleEntity->publisEndDate = $this->formatDate($values['publish_end_date']);
+			$articleEntity->publishEndDate = $this->formatDate($values['publish_end_date']);
 		}
 		$articleEntity->createDate = $this->formatDate('now');
 		$articleEntity->createUser = $this->userEntity;
