@@ -29,7 +29,6 @@ class AdminMenuItem implements \Wame\MenuModule\Models\IMenuItem
 	{
 		$item = new Item();
 		$item->setName('article');
-		$item->setPriority(10);
 		$item->setTitle(_('Articles'));
 		$item->setLink($this->linkGenerator->link('Admin:Article:', ['id' => null]));
 		$item->setIcon('fa fa-file-text');
