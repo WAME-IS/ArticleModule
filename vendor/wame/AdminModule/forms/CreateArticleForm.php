@@ -4,6 +4,7 @@ namespace Wame\ArticleModule\Vendor\Wame\AdminModule\Forms;
 
 use Nette\Security\User;
 use Nette\Application\UI\Form;
+use Nette\Utils\Strings;
 use Wame\Core\Forms\FormFactory;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
@@ -85,7 +86,7 @@ class CreateArticleForm extends FormFactory
 		$articleLangEntity->article = $articleEntity;
 		$articleLangEntity->lang = $this->lang;
 		$articleLangEntity->title = $values['title'];
-		$articleLangEntity->slug = $values['slug'];
+		$articleLangEntity->slug = $values['slug']?:(Strings::webalize($values['title']));
 		$articleLangEntity->description = $values['description'];
 		$articleLangEntity->text = $values['text'];
 		$articleLangEntity->editDate = $this->formatDate('now');
