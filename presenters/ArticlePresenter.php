@@ -81,10 +81,10 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
     public $author;
 	
 	
-	public function __construct(\Wame\FilterModule\FilterBuilder $filterBuilder) {
+	public function __construct(\Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory, \Wame\ArticleModule\Repositories\ArticleRepository $articleRepository) {
 		parent::__construct();
 		
-		$this->filterBuilder = $filterBuilder;
+		$this->filterBuilder = $filterBuilderFactory->create();
 	}
 	
 	public function renderDefault()
@@ -96,6 +96,7 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		$this->articleId = $id;
 		
 		$article = $this->articleRepository->get(['id' => $this->articleId]);
+		
 		
 		$title = $article->langs[$this->lang]->title;
 		$description = $article->langs[$this->lang]->description;

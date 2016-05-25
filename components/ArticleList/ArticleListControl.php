@@ -3,6 +3,7 @@
 namespace Wame\ArticleModule\Components;
 
 use Wame\ArticleModule\Repositories\ArticleRepository;
+use Wame\CategoryModule\Repositories\CategoryItemRepository;
 
 //use Wame\FilterModule\Type\StatusFilter;
 //use Wame\FilterModule\Type\AuthorFilter;
@@ -54,6 +55,9 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 	/** @var ArticleRepository */
 	public $articleRepository;
 	
+	/** @var CategoryItemRepository */
+	public $categoryItemRepository;
+	
 	/** @var string */
 	private $lang;
 	
@@ -63,11 +67,14 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 	/** @var boolean */
 	private $filterVisible = true;
 	
+	private $category;
 	
-	public function __construct(\Nette\Http\Request $httpRequest, ArticleRepository $articleRepository, \Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory) {
+	
+	public function __construct(\Nette\Http\Request $httpRequest, ArticleRepository $articleRepository, CategoryItemRepository $categoryItemRepository, \Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory) {
 		parent::__construct();
 		
 		$this->articleRepository = $articleRepository;
+		$this->categoryItemRepository = $categoryItemRepository;
 		$this->lang = $this->articleRepository->lang;
 		
 		$this->filterBuilder = $filterBuilderFactory->create();
@@ -136,6 +143,11 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 ////			$this->orderBy[$newName] = $sort;
 //			$this->orderBy = [$newName, $sort];
 //		}
+	}
+	
+	public function setCategory($category)
+	{
+		$this->category = $category;
 	}
 	
 	public function setFilters()
@@ -217,6 +229,18 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 	 */
 	public function render()
 	{
+		dump($this);
+		
+		$component = $this->componentInPosition->component;
+		
+		$sort = $this->componentInPosition->component->getParameter('sort');
+		$order = $this->componentInPosition->component->getParameter('order');
+		$limit = $this->componentInPosition->component->getParameter('limit');
+		
+		$categories = $this->categoryItemRepository->getCategories('component', $this->componentInPosition->component->id);
+		
+		$articles = $this->articleRepository->find();
+		
 		$paginator = $this['paginator'];
 		$paginator->setCount($this->count);
 		

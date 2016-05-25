@@ -4,8 +4,10 @@ namespace App\AdminModule\Presenters;
 
 use Wame\ComponentModule\Forms\ComponentForm;
 use Wame\PositionModule\Repositories\PositionRepository;
-//use Wame\TextBlockModule\Forms\TextFormContainer;
-//use Wame\TextBlockModule\Forms\ShowTitleFormContainer;
+use Wame\ArticleCategoryPlugin\Wame\ArticleModule\Wame\AdminModule\Forms\ICategoryTreeFormContainerFactory;
+use Wame\ArticleModule\Forms\ILimitFormContainerFactory;
+use Wame\ArticleModule\Forms\ISortFormContainerFactory;
+use Wame\ArticleModule\Forms\ArticleListForm;
 
 class ArticleListPresenter extends ComponentPresenter
 {		
@@ -14,12 +16,20 @@ class ArticleListPresenter extends ComponentPresenter
 
 	/** @var PositionRepository @inject */
 	public $positionRepository;
-
-//	/** @var TextFormContainer @inject */
-//	public $textFormContainer;
-//
-//	/** @var ShowTitleFormContainer @inject */
-//	public $showTitleFormContainer;
+	
+	/** @var ICategoryTreeFormContainerFactory @inject */
+	public $ICategoryTreeFormContainer;
+	
+	/** @var ILimitFormContainerFactory @inject */
+	public $ILimitFormContainerFactory;
+	
+	/** @var ISortFormContainerFactory @inject */
+	public $ISortFormContainerFactory;
+	
+	/** @var ArticleListForm @inject */
+	public $articleListForm;
+	
+	
 	
 	
 	public function actionCreate()
@@ -68,10 +78,11 @@ class ArticleListPresenter extends ComponentPresenter
 		$form = $this->componentForm
 						->setType('ArticleListComponent')
 						->setId($this->id)
-//						->addFormContainer($this->textFormContainer, 'TextFormContainer', 75)
-//						->addFormContainer($this->showTitleFormContainer, 'ShowTitleFormContainer', 25)
+						->addFormContainer($this->ILimitFormContainerFactory->create(), 'LimitFormContainer')
+						->addFormContainer($this->ISortFormContainerFactory->create(), 'SortFormContainer')
+						->addFormContainer($this->ICategoryTreeFormContainer->create(), 'CategoryTreeFormContainer')
 						->build();
-
+		
 		return $form;
 	}
 	

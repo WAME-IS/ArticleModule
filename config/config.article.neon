@@ -22,6 +22,9 @@ services:
 	- Wame\ArticleModule\Components\IArticleControlFactory
 	- Wame\ArticleModule\Components\IArticleListControlFactory
 	- Wame\ArticleModule\Components\IArticleNewsControlFactory
+
+	# Events
+	- {class: Wame\ArticleModule\Events\ArticleListFormListener, tags: [run]}
 	
 #	Article:
 #		class: Wame\ArticleModule\Controls\Article
