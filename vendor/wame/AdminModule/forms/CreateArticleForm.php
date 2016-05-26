@@ -53,7 +53,7 @@ class CreateArticleForm extends FormFactory
 
 			$presenter->flashMessage(_('The article was successfully created.'), 'success');
 			
-			$presenter->redirect('this');
+			$presenter->redirect(':Admin:Article:');
 		} catch (\Exception $e) {
 			if ($e instanceof \Nette\Application\AbortException) {
 				throw $e;
