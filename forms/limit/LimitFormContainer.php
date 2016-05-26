@@ -31,6 +31,6 @@ class LimitFormContainer extends BaseFormContainer
 	{
 		$form = $this->getForm();
 		
-//		$form['limit']->setDefaultValue($object->articleEntity->langs[$object->lang]->slug);
+		$form['limit']->setDefaultValue($object->componentEntity->getParameter('limit'));
 	}
 }

@@ -30,6 +30,6 @@ class PaginatorVisibilityFormContainer extends BaseFormContainer
 	{
 		$form = $this->getForm();
 		
-//		$form['limit']->setDefaultValue($object->articleEntity->langs[$object->lang]->slug);
+		$form['paginator_visibility']->setDefaultValue($object->componentEntity->getParameter('paginator_visibility'));
 	}
 }

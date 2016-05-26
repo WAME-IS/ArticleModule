@@ -34,6 +34,7 @@ class SortFormContainer extends BaseFormContainer
 	{
 		$form = $this->getForm();
 		
-//		$form['slug']->setDefaultValue($object->articleEntity->langs[$object->lang]->slug);
+		$form['sort']->setDefaultValue($object->componentEntity->getParameter('sort'));
+		$form['order']->setDefaultValue($object->componentEntity->getParameter('order'));
 	}
 }

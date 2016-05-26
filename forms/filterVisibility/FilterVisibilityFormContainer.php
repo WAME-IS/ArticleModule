@@ -30,6 +30,6 @@ class FilterVisibilityFormContainer extends BaseFormContainer
 	{
 		$form = $this->getForm();
 		
-//		$form['limit']->setDefaultValue($object->articleEntity->langs[$object->lang]->slug);
+		$form['filter_visibility']->setDefaultValue($object->componentEntity->getParameter('filter_visibility'));
 	}
 }
