@@ -26,7 +26,7 @@ class ArticleListFormListener extends Object
 	
 	public function onCreate($form, $values, $componentEntity) 
 	{
-		if ($componentEntity->type == COMPONENT) {				
+		if ($componentEntity->type == self::COMPONENT) {				
 			$componentEntity->setParameters($this->getParams($values, $componentEntity->getParameters()));
 		}
 	}
@@ -34,7 +34,7 @@ class ArticleListFormListener extends Object
 	
 	public function onUpdate($form, $values, $componentEntity)
 	{
-		if ($componentEntity->type == COMPONENT) {
+		if ($componentEntity->type == self::COMPONENT) {
 			$componentEntity->setParameters($this->getParams($values, $componentEntity->getParameters()));
 		}
 	}
