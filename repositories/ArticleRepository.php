@@ -188,8 +188,6 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	{
 		$allArticles = $this->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
 
-		
-
 		$filterBuilder->addFilter(new \Wame\FilterModule\Type\StatusFilter());
 		
 		$authorFilter = new \Wame\FilterModule\Type\AuthorFilter();
@@ -199,19 +197,11 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 		$dateFilter = new \Wame\FilterModule\Type\DateFilter();
 		$dateFilter->setItems($allArticles);
 		$filterBuilder->addFilter($dateFilter);
-		
-		
 
 		$filterBuilder->addFilter(new \Wame\FilterModule\Type\IdFilter());
 		
-//		$this->setPaginator($filterBuilder->build()->count());
-		
 		// Paginator
-//		$paginator = $vp->getPaginator();
-//		$paginator->itemsPerPage = $this->itemsPerPage;
 		$paginator->getPaginator()->itemCount = $filterBuilder->build()->count();
-		
-//		$this->paginator->offset, $this->paginator->itemsPerPage
 		
 		// Page filter
 		$filterPage = new \Wame\FilterModule\Type\PageFilter();

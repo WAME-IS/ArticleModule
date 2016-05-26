@@ -3,12 +3,12 @@
 namespace Wame\ArticleModule\Events;
 
 use Nette\Object;
-use Wame\Utils\Form\Helpers;
 use Wame\ComponentModule\Repositories\ComponentRepository;
-use Wame\SliderBootstrapCarouselPlugin\Vendor\Wame\SliderModule\Components\SliderControl\BootstrapCarousel;
 
 class ArticleListFormListener extends Object 
 {
+	const COMPONENT = 'ArticleListComponent';
+	
 	/** @var ComponentRepository */
 	private $componentRepository;
 	
@@ -26,7 +26,7 @@ class ArticleListFormListener extends Object
 	
 	public function onCreate($form, $values, $componentEntity) 
 	{
-		if ($componentEntity->type == 'ArticleListComponent') {				
+		if ($componentEntity->type == COMPONENT) {				
 			$componentEntity->setParameters($this->getParams($values, $componentEntity->getParameters()));
 		}
 	}
@@ -34,7 +34,7 @@ class ArticleListFormListener extends Object
 	
 	public function onUpdate($form, $values, $componentEntity)
 	{
-		if ($componentEntity->type == 'ArticleListComponent') {
+		if ($componentEntity->type == COMPONENT) {
 			$componentEntity->setParameters($this->getParams($values, $componentEntity->getParameters()));
 		}
 	}

@@ -5,15 +5,6 @@ namespace Wame\ArticleModule\Components;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 use Wame\CategoryModule\Repositories\CategoryItemRepository;
 
-//use Wame\FilterModule\Type\StatusFilter;
-//use Wame\FilterModule\Type\AuthorFilter;
-//use Wame\FilterModule\Type\DateFilter;
-//use Wame\FilterModule\Type\OrderByFilter;
-//use Wame\FilterModule\Type\IdFilter;
-//
-//use Wame\ArticleModule\Entities\ArticleEntity;
-//use Wame\ArticleModule\Entities\ArticleLangEntity;
-
 use \Wame\FilterModule\FilterBuilder;
 
 
@@ -31,26 +22,20 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 	const SORT_ASC = 'ASC';
 	const SORT_DESC = 'DESC';
 	
-	/** @var limit */
-	private $limit = null;
-	
 	/** @var integer */
 	private $count = 5;
 	
 	/** @var integer */
 	private $itemsPerPage = 10;
 	
-//	private $paginator;
-	
-//	/** @var integer */
-//	private $paginatorOffset;
+	/** @var Paginator */
+	private $paginator;
 	
 	/** @var array */
 	private $orderBy = [];
 	
 	/** @var FilterBuilder */
 	private $filterBuilder;
-	
 	
 	/** @var ArticleRepository */
 	public $articleRepository;
@@ -67,8 +52,10 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 	/** @var boolean */
 	private $filterVisible = true;
 	
+	/** @var integer */
 	private $category;
 	
+	/** @var string */
 	private $sort;
 	
 	
@@ -82,19 +69,26 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 		$this->filterBuilder = $filterBuilderFactory->create();
 	}
 	
+	
+	/**
+	 * Set paginator visibility
+	 * 
+	 * @param type $visible
+	 */
 	public function setPaginatorVisibility($visible)
 	{
 		$this->paginatorVisible = $visible;
 	}
 	
+	/**
+	 * Set filter visibility
+	 * 
+	 * @param type $visible
+	 */
 	public function setFilterVisibility($visible)
 	{
 		$this->filterVisible = $visible;
 	}
-	
-//	public function __construct(\Wame\FilterModule\FilterBuilder $filterBuilder) {
-//		$this->filterBuilder = $filterBuilder;
-//	}
 	
 	/**
 	 * Set items per page
@@ -106,11 +100,6 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 		$this->itemsPerPage = $itemsPerPage;
 	}
 	
-	public function setLimit($limit)
-	{
-		$this->limit = $limit;
-	}
-	
 	/**
 	 * Set count of items in paginator
 	 * @param type $count
@@ -120,105 +109,59 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 		$this->count = $count;
 	}
 	
-	// TODO: presunut do oddelenej casti, aby sortovanie mohlo byt vyuzivane viacerymi komponentami
 	/**
 	 * Set SortBy
 	 * 
 	 * @param type $name
 	 * @param type $sort
 	 */
-	public function setSortBy($name, $sort = self::SORT_ASC)
+	public function setSortBy($name)
 	{
 		$this->orderBy = $name;
-		
-//		switch($name) {
-//			default:
-//			case self::SORT_BY_NAME:
-//				$newName = 'langs.title';
-//				break;
-//			case self::SORT_BY_DATE:
-//				$newName = 'publishStartDate';
-//				break;
-//		}
-//		
-//		if($sort == self::SORT_ASC || $sort == self::SORT_DESC) {
-////			$this->orderBy[$newName] = $sort;
-//			$this->orderBy = [$newName, $sort];
-//		}
 	}
 	
+	/**
+	 * Set category
+	 * 
+	 * @param type $category
+	 */
 	public function setCategory($category)
 	{
 		$this->category = $category;
 	}
 	
+	/**
+	 * Set filters
+	 */
 	public function setFilters()
 	{
 		
 	}
 	
-//	// TODO: presunut do repository
-//	private function getArticles()
-//	{
-//		$allArticles = $this->articleRepository->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
-//		
-//		$filterBuilder = $this->filterBuilder;
-//		$filterBuilder->setEntity(ArticleEntity::class);
-//
-//		$filterBuilder->addFilter(new StatusFilter());
-//		
-//		$authorFilter = new AuthorFilter();
-//		$authorFilter->setItems($allArticles);
-//		$filterBuilder->addFilter($authorFilter);
-//		
-//		$dateFilter = new DateFilter();
-//		$dateFilter->setItems($allArticles);
-//		$filterBuilder->addFilter($dateFilter);
-//		
-////		$filterBuilder->addFilter(new DateFilter());
-//		
-//		$filterOrderBy = new OrderByFilter();
-//		$filterOrderBy
-//				->addOrder('name', 'title', ArticleLangEntity::class)
-//				->addOrder('id', 'id')
-//				->addOrder('date', 'createDate');
-//		$filterBuilder->addFilter($filterOrderBy);
-//
-//		$filterBuilder->addFilter(new IdFilter());
-//		
-//		$this->setPaginator($filterBuilder->build()->count());
-//		
-//		// Page filter
-//		$filterPage = new \Wame\FilterModule\Type\PageFilter();
-//		$filterPage->setOffset($this->paginator->offset)
-//				->setLimit($this->paginator->itemsPerPage);
-//		$filterBuilder->addFilter($filterPage);
-//		
-//		return $filterBuilder->build()->get();
-//	}
-	
-//	private function setPaginator($itemCount)
-//	{
-//		$vp = $this['paginator'];
-//		$vp->setCount($this->count);
-//		$this->paginator = $vp->getPaginator();
-//		$this->paginator->itemsPerPage = $this->itemsPerPage;
-////		$this->paginatorOffset = $this->paginator->offset;
-//		
-//		$this->paginator->itemCount = $itemCount;
-//	}
-
+	/**
+	 * Create Paginator component
+	 * 
+	 * @return \Wame\Utils\Pagination
+	 */
 	protected function createComponentPaginator()
 	{
 		return new \Wame\Utils\Pagination;
 	}
 	
+	/**
+	 * Create Filter component
+	 * @return \Wame\FilterModule\Controls\FilterControl
+	 */
 	protected function createComponentFilter()
 	{
 		$filterControl = new \Wame\FilterModule\Controls\FilterControl($this->filterBuilder);
 		return $filterControl;
 	}
 	
+	/**
+	 * Create Article component
+	 * @return \Wame\ArticleModule\Components\ArticleControl
+	 */
 	protected function createComponentArticle()
 	{
 		$component = new \Wame\ArticleModule\Components\ArticleControl($this->articleRepository);
@@ -233,21 +176,55 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 	{
 		$this->setComponent();
 		
+		$this->setPaginator();
+		
+		$articles = $this->getArticles();
+		
+		$this->template->paginatorVisible = $this->paginatorVisible;
+		$this->template->filterVisible = $this->filterVisible;
+		$this->template->articles = $articles;
+		
+		
+		$this->getTemplateFile();
+		$this->template->render();
+	}
+	
+	/**
+	 * Set paginator
+	 */
+	private function setPaginator()
+	{
+		$this->paginator = $this['paginator'];
+		$this->paginator->setCount($this->count);
+		$this->paginator->getPaginator()->itemsPerPage = $this->itemsPerPage;
+		
+		$this->template->paginatorOffset = $this->paginator->getPaginator()->offset;
+	}
+	
+	/**
+	 * Get articles
+	 * 
+	 * @return type
+	 */
+	private function getArticles()
+	{
 //		$categories = $this->categoryItemRepository->getCategories('component', $this->componentInPosition->component->id);
 //		$articles = $this->articleRepository->find();
 		
-		$paginator = $this['paginator'];
-		$paginator->setCount($this->count);
+		$this->setFilter();
 		
-		$paginator->getPaginator()->itemsPerPage = $this->itemsPerPage;
-		
-		
-		
+		return $this->articleRepository->findFiltered($this->filterBuilder, $this->paginator);
+	}
+	
+	/**
+	 * Set filer
+	 */
+	private function setFilter()
+	{
 		$this->filterBuilder->setEntity(\Wame\ArticleModule\Entities\ArticleEntity::class);
 		$filterOrderBy = new \Wame\FilterModule\Type\OrderByFilter();
 		$filterOrderBy
 				->addOrder('name', 'title', \Wame\ArticleModule\Entities\ArticleLangEntity::class)
-				->addOrder('id', 'id')
 				->addOrder('date', 'createDate');
 		
 		if($this->orderBy) {
@@ -258,33 +235,29 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 		}
 		
 		$this->filterBuilder->addFilter($filterOrderBy);
-		
-		
-		$articles = $this->articleRepository->findFiltered($this->filterBuilder, $paginator);
-		
-//		$articles = $this->articleRepository->find();
-		
-		$this->template->paginatorVisible = $this->paginatorVisible;
-		$this->template->filterVisible = $this->filterVisible;
-		$this->template->articles = $articles;
-		$this->template->paginatorOffset = $paginator->getPaginator()->offset;
-		
-		$this->getTemplateFile();
-		$this->template->render();
 	}
 	
+	/**
+	 * Set component
+	 */
 	private function setComponent()
 	{
 		if($this->componentInPosition) {
 			$this->sort = $this->getComponentParameter('sort');
 			$this->orderBy = $this->getComponentParameter('order');
-			$this->limit = $this->getComponentParameter('limit');
+			$this->itemsPerPage = $this->getComponentParameter('limit');
 			$this->paginatorVisible = $this->getComponentParameter('paginator_visible');
 			$this->filterVisible = $this->getComponentParameter('filter_visible');
 		}
 		
 	}
 	
+	/**
+	 * Get component parameter
+	 * 
+	 * @param string $parameter		parameter name
+	 * @return mixin				parameter
+	 */
 	private function getComponentParameter($parameter)
 	{
 		return $this->componentInPosition->component->getParameter($parameter);

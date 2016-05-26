@@ -106,7 +106,7 @@ class EditArticleForm extends FormFactory
 		
 		$articleLangEntity = $this->entityManager->getRepository(ArticleLangEntity::class)->findOneBy(['article' => $articleEntity, 'lang' => $this->lang]);
 		$articleLangEntity->title = $values['title'];
-		$articleLangEntity->slug = $values['slug'];
+		$articleLangEntity->slug = $values['slug']?:(Strings::webalize($values['title']));
 		$articleLangEntity->description = $values['description'];
 		$articleLangEntity->text = $values['text'];
 		$articleLangEntity->editDate = $this->formatDate('now');

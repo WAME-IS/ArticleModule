@@ -2,8 +2,6 @@
 
 namespace App\ArticleModule\Presenters;
 
-//use Wame\ArticleModule\Controls\Article;
-
 use Wame\ArticleModule\Components\IArticleControlFactory;
 use Wame\ArticleModule\Components\IArticleListControlFactory;
 
@@ -77,9 +75,15 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	}
 	
 	public function actionShow($id) {
+		// TODO: poriesit vyber cez slugy
 		$this->articleId = $id;
 		
-		$article = $this->articleRepository->get(['id' => $this->articleId]);
+		try {
+			$article = $this->articleRepository->getArticle(['id' => $this->articleId]);
+		} catch(\Exception $e) {
+			$this->flashMessage($e->getMessage(), 'danger');
+			$this->redirect(':Homepage:Homepage:', ['id' => null]);
+		}
 		
 		
 		$title = $article->langs[$this->lang]->title;
