@@ -4,8 +4,9 @@ namespace Wame\ArticleModule\Vendor\Wame\AdminModule\Forms;
 
 use Nette\Security\User;
 use Nette\Application\UI\Form;
-use Wame\Core\Forms\FormFactory;
+use Nette\Utils\Strings;
 use Kdyby\Doctrine\EntityManager;
+use Wame\Core\Forms\FormFactory;
 use Wame\UserModule\Entities\UserEntity;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
