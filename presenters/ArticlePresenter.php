@@ -6,12 +6,8 @@ namespace App\ArticleModule\Presenters;
 
 use Wame\ArticleModule\Components\IArticleControlFactory;
 use Wame\ArticleModule\Components\IArticleListControlFactory;
-use Wame\ArticleModule\Components\IArticleNewsControlFactory;
 
 use Wame\FilterModule\Controls\SortControl;
-use Wame\FilterModule\Controls\FilterDateControl;
-use Wame\FilterModule\Controls\FilterAuthorControl;
-use Wame\FilterModule\Controls\FilterCheckboxControl;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 
 use Wame\CategoryModule\Components\ICategoryListControlFactory;
@@ -32,20 +28,8 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	/** @var IArticleListControlFactory @inject */
 	public $IArticleListControlFactory;
 	
-	/** @var IArticleNewsControlFactory @inject */
-	public $IArticleNewsControlFactory;
-	
 	/** @var SortControl @inject */
 	public $sortControl;
-	
-//	/** @var FilterDateControl @inject */
-//	public $filterDateControl;
-//	
-//	/** @var FilterAuthorControl @inject */
-//	public $filterAuthorControl;
-//	
-//	/** @var FilterCheckboxControl @inject */
-//	public $filterCheckboxControl;
 	
 	/** @var TagListControl @inject */
 	public $tagListControl;
@@ -128,26 +112,12 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		$sort = $this->sort;
 		
 		$component = $this->IArticleListControlFactory->create();
-		
-		
-		
-		
-//		$componentArticleListControl = $this->articleListControl;
-		
+
 		$articleComponent = $this->createComponentArticle();
 		$articleComponent->setInList(true);
 		
-//		$component->addComponent($articleComponent, 'article');
 		$component->addComponent($this->createComponentSortControl(), 'sort');
-//		$component->addComponent($this->createComponentFilterDateControl(), 'filterDate');
 		$component->setSortBy($sort);
-		return $component;
-	}
-	
-	public function createComponentArticleNews()
-	{
-		$component = $this->IArticleNewsControlFactory->create();
-		
 		return $component;
 	}
 	
@@ -168,15 +138,4 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		$control = $this->ICategoryListControlFactory->create();
 		return $control;
 	}
-	
-//	public function createComponentFilterDateControl()
-//	{
-//		$articles = $this->articleRepository->find([
-//			'status' => ArticleRepository::STATUS_PUBLISHED
-//		]);
-//		
-//		$filterDateControl = $this->filterDateControl;
-//		$filterDateControl->setItems($articles);
-//		return $filterDateControl;
-//	}
 }

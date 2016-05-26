@@ -188,7 +188,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	{
 		$allArticles = $this->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
 
-		$filterBuilder->setEntity(ArticleEntity::class);
+		
 
 		$filterBuilder->addFilter(new \Wame\FilterModule\Type\StatusFilter());
 		
@@ -200,12 +200,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 		$dateFilter->setItems($allArticles);
 		$filterBuilder->addFilter($dateFilter);
 		
-		$filterOrderBy = new \Wame\FilterModule\Type\OrderByFilter();
-		$filterOrderBy
-				->addOrder('name', 'title', ArticleLangEntity::class)
-				->addOrder('id', 'id')
-				->addOrder('date', 'createDate');
-		$filterBuilder->addFilter($filterOrderBy);
+		
 
 		$filterBuilder->addFilter(new \Wame\FilterModule\Type\IdFilter());
 		

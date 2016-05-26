@@ -5,6 +5,8 @@ namespace App\AdminModule\Presenters;
 use Wame\ComponentModule\Forms\ComponentForm;
 use Wame\PositionModule\Repositories\PositionRepository;
 use Wame\ArticleCategoryPlugin\Wame\ArticleModule\Wame\AdminModule\Forms\ICategoryTreeFormContainerFactory;
+use Wame\ArticleModule\Forms\IPaginatorVisibilityFormContainerFactory;
+use Wame\ArticleModule\Forms\IFilterVisibilityFormContainerFactory;
 use Wame\ArticleModule\Forms\ILimitFormContainerFactory;
 use Wame\ArticleModule\Forms\ISortFormContainerFactory;
 use Wame\ArticleModule\Forms\ArticleListForm;
@@ -25,6 +27,12 @@ class ArticleListPresenter extends ComponentPresenter
 	
 	/** @var ISortFormContainerFactory @inject */
 	public $ISortFormContainerFactory;
+	
+	/** @var IPaginatorVisibilityFormContainerFactory @inject */
+	public $IPaginatorVisibilityFormContainerFactory;
+	
+	/** @var IFilterVisibilityFormContainerFactory @inject */
+	public $IFilterVisibilityFormContainerFactory;
 	
 	/** @var ArticleListForm @inject */
 	public $articleListForm;
@@ -78,6 +86,8 @@ class ArticleListPresenter extends ComponentPresenter
 		$form = $this->componentForm
 						->setType('ArticleListComponent')
 						->setId($this->id)
+						->addFormContainer($this->IPaginatorVisibilityFormContainerFactory->create(), 'PaginatorVisibility')
+						->addFormContainer($this->IFilterVisibilityFormContainerFactory->create(), 'FilterVisibility')
 						->addFormContainer($this->ILimitFormContainerFactory->create(), 'LimitFormContainer')
 						->addFormContainer($this->ISortFormContainerFactory->create(), 'SortFormContainer')
 						->addFormContainer($this->ICategoryTreeFormContainer->create(), 'CategoryTreeFormContainer')

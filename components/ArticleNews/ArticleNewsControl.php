@@ -10,10 +10,10 @@ interface IArticleNewsControlFactory
 
 class ArticleNewsControls extends ArticleListControl
 {
-	public function __construct(\Nette\Http\Request $httpRequest, \Wame\ArticleModule\Repositories\ArticleRepository $articleRepository, \Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory) {
-		parent::__construct($httpRequest, $articleRepository, $filterBuilderFactory);
-		
-		$this->setPaginatorVisibility(false);
-		$this->setFilterVisibility(false);
-	}
+//	public function __construct(\Nette\Http\Request $httpRequest, \Wame\ArticleModule\Repositories\ArticleRepository $articleRepository, \Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory) {
+//		parent::__construct($httpRequest, $articleRepository, $filterBuilderFactory);
+//		
+//		$this->setPaginatorVisibility(false);
+//		$this->setFilterVisibility(false);
+//	}
 }

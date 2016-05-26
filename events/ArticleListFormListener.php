@@ -59,6 +59,8 @@ class ArticleListFormListener extends Object
 			'sort' => $values->sort,
 			'order' => $values->order,
 			'limit' => $values->limit,
+			'paginator_visibility' => $values->paginator_visibility,
+			'filter_visibility' => $values->filter_visibility,
 		];
 		
 		return array_replace($parameters, $array);

@@ -12,6 +12,8 @@ services:
 	- Wame\ArticleModule\Forms\ITextFormContainerFactory
 	- Wame\ArticleModule\Forms\ILimitFormContainerFactory
 	- Wame\ArticleModule\Forms\ISortFormContainerFactory
+	- Wame\ArticleModule\Forms\IPaginatorVisibilityFormContainerFactory
+	- Wame\ArticleModule\Forms\IFilterVisibilityFormContainerFactory
 
 	# Create article in administration form
 	CreateArticleForm:
