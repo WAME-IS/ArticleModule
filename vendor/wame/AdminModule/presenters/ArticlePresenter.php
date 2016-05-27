@@ -7,7 +7,7 @@ use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\EditArticleForm;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 use Wame\MenuModule\Forms\MenuItemForm;
 
-use Wame\DataGridControl\DataGridControl;
+use Wame\DataGridControl\IDataGridControlFactory;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid;
 
 use Wame\GalleryModule\Controls\GalleryPickerControl;
@@ -30,7 +30,7 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	/** @var EntityManager @inject */
 	public $entityManager;
 	
-	/** @var DataGridControl @inject */
+	/** @var IDataGridControlFactory @inject */
 	public $gridControl;
 	
 	/** @var ArticleGrid @inject */
@@ -44,6 +44,10 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	
 	/** @var GalleryPicker2Control @inject */
 	public $galleryPicker2Control;
+	
+	
+	
+	/** components ************************************************************/
 	
 	/**
 	 * Create article
@@ -70,16 +74,10 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		return $form;
 	}
 	
-//	public function renderDefault()
-//	{
-//		$this->template->siteTitle = _('Articles');
-//		$this->template->articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
-//	}
-	
-	public function createComponentArticleGrid()
+	public function createComponentArticleGrid($name)
 	{
-		$grid = $this->gridControl;
-		$grid->setName('article');
+		$grid = $this->gridControl->create();
+		$grid->setGridName('article');
 		$articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
 		$grid->setDataSource($articles);
 //		$grid->setLang($this->lang); // TODO: presunut logiku do komponenty
@@ -123,6 +121,26 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		return $form;
 	}
 	
+	
+	/**
+	 * Menu component form
+	 * 
+	 * @return ComponentForm
+	 */
+	protected function createComponentArticleListForm()
+	{
+		$form = $this->componentForm
+						->setType('TextBlockComponent')
+						->setId($this->id)
+						->addFormContainer($this->textFormContainer, 'TextFormContainer', 75)
+						->addFormContainer($this->showTitleFormContainer, 'ShowTitleFormContainer', 25)
+						->build();
+
+		return $form;
+	}
+	
+	
+	/** renders ***************************************************************/
 	
 	public function renderDefault()
 	{
