@@ -1,14 +1,14 @@
 <article>
 	<header>
-		<h1>{$article->langs[$lang]->title}</h1>
+		<h1>{$article->title}</h1>
 	</header>
 
 	<div id="author">{_'author'}: {$article->createUser->fullName}</div>
 
-	<p id="description">{$article->langs[$lang]->description}</p>
+	<p id="description">{$article->description}</p>
 
 	<div>
-		{$article->langs[$lang]->text|noescape}
+		{$article->text|noescape}
 	</div>
 
 	<footer>
