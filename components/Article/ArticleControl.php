@@ -87,7 +87,7 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 		$template = isset($parameters['template']) ? $parameters['template'] : null;
 		
 		if($template) {
-			$this->setTemplateFile($template . (\Wame\Utils\Strings::endsWith($template, '.latte') ? null : '.latte'));
+			$this->setTemplateFile($template);
 		}
 		else if($this->inList) {
 			$this->setTemplateFile('default.latte');
