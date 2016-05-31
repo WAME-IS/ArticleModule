@@ -15,6 +15,7 @@ class ArticleEntity extends BaseEntity
 {
 	use Columns\Identifier;
 	use Columns\CreateDate;
+	use Columns\CreateUser;
 	use Columns\Status;
 
 	/**
