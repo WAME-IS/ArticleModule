@@ -10,6 +10,10 @@ services:
 	- Wame\ArticleModule\Forms\IStatusFormContainerFactory
 	- Wame\ArticleModule\Forms\IDescriptionFormContainerFactory
 	- Wame\ArticleModule\Forms\ITextFormContainerFactory
+	- Wame\ArticleModule\Forms\ILimitFormContainerFactory
+	- Wame\ArticleModule\Forms\ISortFormContainerFactory
+	- Wame\ArticleModule\Forms\IPaginatorVisibilityFormContainerFactory
+	- Wame\ArticleModule\Forms\IFilterVisibilityFormContainerFactory
 
 	# Create article in administration form
 	CreateArticleForm:
@@ -32,3 +36,6 @@ services:
 			- addFormContainer(Wame\ArticleModule\Forms\StatusFormContainer(), 'StatusFormContainer', 96)
 			- addFormContainer(Wame\ArticleModule\Forms\DescriptionFormContainer(), 'DescriptionFormContainer', 95)
 			- addFormContainer(Wame\ArticleModule\Forms\TextFormContainer(), 'TextFormContainer', 94)
+
+	ArticleListForm:
+		class: Wame\ArticleModule\Forms\ArticleListForm

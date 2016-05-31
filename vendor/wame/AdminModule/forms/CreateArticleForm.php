@@ -4,6 +4,7 @@ namespace Wame\ArticleModule\Vendor\Wame\AdminModule\Forms;
 
 use Nette\Security\User;
 use Nette\Application\UI\Form;
+use Nette\Utils\Strings;
 use Wame\Core\Forms\FormFactory;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
@@ -52,7 +53,7 @@ class CreateArticleForm extends FormFactory
 
 			$presenter->flashMessage(_('The article was successfully created.'), 'success');
 			
-			$presenter->redirect('this');
+			$presenter->redirect(':Admin:Article:');
 		} catch (\Exception $e) {
 			if ($e instanceof \Nette\Application\AbortException) {
 				throw $e;
@@ -72,10 +73,10 @@ class CreateArticleForm extends FormFactory
 	{
 		$articleEntity = new ArticleEntity();
 		if ($values['publish_start_date']) {
-			$articleEntity->publisStartDate = $this->formatDate($values['publish_start_date']);
+			$articleEntity->publishStartDate = $this->formatDate($values['publish_start_date']);
 		}
 		if ($values['publish_end_date']) {
-			$articleEntity->publisEndDate = $this->formatDate($values['publish_end_date']);
+			$articleEntity->publishEndDate = $this->formatDate($values['publish_end_date']);
 		}
 		$articleEntity->createDate = $this->formatDate('now');
 		$articleEntity->createUser = $this->userEntity;
@@ -85,7 +86,7 @@ class CreateArticleForm extends FormFactory
 		$articleLangEntity->article = $articleEntity;
 		$articleLangEntity->lang = $this->lang;
 		$articleLangEntity->title = $values['title'];
-		$articleLangEntity->slug = $values['slug'];
+		$articleLangEntity->slug = $values['slug']?:(Strings::webalize($values['title']));
 		$articleLangEntity->description = $values['description'];
 		$articleLangEntity->text = $values['text'];
 		$articleLangEntity->editDate = $this->formatDate('now');

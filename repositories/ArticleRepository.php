@@ -4,7 +4,6 @@ namespace Wame\ArticleModule\Repositories;
 
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
-use Wame\UserModule\Entities\UserEntity;
 use Wame\Core\Exception\RepositoryException;
 
 class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
@@ -13,12 +12,6 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	const STATUS_PUBLISHED = 1;
 	const STATUS_UNPUBLISHED = 2;
 	
-//	/** @var ArticleEntity */
-//	private $articleEntity;
-	
-	/** @var UserEntity */
-	private $userEntity;
-	
 	
 	public function __construct(
 		\Nette\DI\Container $container, 
@@ -26,9 +19,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 		\h4kuna\Gettext\GettextSetup $translator, 
 		\Nette\Security\User $user
 	) {
-		parent::__construct($container, $entityManager, $translator, $user, ArticleEntity::CLASS);
-		
-		$this->userEntity = $this->entityManager->getRepository(UserEntity::class)->findOneBy(['id' => $user->id]);
+		parent::__construct($container, $entityManager, $translator, $user, ArticleEntity::class);
 	}
 	
 	
@@ -193,41 +184,33 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	}
 
 	
-	public function findFiltered($filterBuilder, $offset, $limit)
-	{
-		$allArticles = $this->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
-
-		$filterBuilder->setEntity(ArticleEntity::class);
-
-		$filterBuilder->addFilter(new \Wame\FilterModule\Type\StatusFilter());
-		
-		$authorFilter = new \Wame\FilterModule\Type\AuthorFilter();
-		$authorFilter->setItems($allArticles);
-		$filterBuilder->addFilter($authorFilter);
-		
-		$dateFilter = new \Wame\FilterModule\Type\DateFilter();
-		$dateFilter->setItems($allArticles);
-		$filterBuilder->addFilter($dateFilter);
-		
-		$filterOrderBy = new \Wame\FilterModule\Type\OrderByFilter();
-		$filterOrderBy
-				->addOrder('name', 'title', ArticleLangEntity::class)
-				->addOrder('id', 'id')
-				->addOrder('date', 'createDate');
-		$filterBuilder->addFilter($filterOrderBy);
-
-		$filterBuilder->addFilter(new \Wame\FilterModule\Type\IdFilter());
-		
-		$this->setPaginator($filterBuilder->build()->count());
-		
-		// Page filter
-		$filterPage = new \Wame\FilterModule\Type\PageFilter();
-		$filterPage->setOffset($this->paginator->offset)
-				->setLimit($this->paginator->itemsPerPage);
-		$filterBuilder->addFilter($filterPage);
-		
-		return $filterBuilder->build()->get();
-	}
+//	public function findFiltered($filterBuilder, $paginator)
+//	{
+//		$allArticles = $this->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
+//
+//		$filterBuilder->addFilter(new \Wame\FilterModule\Type\StatusFilter());
+//		
+//		$authorFilter = new \Wame\FilterModule\Type\AuthorFilter();
+//		$authorFilter->setItems($allArticles);
+//		$filterBuilder->addFilter($authorFilter);
+//		
+//		$dateFilter = new \Wame\FilterModule\Type\DateFilter();
+//		$dateFilter->setItems($allArticles);
+//		$filterBuilder->addFilter($dateFilter);
+//
+//		$filterBuilder->addFilter(new \Wame\FilterModule\Type\IdFilter());
+//		
+//		// Paginator
+//		$paginator->getPaginator()->itemCount = $filterBuilder->build()->count();
+//		
+//		// Page filter
+//		$filterPage = new \Wame\FilterModule\Type\PageFilter();
+//		$filterPage->setOffset($paginator->getPaginator()->offset)
+//				->setLimit($paginator->getPaginator()->itemsPerPage);
+//		$filterBuilder->addFilter($filterPage);
+//		
+//		return $filterBuilder->build()->get();
+//	}
 
 	/**
 	 * Get article by criteria
@@ -277,7 +260,7 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	 * @api {get} /article/ Get all articles
 	 * @param int $id
 	 */
-	public function find($criteria = array(), $orderBy = null, $limit = null, $offset = null) 
+	public function find($criteria = [], $orderBy = [], $limit = null, $offset = null) 
 	{
 		return parent::find($criteria, $orderBy, $limit, $offset);
 	}

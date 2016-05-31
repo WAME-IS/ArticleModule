@@ -1,0 +1,26 @@
+		
+<article>
+
+	<header>
+		<h1 class="article-title">{$article->langs[$lang]->title}</h1>
+		<span n:if="$article->publishStartDate" class="meta-date">
+			<span class="glyphicon glyphicon-time"></span>
+			{$article->publishStartDate}
+		</span>
+		<span class="meta-comments">
+			<span class="glyphicon glyphicon-comment"></span>
+			{_'Comments'}
+		</span>
+	</header>
+
+	<p id="description">{$article->langs[$lang]->description}</p>
+
+	<div class="post-content">
+		{$article->langs[$lang]->text|noescape}
+	</div>
+
+	<footer>
+		<p>{_'Published'}: {$article->publishStartDate|date:'d.m.Y, H:i'}</p>
+	</footer>
+	
+</article>
