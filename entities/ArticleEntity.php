@@ -64,8 +64,4 @@ class ArticleEntity extends BaseEntity
 		return $this;
 	}
 	
-	public function getCreateUserId()
-	{
-		return $this->getCreateUser()->id;
-	}
 }

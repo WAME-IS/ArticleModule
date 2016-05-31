@@ -45,10 +45,6 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	/** @var GalleryPicker2Control @inject */
 	public $galleryPicker2Control;
 	
-	
-	
-	/** components ************************************************************/
-	
 	/**
 	 * Create article
 	 * 
@@ -121,26 +117,6 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		return $form;
 	}
 	
-	
-	/**
-	 * Menu component form
-	 * 
-	 * @return ComponentForm
-	 */
-	protected function createComponentArticleListForm()
-	{
-		$form = $this->componentForm
-						->setType('TextBlockComponent')
-						->setId($this->id)
-						->addFormContainer($this->textFormContainer, 'TextFormContainer', 75)
-						->addFormContainer($this->showTitleFormContainer, 'ShowTitleFormContainer', 25)
-						->build();
-
-		return $form;
-	}
-	
-	
-	/** renders ***************************************************************/
 	
 	public function renderDefault()
 	{

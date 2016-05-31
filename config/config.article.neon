@@ -19,16 +19,15 @@ services:
 	- Wame\ArticleModule\Repositories\ArticleRepository
 
 	# Components
-	- Wame\ArticleModule\Components\IArticleControlFactory
-	- Wame\ArticleModule\Components\IArticleListControlFactory
+	Article:
+		class: Wame\ArticleModule\Controls\Article
+		setup:
+			- injectRepository
 
-	# Events
-	- {class: Wame\ArticleModule\Events\ArticleListFormListener, tags: [run]}
-	
-#	Article:
-#		class: Wame\ArticleModule\Controls\Article
-#		setup:
-#			- injectRepository
+	ArticleList:
+		class: Wame\ArticleModule\Controls\ArticleList
+		setup:
+			- injectRepository
 
 	ArticleGrid:
 		class: Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid

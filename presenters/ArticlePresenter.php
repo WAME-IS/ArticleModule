@@ -2,15 +2,13 @@
 
 namespace App\ArticleModule\Presenters;
 
-use Wame\ArticleModule\Components\IArticleControlFactory;
-use Wame\ArticleModule\Components\IArticleListControlFactory;
-
-//use Wame\FilterModule\Controls\SortControl;
+use Wame\ArticleModule\Controls\Article;
+use Wame\ArticleModule\Controls\ArticleList;
+use Wame\FilterModule\Controls\SortControl;
+use Wame\FilterModule\Controls\FilterDateControl;
+use Wame\FilterModule\Controls\FilterAuthorControl;
+use Wame\FilterModule\Controls\FilterCheckboxControl;
 use Wame\ArticleModule\Repositories\ArticleRepository;
-
-use Wame\CategoryModule\Components\ICategoryListControlFactory;
-
-use Wame\TagModule\Controls\TagListControl;
 
 use Wame\HeadControl\MetaTitle;
 use Wame\HeadControl\MetaDescription;
@@ -20,20 +18,23 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	/** @var ArticleRepository @inject */
 	public $articleRepository;
 	
-	/** @var IArticleControlFactory @inject */
-	public $IArticleControlFactory;
+	/** @var Article @inject */
+	public $articleControl;
 	
-	/** @var IArticleListControlFactory @inject */
-	public $IArticleListControlFactory;
+	/** @var ArticleList @inject */
+	public $articleListControl;
 	
-//	/** @var SortControl @inject */
-//	public $sortControl;
+	/** @var SortControl @inject */
+	public $sortControl;
 	
-	/** @var TagListControl @inject */
-	public $tagListControl;
+	/** @var FilterDateControl @inject */
+	public $filterDateControl;
 	
-	/** @var ICategoryListControlFactory @inject */
-	public $ICategoryListControlFactory;
+	/** @var FilterAuthorControl @inject */
+	public $filterAuthorControl;
+	
+	/** @var FilterCheckboxControl @inject */
+	public $filterCheckboxControl;
 	
 	/** @var integer */
 	protected $articleId;
@@ -41,7 +42,7 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	/** @var string */
 	protected $articleSlug;
 	
-//	private $filterBuilder;
+	private $filterBuilder;
 	
 	
 	/** @persistent */
@@ -63,10 +64,10 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
     public $author;
 	
 	
-	public function __construct(\Wame\ArticleModule\Repositories\ArticleRepository $articleRepository) {
+	public function __construct(\Wame\FilterModule\FilterBuilder $filterBuilder) {
 		parent::__construct();
 		
-//		$this->filterBuilder = $filterBuilderFactory->create();
+		$this->filterBuilder = $filterBuilder;
 	}
 	
 	public function renderDefault()
@@ -75,16 +76,9 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	}
 	
 	public function actionShow($id) {
-		// TODO: poriesit vyber cez slugy
 		$this->articleId = $id;
 		
-		try {
-			$article = $this->articleRepository->getArticle(['id' => $this->articleId]);
-		} catch(\Exception $e) {
-			$this->flashMessage($e->getMessage(), 'danger');
-			$this->redirect(':Homepage:Homepage:', ['id' => null]);
-		}
-		
+		$article = $this->articleRepository->get(['id' => $this->articleId]);
 		
 		$title = $article->langs[$this->lang]->title;
 		$description = $article->langs[$this->lang]->description;
@@ -101,28 +95,26 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		$articleId = $this->getParameter('id');
 		$articleSlug = $this->getParameter('slug');
 		
-		$component = $this->IArticleControlFactory->create();
-		$component->setId($articleId);
-		$component->setSlug($articleSlug);
-		
-		$component->addComponent($this->createComponentTagList(), 'tagList');
-		$component->addComponent($this->createComponentCategoryList(), 'categoryList');
-		
-		return $component;
+		$componentArticleControl = $this->articleControl;
+		$componentArticleControl->setId($articleId);
+		$componentArticleControl->setSlug($articleSlug);
+		return $componentArticleControl;
 	}
 	
 	public function createComponentArticleList()
 	{
 		$sort = $this->sort;
 		
-		$component = $this->IArticleListControlFactory->create();
-
+		$componentArticleListControl = $this->articleListControl;
+		
 		$articleComponent = $this->createComponentArticle();
 		$articleComponent->setInList(true);
 		
-//		$component->addComponent($this->createComponentSortControl(), 'sort');
-//		$component->setSortBy($sort);
-		return $component;
+		$componentArticleListControl->addComponent($articleComponent, 'article');
+		$componentArticleListControl->addComponent($this->createComponentSortControl(), 'sort');
+//		$componentArticleListControl->addComponent($this->createComponentFilterDateControl(), 'filterDate');
+		$componentArticleListControl->setSortBy($sort);
+		return $componentArticleListControl;
 	}
 	
 	public function createComponentSortControl()
@@ -131,15 +123,14 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		return $sortControl;
 	}
 	
-	public function createComponentTagList()
-	{
-		$control = $this->tagListControl;
-		return $control;
-	}
-	
-	public function createComponentCategoryList()
-	{
-		$control = $this->ICategoryListControlFactory->create();
-		return $control;
-	}
+//	public function createComponentFilterDateControl()
+//	{
+//		$articles = $this->articleRepository->find([
+//			'status' => ArticleRepository::STATUS_PUBLISHED
+//		]);
+//		
+//		$filterDateControl = $this->filterDateControl;
+//		$filterDateControl->setItems($articles);
+//		return $filterDateControl;
+//	}
 }
