@@ -232,17 +232,6 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 		return $filteredArticles;
 	}
 	
-	/**
-	 * Get component parameter
-	 * 
-	 * @param string $parameter		parameter name
-	 * @return mixin				parameter
-	 */
-	private function getComponentParameter($parameter)
-	{
-		return $this->componentInPosition->component->getParameter($parameter);
-	}
-	
 	private function getPage() {
 		return ( (int)$this->presenter->getParameter('page') ?: 1 ) - 1;
 	}
