@@ -5,7 +5,7 @@ namespace App\ArticleModule\Presenters;
 use Wame\ArticleModule\Components\IArticleControlFactory;
 use Wame\ArticleModule\Components\IArticleListControlFactory;
 
-use Wame\FilterModule\Controls\SortControl;
+//use Wame\FilterModule\Controls\SortControl;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 
 use Wame\CategoryModule\Components\ICategoryListControlFactory;
@@ -26,8 +26,8 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	/** @var IArticleListControlFactory @inject */
 	public $IArticleListControlFactory;
 	
-	/** @var SortControl @inject */
-	public $sortControl;
+//	/** @var SortControl @inject */
+//	public $sortControl;
 	
 	/** @var TagListControl @inject */
 	public $tagListControl;
@@ -41,7 +41,7 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	/** @var string */
 	protected $articleSlug;
 	
-	private $filterBuilder;
+//	private $filterBuilder;
 	
 	
 	/** @persistent */
@@ -63,10 +63,10 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
     public $author;
 	
 	
-	public function __construct(\Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory, \Wame\ArticleModule\Repositories\ArticleRepository $articleRepository) {
+	public function __construct(\Wame\ArticleModule\Repositories\ArticleRepository $articleRepository) {
 		parent::__construct();
 		
-		$this->filterBuilder = $filterBuilderFactory->create();
+//		$this->filterBuilder = $filterBuilderFactory->create();
 	}
 	
 	public function renderDefault()
@@ -120,8 +120,8 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		$articleComponent = $this->createComponentArticle();
 		$articleComponent->setInList(true);
 		
-		$component->addComponent($this->createComponentSortControl(), 'sort');
-		$component->setSortBy($sort);
+//		$component->addComponent($this->createComponentSortControl(), 'sort');
+//		$component->setSortBy($sort);
 		return $component;
 	}
 	

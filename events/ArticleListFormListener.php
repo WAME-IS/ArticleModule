@@ -26,7 +26,7 @@ class ArticleListFormListener extends Object
 	
 	public function onCreate($form, $values, $componentEntity) 
 	{
-		if ($componentEntity->type == self::COMPONENT) {				
+		if ($componentEntity->type == self::COMPONENT) {
 			$componentEntity->setParameters($this->getParams($values, $componentEntity->getParameters()));
 		}
 	}

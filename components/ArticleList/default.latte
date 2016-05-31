@@ -1,17 +1,22 @@
-<div class="pull-left">
-{foreach $articles as $article}
-	{control article $article}
-{/foreach}
+<div class="row">
+	<div class="col-md-9">
+		{foreach $articles as $article}
+			{control article entity => $article}
+		{/foreach}
+	</div>
+	<div class="col-md-3">
+		{if $filterVisible}
+		{control filter}
+	{/if}
+
+	{control sort}
+	</div>
 </div>
 
-{if $filterVisible}
-	<div class="pull-right">
-		{control filter}
-	</div>
-{/if}
-
-<div class="clearfix"></div>
-
 {if $paginatorVisible}
-	{control paginator}
+	<div class="row">
+		<div class="col-md-12">
+			{control paginator}
+		</div>
+	</div>
 {/if}

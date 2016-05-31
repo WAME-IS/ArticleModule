@@ -20,6 +20,7 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 	/** @var string */
 	protected $slug;
 	
+	/** @var boolean */
 	private $inList = false;
 	
 	/** @var ArticleEntity */
@@ -28,8 +29,10 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 	/** @var ArticleRepository */
 	private $articleRepository;
 	
+	/** @var ArticleEntity */
 	private $article;
 	
+	/** @var string */
 	private $lang;
 	
 	
@@ -71,12 +74,25 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 		$this->inList = $inList;
 	}
 	
-
-	public function render(ArticleEntity $articleEntity = null)
+	/**
+	 * Render
+	 * 
+	 * @param ArticleEntity $articleEntity	article
+	 */
+	public function render($parameters = [])
 	{
-		if($this->inList) {
+		$articleEntity = isset($parameters['entity']) ? $parameters['entity'] : null;
+		
+		/** @var string */
+		$template = isset($parameters['template']) ? $parameters['template'] : null;
+		
+		if($template) {
+			$this->setTemplateFile($template . (\Wame\Utils\Strings::endsWith($template, '.latte') ? null : '.latte'));
+		}
+		else if($this->inList) {
 			$this->setTemplateFile('default.latte');
-		} else {
+		}
+		else {
 			$this->setTemplateFile('detail.latte');
 		}
 		
@@ -90,14 +106,6 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 			}
 		}
 		
-//		if($this->id) {
-//			$articles = $this->getArticleById($this->id);
-//		} else if($this->slug) {
-//			$articles = $this->getArticleBySlug($this->slug);
-//		} else {
-//			$articles = $this->getArticles();
-//		}
-		
 		$this->template->lang = $this->lang;
 		$this->template->article = $this->article;
 		
@@ -105,19 +113,32 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 		$this->template->render();
 	}
 	
+	
+	/**
+	 * Get article by ID
+	 * 
+	 * @param integer $id		ID
+	 * @return ArticleEntity	article
+	 */
 	private function getArticleById($id)
 	{
 		return $this->articleRepository->get([
 			'id' => $id,
-//			'status' => ArticleRepository::STATUS_PUBLISHED
+			'status' => ArticleRepository::STATUS_PUBLISHED
 		]);
 	}
 	
+	/**
+	 * Get article by slug
+	 * 
+	 * @param string $slug		slug
+	 * @return ArticleEntity	article
+	 */
 	private function getArticleBySlug($slug)
 	{
 		return $this->articleRepository->get([
 			'langs.slug' => $slug,
-//			'status' => ArticleRepository::STATUS_PUBLISHED
+			'status' => ArticleRepository::STATUS_PUBLISHED
 		]);
 	}
 }
