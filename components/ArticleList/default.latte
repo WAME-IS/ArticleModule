@@ -1,18 +1,22 @@
-
-<div class="com-article-list">
-	<ul class="list-group">
+<div class="row">
+	<div class="col-md-9">
 		{foreach $articles as $article}
-			<li class="list-group-item">
-				{control article $article}
-			</li>
+			{control article entity => $article}
 		{/foreach}
-	</ul>
-	
-	{if $filterVisible}
+	</div>
+	<div class="col-md-3">
+		{if $filterVisible}
 		{control filter}
 	{/if}
 
-	{if $paginatorVisible}
-		{control paginator}
-	{/if}
+	{control sort}
+	</div>
 </div>
+
+{if $paginatorVisible}
+	<div class="row">
+		<div class="col-md-12">
+			{control paginator}
+		</div>
+	</div>
+{/if}
