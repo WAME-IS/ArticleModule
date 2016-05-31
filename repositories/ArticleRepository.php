@@ -184,33 +184,33 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 	}
 
 	
-	public function findFiltered($filterBuilder, $paginator)
-	{
-		$allArticles = $this->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
-
-		$filterBuilder->addFilter(new \Wame\FilterModule\Type\StatusFilter());
-		
-		$authorFilter = new \Wame\FilterModule\Type\AuthorFilter();
-		$authorFilter->setItems($allArticles);
-		$filterBuilder->addFilter($authorFilter);
-		
-		$dateFilter = new \Wame\FilterModule\Type\DateFilter();
-		$dateFilter->setItems($allArticles);
-		$filterBuilder->addFilter($dateFilter);
-
-		$filterBuilder->addFilter(new \Wame\FilterModule\Type\IdFilter());
-		
-		// Paginator
-		$paginator->getPaginator()->itemCount = $filterBuilder->build()->count();
-		
-		// Page filter
-		$filterPage = new \Wame\FilterModule\Type\PageFilter();
-		$filterPage->setOffset($paginator->getPaginator()->offset)
-				->setLimit($paginator->getPaginator()->itemsPerPage);
-		$filterBuilder->addFilter($filterPage);
-		
-		return $filterBuilder->build()->get();
-	}
+//	public function findFiltered($filterBuilder, $paginator)
+//	{
+//		$allArticles = $this->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
+//
+//		$filterBuilder->addFilter(new \Wame\FilterModule\Type\StatusFilter());
+//		
+//		$authorFilter = new \Wame\FilterModule\Type\AuthorFilter();
+//		$authorFilter->setItems($allArticles);
+//		$filterBuilder->addFilter($authorFilter);
+//		
+//		$dateFilter = new \Wame\FilterModule\Type\DateFilter();
+//		$dateFilter->setItems($allArticles);
+//		$filterBuilder->addFilter($dateFilter);
+//
+//		$filterBuilder->addFilter(new \Wame\FilterModule\Type\IdFilter());
+//		
+//		// Paginator
+//		$paginator->getPaginator()->itemCount = $filterBuilder->build()->count();
+//		
+//		// Page filter
+//		$filterPage = new \Wame\FilterModule\Type\PageFilter();
+//		$filterPage->setOffset($paginator->getPaginator()->offset)
+//				->setLimit($paginator->getPaginator()->itemsPerPage);
+//		$filterBuilder->addFilter($filterPage);
+//		
+//		return $filterBuilder->build()->get();
+//	}
 
 	/**
 	 * Get article by criteria
