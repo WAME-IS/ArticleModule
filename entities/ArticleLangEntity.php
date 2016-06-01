@@ -15,6 +15,7 @@ class ArticleLangEntity extends BaseEntity
  	use Columns\Identifier;
 	use Columns\Description;
 	use Columns\EditDate;
+	use Columns\EditUser;
 	use Columns\Lang;
 	use Columns\Slug;
 	use Columns\Title;
