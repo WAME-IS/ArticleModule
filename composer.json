@@ -11,6 +11,7 @@
 	],
 	"require": {
 		"wame/Core": "*",
+        "wame/AdminModule": "*",
         "wame/MenuModule": "*",
  		"wame/PermissionModule": "*",
         "wame/UserModule": "*"
