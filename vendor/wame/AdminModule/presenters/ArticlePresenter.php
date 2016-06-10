@@ -46,97 +46,14 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	public $galleryPicker2Control;
 	
 	
+	/** handlers **************************************************************/
 	
-	/** components ************************************************************/
-	
-	/**
-	 * Create article
-	 * 
-	 * @return CreateArticleForm	form
-	 */
-	protected function createComponentCreateArticleForm() 
+	public function handleDelete()
 	{
-		$form = $this->createArticleForm->build();
+		$this->articleRepository->delete(['id' => $this->id]);
 		
-		return $form;
-	}
-	
-	
-	/**
-	 * Edit article
-	 * 
-	 * @return EditUserForm		form
-	 */
-	protected function createComponentEditArticleForm() 
-	{
-		$form = $this->editArticleForm->setId($this->id)->build();
-
-		return $form;
-	}
-	
-	public function createComponentArticleGrid($name)
-	{
-		$grid = $this->gridControl->create();
-		$grid->setGridName('article');
-		$articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
-		$grid->setDataSource($articles);
-//		$grid->setLang($this->lang); // TODO: presunut logiku do komponenty
-		
-		$grid->setProvider($this->articleGrid);
-		
-
-		
-		return $grid;
-	}
-	
-	// TODO: presunut do dynamic forms!!!
-	public function createComponentGalleryPicker()
-	{
-		$control = $this->galleryPickerControl;
-		$control->setItem(0);
-		return $control;
-	}
-	
-	public function createComponentGalleryPicker2()
-	{
-		$control = $this->galleryPicker2Control;
-		return $control;
-	}
-	
-	
-	/**
-	 * Menu item form
-	 * 
-	 * @return MenuItemForm
-	 */
-	protected function createComponentArticleMenuItemForm()
-	{
-		$form = $this->menuItemForm
-						->setActionForm('articleMenuItemForm')
-						->setType('article')
-						->setId($this->id)
-						->addFormContainer(new \Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuManager\Forms\ArticleFormContainer(), 'ArticleFormContainer', 50)
-						->build();
-
-		return $form;
-	}
-	
-	
-	/**
-	 * Menu component form
-	 * 
-	 * @return ComponentForm
-	 */
-	protected function createComponentArticleListForm()
-	{
-		$form = $this->componentForm
-						->setType('TextBlockComponent')
-						->setId($this->id)
-						->addFormContainer($this->textFormContainer, 'TextFormContainer', 75)
-						->addFormContainer($this->showTitleFormContainer, 'ShowTitleFormContainer', 25)
-						->build();
-
-		return $form;
+		$this->flashMessage(_('Article has been successfully deleted'), 'success');
+		$this->redirect(':Admin:Article:', ['id' => null]);
 	}
 	
 	
@@ -177,11 +94,91 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	}
 	
 	
-	public function handleDelete()
+	/** components ************************************************************/
+	
+	/**
+	 * Create article
+	 * 
+	 * @return CreateArticleForm	form
+	 */
+	protected function createComponentCreateArticleForm() 
 	{
-		$this->articleRepository->delete(['id' => $this->id]);
+		$form = $this->createArticleForm->build();
 		
-		$this->flashMessage(_('Article has been successfully deleted'), 'success');
-		$this->redirect(':Admin:Article:', ['id' => null]);
+		return $form;
 	}
+	
+	/**
+	 * Edit article
+	 * 
+	 * @return EditUserForm		form
+	 */
+	protected function createComponentEditArticleForm() 
+	{
+		$form = $this->editArticleForm->setId($this->id)->build();
+
+		return $form;
+	}
+	
+	protected function createComponentArticleGrid($name)
+	{
+		$grid = $this->gridControl->create();
+		$grid->setGridName('article');
+		$articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
+		$grid->setDataSource($articles);
+//		$grid->setLang($this->lang); // TODO: presunut logiku do komponenty
+		
+		$grid->setProvider($this->articleGrid);
+		
+		return $grid;
+	}
+	
+	// TODO: presunut do dynamic forms!!!
+	protected function createComponentGalleryPicker()
+	{
+		$control = $this->galleryPickerControl;
+		$control->setItem(0);
+		return $control;
+	}
+	
+	protected function createComponentGalleryPicker2()
+	{
+		$control = $this->galleryPicker2Control;
+		return $control;
+	}
+	
+	/**
+	 * Menu item form
+	 * 
+	 * @return MenuItemForm
+	 */
+	protected function createComponentArticleMenuItemForm()
+	{
+		$form = $this->menuItemForm
+						->setActionForm('articleMenuItemForm')
+						->setType('article')
+						->setId($this->id)
+						->addFormContainer(new \Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuManager\Forms\ArticleFormContainer(), 'ArticleFormContainer', 50)
+						->build();
+
+		return $form;
+	}
+	
+	/**
+	 * Menu component form
+	 * 
+	 * @return ComponentForm
+	 */
+	protected function createComponentArticleListForm()
+	{
+		$form = $this->componentForm
+						->setType('TextBlockComponent')
+						->setId($this->id)
+						->addFormContainer($this->textFormContainer, 'TextFormContainer', 75)
+						->addFormContainer($this->showTitleFormContainer, 'ShowTitleFormContainer', 25)
+						->build();
+
+		return $form;
+	}
+	
 }
