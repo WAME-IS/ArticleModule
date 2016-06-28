@@ -5,6 +5,7 @@ namespace Wame\ArticleModule\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use Wame\Core\Entities\BaseEntity;
 use Wame\Core\Entities\Columns;
+use Wame\RestApiModule\DataConverter\Annotations\noApi;
 
 /**
  * @ORM\Table(name="wame_article_lang")
@@ -21,6 +22,7 @@ class ArticleLangEntity extends BaseEntity
 	use Columns\Title;
 
 	/**
+     * @noApi
      * @ORM\ManyToOne(targetEntity="ArticleEntity", inversedBy="langs")
      * @ORM\JoinColumn(name="article_id", referencedColumnName="id", nullable=false)
      */
