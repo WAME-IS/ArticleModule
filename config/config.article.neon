@@ -45,4 +45,3 @@ services:
 doctrine:
 	metadata:
 		Wame\ArticleModule\Entities: %appDir%/../vendor/wame/ArticleModule/entities
-		Wame\ArticleModule\Repositories: %appDir%/../vendor/wame/ArticleModule/repositories

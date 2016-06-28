@@ -99,11 +99,9 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	public function createComponentArticle()
 	{
 		$articleId = $this->getParameter('id');
-		$articleSlug = $this->getParameter('slug');
 		
 		$component = $this->IArticleControlFactory->create();
 		$component->setId($articleId);
-		$component->setSlug($articleSlug);
 		
 		$component->addComponent($this->createComponentTagList(), 'tagList');
 		$component->addComponent($this->createComponentCategoryList(), 'categoryList');

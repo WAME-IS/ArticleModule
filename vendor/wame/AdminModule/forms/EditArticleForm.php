@@ -94,12 +94,12 @@ class EditArticleForm extends FormFactory
 	{
 		$articleEntity = $this->articleRepository->get(['id' => $articleId]);
 		if ($values['publish_start_date']) {
-			$articleEntity->publishStartDate = $this->formatDate($values['publish_start_date']);
+			$articleEntity->publishStartDate = \Wame\Utils\Date::toDateTime($values['publish_start_date']);
 		} else {
 			$articleEntity->publishStartDate = null;
 		}
 		if ($values['publish_end_date']) {
-			$articleEntity->publishEndDate = $this->formatDate($values['publish_end_date']);
+			$articleEntity->publishEndDate = \Wame\Utils\Date::toDateTime($values['publish_end_date']);
 		} else {
 			$articleEntity->publishEndDate = null;
 		}
@@ -110,7 +110,7 @@ class EditArticleForm extends FormFactory
 		$articleLangEntity->slug = $values['slug']?:(Strings::webalize($values['title']));
 		$articleLangEntity->description = $values['description'];
 		$articleLangEntity->text = $values['text'];
-		$articleLangEntity->editDate = $this->formatDate('now');
+		$articleLangEntity->editDate = \Wame\Utils\Date::toDateTime('now');
 		$articleLangEntity->editUser = $this->userEntity;
 		
 		return $this->articleRepository->update($articleLangEntity);

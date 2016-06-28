@@ -2,36 +2,32 @@
 
 namespace Wame\ArticleModule\Forms;
 
-use Wame\DynamicObject\Forms\BaseFormContainer;
+use Wame\DynamicObject\Forms\BaseFormContainer,
+    Wame\Utils\Date;
 
+interface IPublishedFormContainerFactory {
 
-interface IPublishedFormContainerFactory
-{
-	/** @return PublishedFormContainer */
-	public function create();
+    /** @return PublishedFormContainer */
+    public function create();
 }
 
+class PublishedFormContainer extends BaseFormContainer {
 
-class PublishedFormContainer extends BaseFormContainer
-{
-    public function configure() 
-	{
-		$form = $this->getForm();
-		
-		$form->addGroup(_('Publish info'));
+    public function configure() {
+        $form = $this->getForm();
 
-		$form->addText('publish_start_date', _('Published from'));
-		
-		$form->addText('publish_end_date', _('Published to'));
+        $form->addGroup(_('Publish info'));
+
+        $form->addText('publish_start_date', _('Published from'));
+
+        $form->addText('publish_end_date', _('Published to'));
     }
 
+    public function setDefaultValues($object) {
+        $form = $this->getForm();
 
-	public function setDefaultValues($object)
-	{
-		$form = $this->getForm();
-		
-		$form['publish_start_date']->setDefaultValue($this->formatDate($object->articleEntity->publishStartDate));
-		$form['publish_end_date']->setDefaultValue($this->formatDate($object->articleEntity->publishEndDate));
-	}
+        $form['publish_start_date']->setDefaultValue(Date::toDateTime($object->articleEntity->publishStartDate));
+        $form['publish_end_date']->setDefaultValue(Date::toDateTime($object->articleEntity->publishEndDate));
+    }
 
 }

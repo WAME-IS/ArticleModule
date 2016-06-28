@@ -2,67 +2,67 @@
 
 namespace Wame\ArticleModule\Repositories;
 
+use Doctrine\ORM\Query\Expr\Join;
+use h4kuna\Gettext\GettextSetup;
+use Kdyby\Doctrine\EntityManager;
+use Nette\DI\Container;
+use Nette\Security\User;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
 use Wame\Core\Exception\RepositoryException;
+use Wame\Core\Repositories\TranslatableRepository;
 
-class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
+class ArticleRepository extends TranslatableRepository
 {
-	const STATUS_REMOVE = 0;
-	const STATUS_PUBLISHED = 1;
-	const STATUS_UNPUBLISHED = 2;
-	
-	
-	public function __construct(
-		\Nette\DI\Container $container, 
-		\Kdyby\Doctrine\EntityManager $entityManager, 
-		\h4kuna\Gettext\GettextSetup $translator, 
-		\Nette\Security\User $user
-	) {
-		parent::__construct($container, $entityManager, $translator, $user, ArticleEntity::class);
-	}
-	
-	
-	/**
-	 * Get all status list
-	 * 
-	 * @return array
-	 */
-	public function getStatusList()
-	{
-		return [
-			self::STATUS_REMOVE => _('Delete'),
-			self::STATUS_PUBLISHED => _('Published'),
-			self::STATUS_UNPUBLISHED => _('Unpublished')
-		];
-	}
-	
-	
-	/**
-	 * Get one status title
-	 * 
-	 * @param int $status
-	 * @return string
-	 */
-	public function getStatus($status)
-	{
-		return $this->getStatusList($status);
-	}
-	
-	
-	/**
-	 * Publish status list
-	 * 
-	 * @return array
-	 */
-	public function getPublishStatusList()
-	{
-		return [
-			self::STATUS_PUBLISHED => _('Published'),
-			self::STATUS_UNPUBLISHED => _('Unpublished')
-		];
-	}
-	
+
+    const STATUS_REMOVE = 0;
+    const STATUS_PUBLISHED = 1;
+    const STATUS_UNPUBLISHED = 2;
+
+    public function __construct(
+    Container $container, EntityManager $entityManager, GettextSetup $translator, User $user
+    )
+    {
+        parent::__construct($container, $entityManager, $translator, $user, ArticleEntity::class);
+    }
+
+    /**
+     * Get all status list
+     * 
+     * @return array
+     */
+    public function getStatusList()
+    {
+        return [
+            self::STATUS_REMOVE => _('Delete'),
+            self::STATUS_PUBLISHED => _('Published'),
+            self::STATUS_UNPUBLISHED => _('Unpublished')
+        ];
+    }
+
+    /**
+     * Get one status title
+     * 
+     * @param int $status
+     * @return string
+     */
+    public function getStatus($status)
+    {
+        return $this->getStatusList($status);
+    }
+
+    /**
+     * Publish status list
+     * 
+     * @return array
+     */
+    public function getPublishStatusList()
+    {
+        return [
+            self::STATUS_PUBLISHED => _('Published'),
+            self::STATUS_UNPUBLISHED => _('Unpublished')
+        ];
+    }
 //	public function findByFilter($filter = [])
 //	{
 //		$qb = $this->entityManager->createQueryBuilder();
@@ -86,7 +86,6 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 //		
 //		return $qb->getQuery()->getSingleScalarResult();
 //	}
-	
 //	private function addDateFilter($qb, $filter)
 //	{
 //		if(array_key_exists('year', $filter) && array_key_exists('month', $filter)) {
@@ -139,51 +138,47 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 //				->setMaxResults($filter['limit']);
 //		}
 //	}
-	
-	
-	/**
-	 * Add article
-	 * 
-	 * @param ArticleLangEntity $articleLangEntity		article lang entity
-	 * @throws Exception\ArticleNotCreatedException
-	 */
-	public function create($articleLangEntity)
-	{
-		$create = $this->entityManager->persist($articleLangEntity->article);
-		$this->entityManager->persist($articleLangEntity);
-		$this->entityManager->flush();
-		if (!$create) {
-			throw new \Wame\Core\Exception\RepositoryException(_('Could not create the article'));
-		}
-		
-		return $articleLangEntity->article;
-	}
-	
-	
-	/**
-	 * Set article
-	 * 
-	 * @param int $articleId
-	 * @param array $values
-	 */
-	public function update($articleLangEntity)
-	{
-		return $articleLangEntity->article;
-	}
-	
-	/**
-	 * Delete articles by criteria
-	 * 
-	 * @param array $criteria
-	 * @param int $status
-	 */
-	public function delete($criteria = [], $status = self::STATUS_REMOVE)
-	{
-		$articleEntity = $this->entity->find($criteria);
-		$articleEntity->status = $status;
-	}
 
-	
+    /**
+     * Add article
+     * 
+     * @param ArticleLangEntity $articleLangEntity		article lang entity
+     * @throws Exception\ArticleNotCreatedException
+     */
+    public function create($articleLangEntity)
+    {
+        $create = $this->entityManager->persist($articleLangEntity->article);
+        $this->entityManager->persist($articleLangEntity);
+        $this->entityManager->flush();
+        if (!$create) {
+            throw new RepositoryException(_('Could not create the article'));
+        }
+
+        return $articleLangEntity->article;
+    }
+
+    /**
+     * Set article
+     * 
+     * @param int $articleId
+     * @param array $values
+     */
+    public function update($articleLangEntity)
+    {
+        return $articleLangEntity->article;
+    }
+
+    /**
+     * Delete articles by criteria
+     * 
+     * @param array $criteria
+     * @param int $status
+     */
+    public function delete($criteria = [], $status = self::STATUS_REMOVE)
+    {
+        $articleEntity = $this->entity->find($criteria);
+        $articleEntity->status = $status;
+    }
 //	public function findFiltered($filterBuilder, $paginator)
 //	{
 //		$allArticles = $this->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
@@ -212,84 +207,79 @@ class ArticleRepository extends \Wame\Core\Repositories\BaseRepository
 //		return $filterBuilder->build()->get();
 //	}
 
-	/**
-	 * Get article by criteria
-	 * return article or exception
-	 * 
-	 * @param array $criteria
-	 * @return ArticleEntity
-	 * @throws RepositoryException
-	 */
-	public function getArticle($criteria)
-	{
-		$article = $this->get($criteria);
-		
-		if (!$article) {
-			throw new RepositoryException(_('Article not found.'));
-		}
-		
-		if ($article->status != self::STATUS_PUBLISHED) {
-			throw new RepositoryException(_('Article is unpublished or removed.'));
-		}
-		
-		if ($article->publishStartDate != null && strtotime($article->publishStartDate) < time()) {
-			throw new RepositoryException(_('Article has not been published.'));
-		}
-		
-		if ($article->publishEndDate != null && strtotime($article->publishEndDate) > time()) {
-			throw new RepositoryException(_('Out of time of article publication.'));
-		}
-		
-		return $article;
-	}
-	
-	
-	/** api ************************************************************/
-	
-	/**
-	 * @api {get} /article/:id Get article by id
-	 * @param int $id
-	 */
-	public function getArticleById($id) 
-	{
-		return $this->getArticle(['id' => $id]);
-	}
-	
-	
-	/**
-	 * @api {get} /article/ Get all articles
-	 * @param int $id
-	 */
-	public function find($criteria = [], $orderBy = [], $limit = null, $offset = null) 
-	{
-		return parent::find($criteria, $orderBy, $limit, $offset);
-	}
-	
-	
-	/**
-	 * @api {get} /article-search/ Search articles
-	 * @param array $columns
-	 * @param string $phrase
-	 * @param string $select
-	 */
-	public function findLike($columns = [], $phrase = null, $select = '*') 
-	{
-		$search = $this->entityManager->createQueryBuilder()
-				->select($select)
-				->from(ArticleEntity::class, 'a')
-				->leftJoin(ArticleLangEntity::class, 'langs', \Doctrine\ORM\Query\Expr\Join::WITH, 'a.id = langs.article')
-				->andWhere('a.status = :status')
-				->setParameter('status', self::STATUS_PUBLISHED)
-				->andWhere('langs.lang = :lang')
-				->setParameter('lang', $this->lang);
-		
-		foreach ($columns as $column) {
-			$search->andWhere($column . ' LIKE :phrase');
-		}
-		
-		$search->setParameter('phrase', '%' . $phrase . '%');
+    /**
+     * Get article by criteria
+     * return article or exception
+     * 
+     * @param array $criteria
+     * @return ArticleEntity
+     * @throws RepositoryException
+     */
+    public function getArticle($criteria)
+    {
+        $article = $this->get($criteria);
 
-		return $search->getQuery()->getResult();
-	}
+        if (!$article) {
+            throw new RepositoryException(_('Article not found.'));
+        }
 
+        if ($article->status != self::STATUS_PUBLISHED) {
+            throw new RepositoryException(_('Article is unpublished or removed.'));
+        }
+
+        if ($article->publishStartDate != null && strtotime($article->publishStartDate) < time()) {
+            throw new RepositoryException(_('Article has not been published.'));
+        }
+
+        if ($article->publishEndDate != null && strtotime($article->publishEndDate) > time()) {
+            throw new RepositoryException(_('Out of time of article publication.'));
+        }
+
+        return $article;
+    }
+    /** api *********************************************************** */
+
+    /**
+     * @api {get} /article/:id Get article by id
+     * @param int $id
+     */
+    public function getArticleById($id)
+    {
+        return $this->getArticle(['id' => $id]);
+    }
+
+    /**
+     * @api {get} /article/ Get all articles
+     * @param int $id
+     */
+    public function find($criteria = [], $orderBy = [], $limit = null, $offset = null)
+    {
+        return parent::find($criteria, $orderBy, $limit, $offset);
+    }
+
+    /**
+     * @api {get} /article-search/ Search articles
+     * @param array $columns
+     * @param string $phrase
+     * @param string $select
+     */
+    public function findLike($columns = [], $phrase = null, $select = '*')
+    {
+        $search = $this->entityManager->createQueryBuilder()
+            ->select($select)
+            ->from(ArticleEntity::class, 'a')
+            ->leftJoin(ArticleLangEntity::class, 'langs', Join::WITH, 'a.id = langs.article')
+            ->andWhere('a.status = :status')
+            ->setParameter('status', self::STATUS_PUBLISHED)
+            ->andWhere('langs.lang = :lang')
+            ->setParameter('lang', $this->lang);
+
+        foreach ($columns as $column) {
+            $search->andWhere($column . ' LIKE :phrase');
+        }
+
+        $search->setParameter('phrase', '%' . $phrase . '%');
+
+        return $search->getQuery()->getResult();
+    }
 }
