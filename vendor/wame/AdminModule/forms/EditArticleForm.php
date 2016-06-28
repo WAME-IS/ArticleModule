@@ -18,19 +18,19 @@ class EditArticleForm extends FormFactory
 	/** @var EntityManager */
 	private $entityManager;
 	
-	/** @val ArticleRepository */
+	/** @var ArticleRepository */
 	private $articleRepository;
 	
-	/** @val UserRepository */
+	/** @var UserRepository */
 	private $userRepository;
 	
-	/** @val UserEntity */
+	/** @var UserEntity */
 	private $userEntity;
 	
-	/** @val ArticleEntity */
+	/** @var ArticleEntity */
 	public $articleEntity;
 	
-	/** @val string */
+	/** @var string */
 	public $lang;
 	
 	

@@ -1,6 +1,6 @@
 <article>
 	<header>
-		<h2><a href="{plink show, $article->id}">{$article->langs[$lang]->title}</a></h2>
+		<h2><a href="{plink :Article:Article:show, $article->id}">{$article->langs[$lang]->title}</a></h2>
 	</header>
 
 	<div id="author">{_'author'}: {$article->createUser->fullName}</div>

@@ -15,6 +15,7 @@ class ArticleEntity extends BaseEntity
 {
 	use Columns\Identifier;
 	use Columns\CreateDate;
+	use Columns\CreateUser;
 	use Columns\Status;
 
 	/**
@@ -64,4 +65,9 @@ class ArticleEntity extends BaseEntity
 		return $this;
 	}
 	
+	public function getCreateUserId()
+	{
+		return $this->getCreateUser()->id;
+	}
+    
 }

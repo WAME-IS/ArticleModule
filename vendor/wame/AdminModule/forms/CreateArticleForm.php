@@ -13,13 +13,13 @@ use Wame\ArticleModule\Repositories\ArticleRepository;
 
 class CreateArticleForm extends FormFactory
 {	
-	/** @val ArticleRepository */
+	/** @var ArticleRepository */
 	private $articleRepository;
 	
-	/** @val UserEntity */
+	/** @var UserEntity */
 	private $userEntity;
 	
-	/** @val string */
+	/** @var string */
 	private $lang;
 	
 	
