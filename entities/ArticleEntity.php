@@ -19,7 +19,7 @@ class ArticleEntity extends TranslatableEntity
 	use Columns\Status;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="ArticleLangEntity", mappedBy="article")
+	 * @ORM\OneToMany(targetEntity="Wame\ArticleModule\Entities\ArticleLangEntity", mappedBy="article")
 	 */
 	protected $langs;
 
