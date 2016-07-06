@@ -18,10 +18,12 @@ class ArticleFormContainer extends BaseFormContainer
 	{
 		$form = $this->getForm();
 
-		$form->addAutocomplete('value', _('Article'), '/api/v1/article-search', [
-			'columns' => ['langs.title'],
-			'select' => 'a.id, langs.title'
-		]);
+		$form->addAutocomplete('value', _('Article'))
+                ->setAttribute('placeholder', _('Begin typing the article title'))
+                ->setSource('/api/v1/article-search')
+                ->setColumns(['langs.title'])
+                ->setSelect('a.id, langs.title')
+                ->setRequired(_('You must select article'));
 		
 		$form->addText('alternative_title', _('Alternative title'));
     }
