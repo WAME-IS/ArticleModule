@@ -10,7 +10,6 @@ use Wame\MenuModule\Forms\MenuItemForm;
 use Wame\DataGridControl\IDataGridControlFactory;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid;
 
-use Wame\GalleryModule\Controls\GalleryPickerControl;
 use Wame\GalleryModule\Controls\GalleryPicker2Control;
 
 
@@ -38,9 +37,6 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 
 	/** @var MenuItemForm @inject */
 	public $menuItemForm;
-	
-	/** @var GalleryPickerControl @inject */
-	public $galleryPickerControl;
 	
 	/** @var GalleryPicker2Control @inject */
 	public $galleryPicker2Control;
@@ -131,14 +127,6 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		$grid->setProvider($this->articleGrid);
 		
 		return $grid;
-	}
-	
-	// TODO: presunut do dynamic forms!!!
-	protected function createComponentGalleryPicker()
-	{
-		$control = $this->galleryPickerControl;
-		$control->setItem(0);
-		return $control;
 	}
 	
 	protected function createComponentGalleryPicker2()
