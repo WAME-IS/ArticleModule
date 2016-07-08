@@ -14,18 +14,21 @@ use Wame\Core\Repositories\TranslatableRepository;
 
 class ArticleRepository extends TranslatableRepository
 {
-
     const STATUS_REMOVE = 0;
     const STATUS_PUBLISHED = 1;
     const STATUS_UNPUBLISHED = 2;
 
+    
     public function __construct(
-    Container $container, EntityManager $entityManager, GettextSetup $translator, User $user
-    )
-    {
+        Container $container, 
+        EntityManager $entityManager, 
+        GettextSetup $translator,
+        User $user
+    ) {
         parent::__construct($container, $entityManager, $translator, $user, ArticleEntity::class);
     }
 
+    
     /**
      * Get all status list
      * 
@@ -63,109 +66,34 @@ class ArticleRepository extends TranslatableRepository
             self::STATUS_UNPUBLISHED => _('Unpublished')
         ];
     }
-//	public function findByFilter($filter = [])
-//	{
-//		$qb = $this->entityManager->createQueryBuilder();
-//		$qb->select('a')->from(ArticleEntity::class, 'a');
-//		$this->addOrderByFilter($qb, $filter);
-//		$this->addDateFilter($qb, $filter);
-//		$this->addAuthorFilter($qb, $filter);
-//		$this->addStatusFilter($qb, $filter);
-//		$this->addPagerFilter($qb, $filter);
-//		
-//		return $qb->getQuery()->getResult();
-//	}
-//	
-//	public function countByFilter($filter = [])
-//	{
-//		$qb = $this->entityManager->createQueryBuilder();
-//		$qb->select('COUNT(1)')->from(ArticleEntity::class, 'a');
-//		$this->addDateFilter($qb, $filter);
-//		$this->addAuthorFilter($qb, $filter);
-//		$this->addStatusFilter($qb, $filter);
-//		
-//		return $qb->getQuery()->getSingleScalarResult();
-//	}
-//	private function addDateFilter($qb, $filter)
-//	{
-//		if(array_key_exists('year', $filter) && array_key_exists('month', $filter)) {
-//			$initialDate = (new \DateTime())->setDate($filter['year'], $filter['month'], 1);
-//			$finalDate = (new \DateTime())->setDate($filter['year'], $filter['month']+1, 1);
-//			
-//			$qb->andWhere('a.createDate BETWEEN :initialDate AND :finalDate')
-//					->setParameter('initialDate', $initialDate)
-//					->setParameter('finalDate', $finalDate);
-//		}
-//	}
-//	
-//	private function addAuthorFilter($qb, $filter)
-//	{
-//		if(array_key_exists('author', $filter)) {
-//			$qb->andWhere('a.createUser = :author')
-//					->setParameter('author', $filter['author']);
-//		}
-//	}
-//	
-//	private function addStatusFilter($qb, $filter)
-//	{
-//		if(array_key_exists('status', $filter)) {
-//			$qb->andWhere('a.status = :status')
-//					->setParameter('status', $filter['status']);
-//		}
-//	}
-//	
-//	private function addOrderByFilter($qb, $filter)
-//	{
-//		if(array_key_exists('orderBy', $filter)) {
-//			switch($filter['orderBy']) {
-//				default:
-//				case 'name':
-//					$qb->innerJoin(ArticleLangEntity::class, 'l');
-//					$qb->orderBy('l.title', 'ASC');
-//					break;
-//				case 'date':
-//					$qb->orderBy('a.createDate', 'ASC');
-//					break;
-//			}
-//		}
-//	}
-//	
-//	private function addPagerFilter($qb, $filter)
-//	{
-//		if(array_key_exists('offset', $filter) && array_key_exists('limit', $filter))
-//		{
-//			$qb->setFirstResult($filter['offset'])
-//				->setMaxResults($filter['limit']);
-//		}
-//	}
 
     /**
      * Add article
      * 
-     * @param ArticleLangEntity $articleLangEntity		article lang entity
+     * @param ArticleEntity $articleEntity		article entity
      * @throws Exception\ArticleNotCreatedException
      */
-    public function create($articleLangEntity)
+    public function create($articleEntity)
     {
-        $create = $this->entityManager->persist($articleLangEntity->article);
-        $this->entityManager->persist($articleLangEntity);
+        $create = $this->entityManager->persist($articleEntity);
+        $this->entityManager->persist($articleEntity->langs);
         $this->entityManager->flush();
         if (!$create) {
             throw new RepositoryException(_('Could not create the article'));
         }
 
-        return $articleLangEntity->article;
+        return $articleEntity;
     }
 
     /**
-     * Set article
+     * Update article
      * 
-     * @param int $articleId
-     * @param array $values
+     * @param ArticleEntity $articleEntity
+     * @return ArticleEntity    article
      */
-    public function update($articleLangEntity)
+    public function update($articleEntity)
     {
-        return $articleLangEntity->article;
+        return $articleEntity;
     }
 
     /**
@@ -179,33 +107,6 @@ class ArticleRepository extends TranslatableRepository
         $articleEntity = $this->entity->find($criteria);
         $articleEntity->status = $status;
     }
-//	public function findFiltered($filterBuilder, $paginator)
-//	{
-//		$allArticles = $this->find(['status' => ArticleRepository::STATUS_PUBLISHED]);
-//
-//		$filterBuilder->addFilter(new \Wame\FilterModule\Type\StatusFilter());
-//		
-//		$authorFilter = new \Wame\FilterModule\Type\AuthorFilter();
-//		$authorFilter->setItems($allArticles);
-//		$filterBuilder->addFilter($authorFilter);
-//		
-//		$dateFilter = new \Wame\FilterModule\Type\DateFilter();
-//		$dateFilter->setItems($allArticles);
-//		$filterBuilder->addFilter($dateFilter);
-//
-//		$filterBuilder->addFilter(new \Wame\FilterModule\Type\IdFilter());
-//		
-//		// Paginator
-//		$paginator->getPaginator()->itemCount = $filterBuilder->build()->count();
-//		
-//		// Page filter
-//		$filterPage = new \Wame\FilterModule\Type\PageFilter();
-//		$filterPage->setOffset($paginator->getPaginator()->offset)
-//				->setLimit($paginator->getPaginator()->itemsPerPage);
-//		$filterBuilder->addFilter($filterPage);
-//		
-//		return $filterBuilder->build()->get();
-//	}
 
     /**
      * Get article by criteria
@@ -237,6 +138,8 @@ class ArticleRepository extends TranslatableRepository
 
         return $article;
     }
+    
+    
     /** api *********************************************************** */
 
     /**
@@ -282,4 +185,5 @@ class ArticleRepository extends TranslatableRepository
 
         return $search->getQuery()->getResult();
     }
+    
 }

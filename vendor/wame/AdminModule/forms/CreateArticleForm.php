@@ -91,7 +91,9 @@ class CreateArticleForm extends FormFactory
 		$articleLangEntity->text = $values['text'];
 		$articleLangEntity->editDate = \Wame\Utils\Date::toDateTime('now');
 		$articleLangEntity->editUser = $this->userEntity;
+        
+        $articleEntity->addLang($this->lang, $articleLangEntity);
 		
-		return $this->articleRepository->create($articleLangEntity);
+		return $this->articleRepository->create($articleEntity);
 	}
 }

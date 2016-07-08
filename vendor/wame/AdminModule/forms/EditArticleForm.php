@@ -105,15 +105,17 @@ class EditArticleForm extends FormFactory
 		}
 		$articleEntity->status = $values['status'];
 		
-		$articleLangEntity = $this->entityManager->getRepository(ArticleLangEntity::class)->findOneBy(['article' => $articleEntity, 'lang' => $this->lang]);
-		$articleLangEntity->title = $values['title'];
-		$articleLangEntity->slug = $values['slug']?:(Strings::webalize($values['title']));
-		$articleLangEntity->description = $values['description'];
-		$articleLangEntity->text = $values['text'];
-		$articleLangEntity->editDate = \Wame\Utils\Date::toDateTime('now');
-		$articleLangEntity->editUser = $this->userEntity;
+        /* @var $articleLangEntity ArticleLangEntity */
+        $articleLangEntity = $articleEntity->langs[$this->lang];
+//		$articleLangEntity = $this->entityManager->getRepository(ArticleLangEntity::class)->findOneBy(['article' => $articleEntity, 'lang' => $this->lang]);
+		$articleLangEntity->setTitle($values['title']);
+		$articleLangEntity->setSlug($values['slug']?:(Strings::webalize($values['title'])));
+		$articleLangEntity->setDescription($values['description']);
+		$articleLangEntity->setText($values['text']);
+		$articleLangEntity->setEditDate(\Wame\Utils\Date::toDateTime('now'));
+		$articleLangEntity->setEditUser($this->userEntity);
 		
-		return $this->articleRepository->update($articleLangEntity);
+		return $this->articleRepository->update($articleEntity);
 	}
 
 }

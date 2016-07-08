@@ -90,8 +90,8 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		$description = $article->langs[$this->lang]->description;
 		
 		$component = $this->headControl;
-		$component->getType(new MetaTitle)->setContent($title);
-		$component->getType(new MetaDescription)->setContent($description);
+		$component->getMetaType(new MetaTitle)->setContent($title);
+		$component->getMetaType(new MetaDescription)->setContent($description);
 		
 		$this->articleRepository->onRead($id);
 	}

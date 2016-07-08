@@ -13,7 +13,7 @@ interface IArticleControlFactory
 
 
 class ArticleControl extends \Wame\Core\Components\BaseControl
-{	
+{
 	/** @var integer */
 	protected $id;
 	
@@ -36,11 +36,14 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 	private $lang;
 	
 	
-	public function __construct(ArticleRepository $articleRepository) {
+	public function __construct(ArticleRepository $articleRepository)
+    {
 		parent::__construct();
 		
 		$this->articleRepository = $articleRepository;
 		$this->lang = $this->articleRepository->lang;
+        
+        $this->status->set('meta', 'test');
 	}
 	
 	
@@ -83,7 +86,6 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 	{
 		$articleEntity = isset($parameters['entity']) ? $parameters['entity'] : null;
 		
-		/** @var string */
 		$template = isset($parameters['template']) ? $parameters['template'] : null;
 		
 		if($template) {
@@ -141,4 +143,5 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 			'status' => ArticleRepository::STATUS_PUBLISHED
 		]);
 	}
+    
 }
