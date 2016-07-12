@@ -10,6 +10,7 @@ use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
 use Wame\UserModule\Repositories\UserRepository;
 use Wame\ArticleModule\Repositories\ArticleRepository;
+use h4kuna\Gettext\GettextSetup;
 
 class CreateArticleForm extends FormFactory
 {	
@@ -21,12 +22,21 @@ class CreateArticleForm extends FormFactory
 	
 	/** @var string */
 	private $lang;
+    
+    /** @var GettextSetup */
+    private $gs;
 	
 	
-	public function __construct(ArticleRepository $articleRepository, UserRepository $userRepository, User $user) {
+	public function __construct(
+            ArticleRepository $articleRepository, 
+            UserRepository $userRepository, 
+            User $user,
+            GettextSetup $gs
+    ) {
 		$this->articleRepository = $articleRepository;
 		$this->userEntity = $userRepository->get(['id' => $user->id]);
 		$this->lang = $articleRepository->lang;
+        $this->gs = $gs;
 	}
 	
 	
@@ -81,7 +91,8 @@ class CreateArticleForm extends FormFactory
 		$articleEntity->createDate = \Wame\Utils\Date::toDateTime('now');
 		$articleEntity->createUser = $this->userEntity;
 		$articleEntity->status = $values['status'];
-
+        
+//        foreach($this->gs->getLanguages() as $lang => $fullLang) {
 		$articleLangEntity = new ArticleLangEntity();
 		$articleLangEntity->article = $articleEntity;
 		$articleLangEntity->lang = $this->lang;
@@ -93,6 +104,7 @@ class CreateArticleForm extends FormFactory
 		$articleLangEntity->editUser = $this->userEntity;
         
         $articleEntity->addLang($this->lang, $articleLangEntity);
+//        }
 		
 		return $this->articleRepository->create($articleEntity);
 	}

@@ -43,7 +43,7 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 		$this->articleRepository = $articleRepository;
 		$this->lang = $this->articleRepository->lang;
         
-        $this->status->set('meta', 'test');
+//        $this->getPresenter()->getStatus()->set('meta', 'test');
 	}
 	
 	

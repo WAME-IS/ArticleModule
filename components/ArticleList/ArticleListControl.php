@@ -324,4 +324,5 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 			$this->sortVisible = $this->getComponentParameter('sort_visible');
 		}
 	}
+    
 }

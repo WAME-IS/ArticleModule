@@ -77,14 +77,11 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	public function actionShow($id) {
 		// TODO: poriesit vyber cez slugy
 		$this->articleId = $id;
-		
-		try {
-			$article = $this->articleRepository->getArticle(['id' => $this->articleId]);
-		} catch(\Exception $e) {
-			$this->flashMessage($e->getMessage(), 'danger');
-			$this->redirect(':Homepage:Homepage:', ['id' => null]);
-		}
-		
+        
+        $article = $this->articleRepository->getArticle(['id' => $this->articleId]);
+        
+        // set meta
+        $this->status->set('meta', ['alias' => 'article', 'id' => $article->id]);
 		
 		$title = $article->langs[$this->lang]->title;
 		$description = $article->langs[$this->lang]->description;

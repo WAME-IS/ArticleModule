@@ -12,6 +12,8 @@ use Wame\ArticleModule\Entities\ArticleLangEntity;
 use Wame\Core\Exception\RepositoryException;
 use Wame\Core\Repositories\TranslatableRepository;
 
+use Nette\Application\BadRequestException;
+
 class ArticleRepository extends TranslatableRepository
 {
     const STATUS_REMOVE = 0;
@@ -121,19 +123,19 @@ class ArticleRepository extends TranslatableRepository
         $article = $this->get($criteria);
 
         if (!$article) {
-            throw new RepositoryException(_('Article not found.'));
+            throw new BadRequestException(_('Article not found.'));
         }
 
         if ($article->status != self::STATUS_PUBLISHED) {
-            throw new RepositoryException(_('Article is unpublished or removed.'));
+            throw new BadRequestException(_('Article is unpublished or removed.'));
         }
 
         if ($article->publishStartDate != null && strtotime($article->publishStartDate) < time()) {
-            throw new RepositoryException(_('Article has not been published.'));
+            throw new BadRequestException(_('Article has not been published.'));
         }
 
         if ($article->publishEndDate != null && strtotime($article->publishEndDate) > time()) {
-            throw new RepositoryException(_('Out of time of article publication.'));
+            throw new BadRequestException(_('Out of time of article publication.'));
         }
 
         return $article;
