@@ -74,11 +74,7 @@ class EditArticleForm extends FormFactory
 			
 			$presenter->redirect('this');
 		} catch (\Exception $e) {
-			if ($e instanceof \Nette\Application\AbortException) {
-				throw $e;
-			}
-			
-			$form->addError($e->getMessage());
+            \Wame\Utils\Exception::handleFormException($e, $form);
 			$this->entityManager->clear();
 		}
 	}
