@@ -57,6 +57,9 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 	private $sort;
 	
 	private $page = 0;
+    
+    /** @var ArticleEntity[] */
+    private $article;
 	
 	
 	public function __construct(ArticleRepository $articleRepository, CategoryItemRepository $categoryItemRepository, \Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory, \Wame\FilterModule2\IFilterBuilderFactory $filterBuilderFactory2) {
@@ -147,14 +150,12 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 	public function render()
 	{
 		$this->setComponent();
-		
-		$articles = $this->getArticles();
-		
+        
 		$this->setPaginator($this->filterBuilder->getCountBeforeFilter());
 		
 		$this->template->paginatorVisible = $this->paginatorVisible;
 		$this->template->filterVisible = $this->filterVisible;
-		$this->template->articles = $articles;
+		$this->template->articles = $this->getArticles();
 		
 		$this->getTemplateFile();
 		$this->template->render();

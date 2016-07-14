@@ -23,7 +23,7 @@ class ArticleLangEntity extends BaseEntity
 
 	/**
      * @noApi
-     * @ORM\ManyToOne(targetEntity="ArticleEntity", inversedBy="langs")
+     * @ORM\ManyToOne(targetEntity="ArticleEntity", inversedBy="langs", fetch="LAZY")
      * @ORM\JoinColumn(name="article_id", referencedColumnName="id", nullable=false)
      */
 	protected $article;
