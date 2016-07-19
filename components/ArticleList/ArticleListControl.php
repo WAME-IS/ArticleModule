@@ -62,8 +62,8 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
     private $article;
 	
 	
-	public function __construct(ArticleRepository $articleRepository, CategoryItemRepository $categoryItemRepository, \Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory, \Wame\FilterModule2\IFilterBuilderFactory $filterBuilderFactory2) {
-		parent::__construct();
+	public function __construct(\Nette\DI\Container $container, ArticleRepository $articleRepository, CategoryItemRepository $categoryItemRepository, \Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory, \Wame\FilterModule2\IFilterBuilderFactory $filterBuilderFactory2) {
+		parent::__construct($container);
 		
 		$this->articleRepository = $articleRepository;
 		$this->categoryItemRepository = $categoryItemRepository;
