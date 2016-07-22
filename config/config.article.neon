@@ -11,10 +11,6 @@ services:
 			- addResourceAction('article', 'delete')
 			- allow('moderator', 'article', 'delete')
 
-	# Entities
-	- Wame\ArticleModule\Entities\ArticleEntity
-	- Wame\ArticleModule\Entities\ArticleLangEntity
-
 	# Repositories
 	- Wame\ArticleModule\Repositories\ArticleRepository
 

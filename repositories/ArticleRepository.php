@@ -77,13 +77,9 @@ class ArticleRepository extends TranslatableRepository
      */
     public function create($articleEntity)
     {
-        $create = $this->entityManager->persist($articleEntity);
+        $this->entityManager->persist($articleEntity);
         $this->entityManager->persist($articleEntity->langs);
         $this->entityManager->flush();
-        if (!$create) {
-            throw new RepositoryException(_('Could not create the article'));
-        }
-
         return $articleEntity;
     }
 
