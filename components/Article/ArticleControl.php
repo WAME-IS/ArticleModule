@@ -5,6 +5,8 @@ namespace Wame\ArticleModule\Components;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 
+use Wame\PositionModule\Components\IPositionControlFactory;
+
 interface IArticleControlFactory
 {
 	/** @return ArticleControl */
@@ -34,9 +36,11 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 	
 	/** @var string */
 	private $lang;
+    
+    private $IPositionControlFactory;
 	
 	
-	public function __construct(ArticleRepository $articleRepository)
+	public function __construct(ArticleRepository $articleRepository, IPositionControlFactory $IPositionControlFactory)
     {
 		parent::__construct();
 		
@@ -44,6 +48,8 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 		$this->lang = $this->articleRepository->lang;
         
 //        $this->getPresenter()->getStatus()->set('meta', 'test');
+        
+        $this->IPositionControlFactory = $IPositionControlFactory;
 	}
 	
 	
@@ -85,7 +91,6 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 	public function render($parameters = [])
 	{
 		$articleEntity = isset($parameters['entity']) ? $parameters['entity'] : null;
-		
 		$template = isset($parameters['template']) ? $parameters['template'] : null;
 		
 		if($template) {
@@ -107,6 +112,8 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 				$this->article = $this->getArticleBySlug($this->slug);
 			}
 		}
+        
+        $this->getStatus()->set('article', $this->article);
 		
 		$this->template->lang = $this->lang;
 		$this->template->article = $this->article;
@@ -143,5 +150,18 @@ class ArticleControl extends \Wame\Core\Components\BaseControl
 			'status' => ArticleRepository::STATUS_PUBLISHED
 		]);
 	}
+    
+    
+    /**
+     * Position control
+     * 
+     * @return IPositionControlFactory
+     */
+    protected function createComponentPositionControl()
+    {
+        $control = $this->IPositionControlFactory->create();
+
+        return $control;
+    }
     
 }
