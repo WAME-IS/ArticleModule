@@ -10,7 +10,7 @@ use Nette\Security\User;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
 use Wame\Core\Exception\RepositoryException;
-use Wame\Core\Repositories\TranslatableRepository;
+use Wame\LanguageModule\Repositories\TranslatableRepository;
 
 use Nette\Application\BadRequestException;
 

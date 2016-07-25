@@ -5,7 +5,7 @@ namespace Wame\ArticleModule\Entities;
 use DateTime,
 	Doctrine\ORM\Mapping as ORM,
 	Wame\Core\Entities\Columns,
-	Wame\Core\Entities\TranslatableEntity;
+	Wame\LanguageModule\Entities\TranslatableEntity;
 
 /**
  * @ORM\Table(name="wame_article")
