@@ -7,6 +7,8 @@ use Wame\CategoryModule\Repositories\CategoryItemRepository;
 
 use \Wame\FilterModule2\FilterBuilder;
 
+use Wame\ArticleModule\Components\IArticleControlFactory;
+
 
 interface IArticleListControlFactory
 {
@@ -60,9 +62,18 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
     
     /** @var ArticleEntity[] */
     private $article;
+    
+    private $IArticleControlFactory;
 	
 	
-	public function __construct(\Nette\DI\Container $container, ArticleRepository $articleRepository, CategoryItemRepository $categoryItemRepository, \Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory, \Wame\FilterModule2\IFilterBuilderFactory $filterBuilderFactory2) {
+	public function __construct(
+            \Nette\DI\Container $container, 
+            ArticleRepository $articleRepository, 
+            CategoryItemRepository $categoryItemRepository, 
+            \Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory, 
+            \Wame\FilterModule2\IFilterBuilderFactory $filterBuilderFactory2,
+            IArticleControlFactory $IArticleControlFactory
+    ) {
 		parent::__construct($container);
 		
 		$this->articleRepository = $articleRepository;
@@ -71,6 +82,8 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 		
 //		$this->filterBuilder = $filterBuilderFactory->create();
 		$this->filterBuilder = $filterBuilderFactory2->create();
+        
+        $this->IArticleControlFactory = $IArticleControlFactory;
 	}
 	
 	
@@ -190,7 +203,7 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 	 */
 	protected function createComponentArticle()
 	{
-		$component = new \Wame\ArticleModule\Components\ArticleControl($this->articleRepository);
+        $component = $this->IArticleControlFactory->create();
 		$component->setInList(true);
 		return $component;
 	}
