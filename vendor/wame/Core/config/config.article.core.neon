@@ -1,0 +1,4 @@
+services:
+    StatusTypeRegister:
+        setup:
+            - add(Wame\ArticleModule\Vendor\Wame\Core\Registers\Types\ArticleStatusType(), 'article')
