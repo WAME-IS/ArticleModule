@@ -107,11 +107,7 @@ class ArticleControl extends BaseControl
             }
         }
 
-        $this->template->lang = $this->lang;
         $this->template->article = $this->article;
-
-        $this->getTemplateFile();
-        $this->template->render();
     }
 
     /**
