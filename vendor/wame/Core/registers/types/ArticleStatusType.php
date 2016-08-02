@@ -14,4 +14,9 @@ class ArticleStatusType implements \Wame\Core\Registers\Types\IStatusType
         return _('Article');
     }
     
+    public function getEntityName()
+    {
+        return \Wame\ArticleModule\Entities\ArticleEntity::class;
+    }
+    
 }

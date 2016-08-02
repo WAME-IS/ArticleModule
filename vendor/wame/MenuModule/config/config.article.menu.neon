@@ -6,6 +6,8 @@ services:
 	MenuManager:
 		setup:
 			- addMenuItemType(Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuManager\Forms\ArticleMenuItem(), 'article')
+			- addMenuItemType(Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuManager\Forms\BlogMenuItem(), 'blog')
 
 	# Events
 	- {class: Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuManager\Events\MenuItemListener, tags: [run]}
+	- {class: Wame\ArticleModule\Vendor\Wame\MenuModule\Components\MenuManager\Events\BlogMenuItemListener, tags: [run]}

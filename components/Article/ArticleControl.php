@@ -83,20 +83,8 @@ class ArticleControl extends BaseControl
      * 
      * @param ArticleEntity $articleEntity	article
      */
-    public function render($parameters = [])
+    public function render($articleEntity)
     {
-        $articleEntity = isset($parameters['entity']) ? $parameters['entity'] : null;
-
-        $template = isset($parameters['template']) ? $parameters['template'] : null;
-
-        if ($template) {
-            $this->setTemplateFile($template);
-        } else if ($this->inList) {
-            $this->setTemplateFile('default.latte');
-        } else {
-            $this->setTemplateFile('detail.latte');
-        }
-
         if ($articleEntity) {
             $this->article = $articleEntity;
         } else {
@@ -106,6 +94,8 @@ class ArticleControl extends BaseControl
                 $this->article = $this->getArticleBySlug($this->slug);
             }
         }
+        
+        $this->getStatus()->set('article', $this->article);
 
         $this->template->article = $this->article;
     }

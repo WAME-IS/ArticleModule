@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-md-9">
 		{foreach $articles as $article}
-			{control article entity => $article}
+			{control article $article}
 		{/foreach}
 	</div>
 	<div class="col-md-3">
