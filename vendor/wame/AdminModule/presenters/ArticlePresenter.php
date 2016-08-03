@@ -116,11 +116,11 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		return $form;
 	}
 	
-	protected function createComponentArticleGrid($name)
+	protected function createComponentArticleGrid()
 	{
+        $qb = $this->articleRepository->createQueryBuilder('a');
 		$grid = $this->gridControl->create();
-		$articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
-		$grid->setDataSource($articles);
+		$grid->setDataSource($qb);
 		$grid->setProvider($this->articleGrid);
 		
 		return $grid;
