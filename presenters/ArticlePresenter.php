@@ -29,9 +29,6 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 //	/** @var SortControl @inject */
 //	public $sortControl;
 	
-	/** @var TagListControl @inject */
-	public $tagListControl;
-	
 	/** @var ICategoryListControlFactory @inject */
 	public $ICategoryListControlFactory;
 	
@@ -63,22 +60,21 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
     public $author;
 	
 	
-	public function __construct(\Wame\ArticleModule\Repositories\ArticleRepository $articleRepository) {
+	public function __construct(\Wame\ArticleModule\Repositories\ArticleRepository $articleRepository)
+    {
 		parent::__construct();
-		
-//		$this->filterBuilder = $filterBuilderFactory->create();
 	}
 	
-	public function renderDefault()
-	{
-		
-	}
-	
-	public function actionShow($id) {
+    
+    /** actions ***************************************************************/
+    
+    public function actionShow($id) {
 		// TODO: poriesit vyber cez slugy
 		$this->articleId = $id;
         
         $article = $this->articleRepository->getArticle(['id' => $this->articleId]);
+        
+        $this->getStatus()->set('article', $article);
         
         // set meta
         $this->status->set('meta', ['alias' => 'article', 'id' => $article->id]);
@@ -92,21 +88,31 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		
 		$this->articleRepository->onRead($id);
 	}
+    
+    
+    /** renders ***************************************************************/
+    
+	public function renderDefault()
+	{
+		
+	}
 	
-	public function createComponentArticle()
+	
+    /** components ************************************************************/
+	
+	protected function createComponentArticle()
 	{
 		$articleId = $this->getParameter('id');
 		
 		$component = $this->IArticleControlFactory->create();
 		$component->setId($articleId);
-		
-		$component->addComponent($this->createComponentTagList(), 'tagList');
+        
 		$component->addComponent($this->createComponentCategoryList(), 'categoryList');
 		
 		return $component;
 	}
 	
-	public function createComponentArticleList()
+	protected function createComponentArticleList()
 	{
 		$sort = $this->sort;
 		
@@ -120,21 +126,16 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 		return $component;
 	}
 	
-	public function createComponentSortControl()
+	protected function createComponentSortControl()
 	{
 		$sortControl = $this->sortControl;
 		return $sortControl;
 	}
 	
-	public function createComponentTagList()
-	{
-		$control = $this->tagListControl;
-		return $control;
-	}
-	
-	public function createComponentCategoryList()
+	protected function createComponentCategoryList()
 	{
 		$control = $this->ICategoryListControlFactory->create();
 		return $control;
 	}
+    
 }

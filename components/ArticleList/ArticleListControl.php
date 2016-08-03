@@ -55,16 +55,23 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 
     /** @var string */
     private $sort;
+    
     private $page = 0;
 
     /** @var ArticleEntity[] */
     private $article;
+    
     private $IArticleControlFactory;
 
+    
     public function __construct(
-    \Nette\DI\Container $container, ArticleRepository $articleRepository, CategoryItemRepository $categoryItemRepository, \Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory, \Wame\FilterModule2\IFilterBuilderFactory $filterBuilderFactory2, IArticleControlFactory $IArticleControlFactory
-    )
-    {
+        \Nette\DI\Container $container, 
+        ArticleRepository $articleRepository, 
+        CategoryItemRepository $categoryItemRepository, 
+        \Wame\FilterModule\IFilterBuilderFactory $filterBuilderFactory, 
+        \Wame\FilterModule2\IFilterBuilderFactory $filterBuilderFactory2, 
+        IArticleControlFactory $IArticleControlFactory
+    ) {
         parent::__construct($container);
 
         $this->articleRepository = $articleRepository;
@@ -77,6 +84,77 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
         $this->IArticleControlFactory = $IArticleControlFactory;
     }
 
+    
+
+    /**
+     * Render
+     */
+    public function render()
+    {
+        $this->setComponent();
+
+        $this->setPaginator($this->filterBuilder->getCountBeforeFilter());
+
+        $this->template->paginatorVisible = $this->paginatorVisible;
+        $this->template->filterVisible = $this->filterVisible;
+        $this->template->articles = $this->getArticles();
+    }
+
+    
+    /** components ************************************************************/
+    
+    /**
+     * Create Paginator component
+     * 
+     * @return \Wame\Utils\Pagination
+     */
+    protected function createComponentPaginator()
+    {
+        return new \Wame\Utils\Pagination;
+    }
+
+    /**
+     * Create Filter component
+     * 
+     * @return \Wame\FilterModule\Controls\FilterControl
+     */
+    protected function createComponentFilter()
+    {
+        $filterControl = new \Wame\FilterModule2\Controls\FilterControl($this->filterBuilder);
+        return $filterControl;
+    }
+
+    /**
+     * Create Article component
+     * 
+     * @return \Wame\ArticleModule\Components\ArticleControl
+     */
+    protected function createComponentArticle()
+    {
+        $component = $this->IArticleControlFactory->create();
+        $component->setInList(true);
+        return $component;
+    }
+
+    /**
+     * Create Sort component
+     * 
+     * @return \Wame\FilterModule2\Controls\SortControl
+     */
+    protected function createComponentSort()
+    {
+        $component = new \Wame\FilterModule2\Controls\SortControl();
+        $component->setOrders([
+            ['name' => _('Name'), 'alias' => 'name', 'value' => 'langs.title'],
+            ['name' => _('Date'), 'alias' => 'date', 'value' => 'createDate']
+        ]);
+
+        return $component;
+    }
+
+    
+    /** methods ***************************************************************/
+    
     /**
      * Set paginator visibility
      * 
@@ -146,70 +224,8 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
     {
         $this->category = $category;
     }
-
-    /**
-     * Render
-     */
-    public function render()
-    {
-        $this->setComponent();
-
-        $this->setPaginator($this->filterBuilder->getCountBeforeFilter());
-
-        $this->template->paginatorVisible = $this->paginatorVisible;
-        $this->template->filterVisible = $this->filterVisible;
-        $this->template->articles = $this->getArticles();
-    }
-
-    /**
-     * Create Paginator component
-     * 
-     * @return \Wame\Utils\Pagination
-     */
-    protected function createComponentPaginator()
-    {
-        return new \Wame\Utils\Pagination;
-    }
-
-    /**
-     * Create Filter component
-     * 
-     * @return \Wame\FilterModule\Controls\FilterControl
-     */
-    protected function createComponentFilter()
-    {
-        $filterControl = new \Wame\FilterModule2\Controls\FilterControl($this->filterBuilder);
-        return $filterControl;
-    }
-
-    /**
-     * Create Article component
-     * 
-     * @return \Wame\ArticleModule\Components\ArticleControl
-     */
-    protected function createComponentArticle()
-    {
-        $component = $this->IArticleControlFactory->create();
-        $component->setInList(true);
-        return $component;
-    }
-
-    /**
-     * Create Sort component
-     * 
-     * @return \Wame\FilterModule2\Controls\SortControl
-     */
-    protected function createComponentSort()
-    {
-        $component = new \Wame\FilterModule2\Controls\SortControl();
-        $component->setOrders([
-            ['name' => _('Name'), 'alias' => 'name', 'value' => 'langs.title'],
-            ['name' => _('Date'), 'alias' => 'date', 'value' => 'createDate']
-        ]);
-
-        return $component;
-    }
-
+    
+    
     /**
      * Get articles
      */
@@ -253,6 +269,7 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
 
         $this->template->paginatorOffset = $this->paginator->getPaginator()->offset;
     }
+    
 //	/**
 //	 * Get articles
 //	 * 
@@ -319,4 +336,5 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
         $this->filterVisible = $this->getComponentParameter('filter_visible');
         $this->sortVisible = $this->getComponentParameter('sort_visible');
     }
+    
 }

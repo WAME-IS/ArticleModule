@@ -9,14 +9,12 @@ use Wame\Core\Components\BaseControl;
 
 interface IArticleControlFactory
 {
-
     /** @return ArticleControl */
     public function create();
 }
 
 class ArticleControl extends BaseControl
 {
-
     /** @var integer */
     protected $id;
 
@@ -37,6 +35,7 @@ class ArticleControl extends BaseControl
 
     /** @var string */
     private $lang;
+    
 
     public function __construct(Container $container, ArticleRepository $articleRepository)
     {
@@ -47,6 +46,31 @@ class ArticleControl extends BaseControl
 
 //        $this->getPresenter()->getStatus()->set('meta', 'test');
     }
+
+
+    /**
+     * Render
+     * 
+     * @param ArticleEntity $articleEntity	article
+     */
+    public function render($articleEntity)
+    {
+        if ($articleEntity) {
+            $this->article = $articleEntity;
+        } else {
+            $this->article = $this->getStatus()->get('article');
+//            if ($this->id) {
+//                $this->article = $this->getArticleById($this->id);
+//            } else if ($this->slug) {
+//                $this->article = $this->getArticleBySlug($this->slug);
+//            }
+        }
+
+        $this->template->article = $this->article;
+    }
+    
+    
+    /** methods ***************************************************************/
 
     /**
      * Set id
@@ -77,29 +101,8 @@ class ArticleControl extends BaseControl
     {
         $this->inList = $inList;
     }
-
-    /**
-     * Render
-     * 
-     * @param ArticleEntity $articleEntity	article
-     */
-    public function render($articleEntity)
-    {
-        if ($articleEntity) {
-            $this->article = $articleEntity;
-        } else {
-            if ($this->id) {
-                $this->article = $this->getArticleById($this->id);
-            } else if ($this->slug) {
-                $this->article = $this->getArticleBySlug($this->slug);
-            }
-        }
-        
-        $this->getStatus()->set('article', $this->article);
-
-        $this->template->article = $this->article;
-    }
-
+    
+    
     /**
      * Get article by ID
      * 
@@ -127,4 +130,5 @@ class ArticleControl extends BaseControl
                 'status' => ArticleRepository::STATUS_PUBLISHED
         ]);
     }
+    
 }
