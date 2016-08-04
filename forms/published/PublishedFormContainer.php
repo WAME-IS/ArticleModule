@@ -26,8 +26,8 @@ class PublishedFormContainer extends BaseFormContainer {
     public function setDefaultValues($object) {
         $form = $this->getForm();
 
-        $form['publish_start_date']->setDefaultValue(Date::toDateTime($object->articleEntity->publishStartDate));
-        $form['publish_end_date']->setDefaultValue(Date::toDateTime($object->articleEntity->publishEndDate));
+        $form['publish_start_date']->setDefaultValue(Date::toString($object->articleEntity->publishStartDate));
+        $form['publish_end_date']->setDefaultValue(Date::toString($object->articleEntity->publishEndDate));
     }
 
 }
