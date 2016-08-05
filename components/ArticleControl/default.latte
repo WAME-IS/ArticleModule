@@ -1,11 +1,15 @@
+Dump
+{? dump($article)}
+{*
 <article>
     {position articleControlTop}
     
 	<header>
-		<h2><a href="{plink :Article:Article:show, $article->id}">{$article->langs[$lang]->title}</a></h2>
+		<h2><a href="{plink :Article:Article:show, $article->id}">{$article->title}</a></h2>
 	</header>
 
 	<div id="author">{_'author'}: {$article->createUser->fullName}</div>
 
 	<p id="description">{$article->description}</p>
 </article>
+*}

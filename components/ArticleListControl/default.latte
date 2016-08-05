@@ -1,22 +1,15 @@
-<div class="row">
-	<div class="col-md-9">
-		{foreach $articles as $article}
-			{control article $article}
-		{/foreach}
-	</div>
-	<div class="col-md-3">
-		{if $filterVisible}
-		{control filter}
-	{/if}
+{if $listComponents}
+    <h2 n:if="$control->getComponentParameter('showTitle')">{$control->getTitle()}</h2>
 
-	{control sort}
-	</div>
-</div>
+    <p n:if="$control->getComponentParameter('showDescription')">{$control->getDescription()}</p>
 
-{if $paginatorVisible}
-	<div class="row">
-		<div class="col-md-12">
-			{control paginator}
-		</div>
-	</div>
+    {$listContainer->startTag()|noescape}
+    {foreach $listComponents as $listComponentInfo}
+        {$listComponentInfo->container->startTag()|noescape}
+        {control $listComponentInfo->component}
+        {$listComponentInfo->container->endTag()|noescape}
+    {/foreach}
+    {$listContainer->endTag()|noescape}
+{else}
+    {control noItems}
 {/if}
