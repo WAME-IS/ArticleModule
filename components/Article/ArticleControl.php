@@ -57,6 +57,7 @@ class ArticleControl extends BaseControl
     {
         if ($articleEntity) {
             $this->article = $articleEntity;
+            $this->getStatus()->set('article', $this->article);
         } else {
             $this->article = $this->getStatus()->get('article');
 //            if ($this->id) {
