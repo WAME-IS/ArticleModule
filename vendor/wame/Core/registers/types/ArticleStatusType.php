@@ -2,7 +2,7 @@
 
 namespace Wame\ArticleModule\Vendor\Wame\Core\Registers\Types;
 
-class ArticleStatusType implements \Wame\Core\Registers\Types\IStatusType
+class ArticleStatusType extends \Wame\Core\Registers\Types\StatusType
 {
     public function getStatusName()
     {
