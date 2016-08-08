@@ -4,7 +4,7 @@ namespace App\AdminModule\Presenters;
 
 use Wame\ComponentModule\Forms\ComponentForm;
 use Wame\ComponentModule\Repositories\PositionRepository;
-use Wame\ArticleCategoryPlugin\Wame\ArticleModule\Wame\AdminModule\Forms\ICategoryTreeFormContainerFactory;
+use Wame\ArticleCategoryPlugin\Vendor\Wame\AdminModule\Forms\ICategoryTreeFormContainerFactory;
 use Wame\ArticleModule\Forms\IPaginatorVisibilityFormContainerFactory;
 use Wame\ArticleModule\Forms\IFilterVisibilityFormContainerFactory;
 use Wame\ArticleModule\Forms\ILimitFormContainerFactory;
