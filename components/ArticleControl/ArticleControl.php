@@ -16,17 +16,17 @@ interface IArticleControlFactory extends IEntityControlFactory
 {
 
     /** @return ArticleControl */
-    public function create($entity);
+    public function create($entity = null);
 }
 
 class ArticleControl extends BaseControl implements DataLoaderControl
 {
 
-    public function __construct(Container $container, $entity)
+    public function __construct(Container $container, $entity = null)
     {
         parent::__construct($container);
         if ($entity) {
-            $this->getStatus()->set('entity', $entity);
+            $this->getStatus()->set(ArticleEntity::class, $entity);
         }
     }
 

@@ -74,7 +74,7 @@ class EditArticleForm extends FormFactory
 			
 			$presenter->redirect('this');
 		} catch (\Exception $e) {
-            \Wame\Utils\Exception::handleFormException($e, $form);
+            \Wame\Utils\Exception::handleException($e, $form);
 			$this->entityManager->clear();
 		}
 	}

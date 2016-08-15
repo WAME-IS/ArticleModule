@@ -15,9 +15,10 @@ class ArticlePresenter extends BasePresenter
     /** @var IArticleControlFactory */
     private $IArticleControlFactory;
 
-    public function injectArticleList(IArticleListControlFactory $IArticleListControlFactory)
+    public function injectArticleList(IArticleListControlFactory $IArticleListControlFactory, IArticleControlFactory $IArticleControlFactory)
     {
         $this->IArticleListControlFactory = $IArticleListControlFactory;
+        $this->IArticleControlFactory = $IArticleControlFactory;
     }
 
     public function actionDefault()
@@ -31,11 +32,6 @@ class ArticlePresenter extends BasePresenter
         $articleControl = $this->IArticleControlFactory->create();
         $articleControl->setArticleId($id);
         $this->addComponent($articleControl, 'article');
-    }
-    
-    public function renderShow()
-    {
-        $this->bindMeta($this['article']);
     }
     
 }

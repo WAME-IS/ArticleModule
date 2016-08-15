@@ -1,6 +1,3 @@
-Dump
-{? dump($article)}
-{*
 <article>
     {position articleControlTop}
     
@@ -8,8 +5,7 @@ Dump
 		<h2><a href="{plink :Article:Article:show, $article->id}">{$article->title}</a></h2>
 	</header>
 
-	<div id="author">{_'author'}: {$article->createUser->fullName}</div>
+	{if $article->createUser}<div id="author">{_'author'}: {$article->createUser->fullName}</div>{/if}
 
 	<p id="description">{$article->description}</p>
 </article>
-*}
