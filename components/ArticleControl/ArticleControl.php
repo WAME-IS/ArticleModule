@@ -19,9 +19,12 @@ interface IArticleControlFactory extends IEntityControlFactory
     public function create($entity = null);
 }
 
-class ArticleControl extends BaseControl implements DataLoaderControl
+class ArticleControl extends BaseControl /* implements DataLoaderControl */
 {
 
+    /** @var int */
+    private $articleId;
+    
     public function __construct(Container $container, $entity = null)
     {
         parent::__construct($container);
