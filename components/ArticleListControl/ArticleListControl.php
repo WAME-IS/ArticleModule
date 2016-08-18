@@ -6,12 +6,8 @@ use Nette\ComponentModel\IContainer;
 use Nette\DI\Container;
 use Wame\ArticleModule\Components\ArticleListControl;
 use Wame\ArticleModule\Entities\ArticleEntity;
-use Wame\ChameleonComponents\Definition\ControlDataDefinition;
-use Wame\ChameleonComponents\Definition\DataDefinition;
-use Wame\ChameleonComponents\Definition\DataDefinitionTarget;
 use Wame\ChameleonComponents\IO\DataLoaderControl;
-use Wame\ChameleonComponentsDoctrineListControl\Provider\ChameleonComponentsListProvider;
-use Wame\ListControl\Components\ProvidedListControl;
+use Wame\ChameleonComponentsDoctrineListControl\Components\ChameleonListControl;
 
 interface IArticleListControlFactory
 {
@@ -20,19 +16,18 @@ interface IArticleListControlFactory
     public function create();
 }
 
-class ArticleListControl extends ProvidedListControl implements DataLoaderControl
+class ArticleListControl extends ChameleonListControl implements DataLoaderControl
 {
 
     public function __construct(Container $container, IArticleControlFactory $IArticleControlFactory, IArticleEmptyListControl $IArticleEmptyListControl, IContainer $parent = NULL, $name = NULL)
     {
         parent::__construct($container, $parent, $name);
-        $this->setProvider(new ChameleonComponentsListProvider());
         $this->setComponentFactory($IArticleControlFactory);
         $this->setNoItemsFactory($IArticleEmptyListControl);
     }
 
-    public function getDataDefinition()
+    public function getListType()
     {
-        return new ControlDataDefinition($this, new DataDefinition(new DataDefinitionTarget(ArticleEntity::class, true)));
+        return ArticleEntity::class;
     }
 }
