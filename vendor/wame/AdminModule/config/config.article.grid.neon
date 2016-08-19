@@ -1,0 +1,12 @@
+services:
+	ArticleGrid:
+		class: Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid
+		setup:
+			- add(Wame\DataGridControl\Columns\Id())
+			- add(Wame\DataGridControl\Columns\Title())
+			- add(Wame\DataGridControl\Columns\Published())
+			- add(Wame\DataGridControl\Columns\CreateUser())
+			- add(Wame\DataGridControl\Columns\Status())
+			- add(Wame\DataGridControl\Columns\CreateDate())
+			- add(Wame\DataGridControl\Actions\Edit())
+			- add(Wame\DataGridControl\Actions\Delete())

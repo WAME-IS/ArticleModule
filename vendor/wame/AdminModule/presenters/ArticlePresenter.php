@@ -29,9 +29,6 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	/** @var EntityManager @inject */
 	public $entityManager;
 	
-	/** @var IDataGridControlFactory @inject */
-	public $gridControl;
-	
 	/** @var ArticleGrid @inject */
 	public $articleGrid;
 
@@ -93,7 +90,7 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	/** components ************************************************************/
 	
 	/**
-	 * Create article
+	 * Create article form component
 	 * 
 	 * @return CreateArticleForm	form
 	 */
@@ -105,7 +102,7 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	}
 	
 	/**
-	 * Edit article
+	 * Edit article form component
 	 * 
 	 * @return EditUserForm		form
 	 */
@@ -116,16 +113,24 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		return $form;
 	}
 	
+    /**
+     * Article grid component
+     * 
+     * @return type
+     */
 	protected function createComponentArticleGrid()
 	{
         $qb = $this->articleRepository->createQueryBuilder('a');
-		$grid = $this->gridControl->create();
-		$grid->setDataSource($qb);
-		$grid->setProvider($this->articleGrid);
+		$this->articleGrid->setDataSource($qb);
 		
-		return $grid;
+		return $this->articleGrid;
 	}
 	
+    /**
+     * Gallery Picker 2 component
+     * 
+     * @return type
+     */
 	protected function createComponentGalleryPicker2()
 	{
 		$control = $this->galleryPicker2Control;
@@ -133,7 +138,7 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	}
 	
 	/**
-	 * Menu item form
+	 * Menu item form component
 	 * 
 	 * @return MenuItemForm
 	 */
@@ -150,7 +155,7 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	}
 	
 	/**
-	 * Menu component form
+	 * ArticleList form component
 	 * 
 	 * @return ComponentForm
 	 */

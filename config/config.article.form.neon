@@ -25,6 +25,7 @@ services:
 			- addFormContainer(Wame\ArticleModule\Forms\StatusFormContainer(), 'StatusFormContainer', 96)
 			- addFormContainer(Wame\ArticleModule\Forms\DescriptionFormContainer(), 'DescriptionFormContainer', 95)
 			- addFormContainer(Wame\ArticleModule\Forms\TextFormContainer(), 'TextFormContainer', 94)
+			- addFormContainer(Wame\ArticleModule\Forms\EditorFormContainer(), 'EditorFormContainer', 93)
 
 	# Edit article in administration form
 	EditArticleForm:
@@ -36,6 +37,7 @@ services:
 			- addFormContainer(Wame\ArticleModule\Forms\StatusFormContainer(), 'StatusFormContainer', 96)
 			- addFormContainer(Wame\ArticleModule\Forms\DescriptionFormContainer(), 'DescriptionFormContainer', 95)
 			- addFormContainer(Wame\ArticleModule\Forms\TextFormContainer(), 'TextFormContainer', 94)
+			- addFormContainer(Wame\ArticleModule\Forms\EditorFormContainer(), 'EditorFormContainer', 93)
 
 	ArticleListForm:
 		class: Wame\ArticleModule\Forms\ArticleListForm
