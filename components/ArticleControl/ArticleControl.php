@@ -8,7 +8,6 @@ use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ChameleonComponents\Definition\ControlDataDefinition;
 use Wame\ChameleonComponents\Definition\DataDefinition;
 use Wame\ChameleonComponents\Definition\DataDefinitionTarget;
-use Wame\ChameleonComponents\IO\DataLoaderControl;
 use Wame\Core\Components\BaseControl;
 use Wame\ListControl\Components\IEntityControlFactory;
 
