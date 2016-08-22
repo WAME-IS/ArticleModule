@@ -2,10 +2,11 @@
 
 namespace Wame\ArticleModule\Entities;
 
-use DateTime,
-	Doctrine\ORM\Mapping as ORM,
-	Wame\Core\Entities\Columns,
-	Wame\LanguageModule\Entities\TranslatableEntity;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use Wame\Core\Entities\BaseEntity;
+use Wame\Core\Entities\Columns;
+use Wame\LanguageModule\Entities\TranslatableEntity;
 
 /**
  * @ORM\Table(name="wame_article")
@@ -19,7 +20,7 @@ class ArticleEntity extends TranslatableEntity
 	use Columns\Status;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="Wame\ArticleModule\Entities\ArticleLangEntity", mappedBy="article", fetch="EAGER")
+	 * @ORM\OneToMany(targetEntity="ArticleLangEntity", mappedBy="article", fetch="EAGER")
 	 */
 	protected $langs;
 

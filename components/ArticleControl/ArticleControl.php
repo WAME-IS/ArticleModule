@@ -8,6 +8,7 @@ use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ChameleonComponents\Definition\ControlDataDefinition;
 use Wame\ChameleonComponents\Definition\DataDefinition;
 use Wame\ChameleonComponents\Definition\DataDefinitionTarget;
+use Wame\ChameleonComponents\IO\DataLoaderControl;
 use Wame\Core\Components\BaseControl;
 use Wame\ListControl\Components\IEntityControlFactory;
 
@@ -18,7 +19,7 @@ interface IArticleControlFactory extends IEntityControlFactory
     public function create($entity = null);
 }
 
-class ArticleControl extends BaseControl /* implements DataLoaderControl */
+class ArticleControl extends BaseControl implements DataLoaderControl
 {
 
     /** @var int */
