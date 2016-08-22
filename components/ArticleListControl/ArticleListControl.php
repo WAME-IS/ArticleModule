@@ -7,7 +7,7 @@ use Nette\DI\Container;
 use Wame\ArticleModule\Components\ArticleListControl;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ChameleonComponents\IO\DataLoaderControl;
-use Wame\ChameleonComponentsDoctrineListControl\Components\ChameleonListControl;
+use Wame\ChameleonComponentsListControl\Components\ChameleonListControl;
 
 interface IArticleListControlFactory
 {
