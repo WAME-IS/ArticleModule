@@ -22,18 +22,6 @@ services:
     # Events
     - {class: Wame\ArticleModule\Events\ArticleListFormListener, tags: [run]}
 
-    ArticleGrid:
-        class: Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid
-        setup:
-            - addColumn(Wame\DataGridControl\IdGridColumn())
-            - addColumn(Wame\DataGridControl\TitleGridColumn())
-            - addColumn(Wame\DataGridControl\PublishedGridColumn())
-            - addColumn(Wame\DataGridControl\CreatorGridColumn())
-            - addColumn(Wame\DataGridControl\StatusGridColumn())
-            - addColumn(Wame\DataGridControl\CreateGridColumn())
-            - addColumn(Wame\DataGridControl\EditGridAction())
-            - addColumn(Wame\DataGridControl\DeleteGridAction())
-
 doctrine:
     metadata:
         Wame\ArticleModule\Entities: %appDir%/../vendor/wame/ArticleModule/entities
