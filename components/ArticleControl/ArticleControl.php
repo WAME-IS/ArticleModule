@@ -3,6 +3,7 @@
 namespace Wame\ArticleModule\Components;
 
 use Doctrine\Common\Collections\Criteria;
+use Nette\Application\BadRequestException;
 use Nette\DI\Container;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ChameleonComponents\Definition\ControlDataDefinition;
@@ -24,10 +25,21 @@ class ArticleControl extends BaseControl implements DataLoaderControl
 
     /** @var int */
     private $articleId;
-    
+
+    /** @var ArticleEntity */
+    private $article;
+
     public function __construct(Container $container, $entity = null)
     {
         parent::__construct($container);
+
+        $this->getStatus()->get(ArticleEntity::class, function($article) {
+            if (!$article) {
+                throw new BadRequestException("Article with this id doesn't exist");
+            }
+            $this->article = $article;
+        });
+
         if ($entity) {
             $this->getStatus()->set(ArticleEntity::class, $entity);
         }
@@ -53,6 +65,6 @@ class ArticleControl extends BaseControl implements DataLoaderControl
 
     public function render()
     {
-        $this->template->article = $this->getStatus()->get('article');
+        $this->template->article = $this->article;
     }
 }

@@ -2,7 +2,10 @@
 
 namespace Wame\ArticleModule\Vendor\Wame\Core\Registers\Types;
 
-class ArticleStatusType extends \Wame\Core\Registers\Types\StatusType
+use Wame\ArticleModule\Entities\ArticleEntity;
+use Wame\Core\Registers\Types\StatusType;
+
+class ArticleStatusType extends StatusType
 {
     public function getStatusName()
     {
@@ -16,7 +19,7 @@ class ArticleStatusType extends \Wame\Core\Registers\Types\StatusType
     
     public function getEntityName()
     {
-        return \Wame\ArticleModule\Entities\ArticleEntity::class;
+        return ArticleEntity::class;
     }
     
 }
