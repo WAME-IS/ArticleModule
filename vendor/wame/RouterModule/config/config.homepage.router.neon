@@ -1,0 +1,4 @@
+router:
+    defaultRoutes:
+        '/[<lang>/]articles': 'Article:Article:default'
+        '/[<lang>/]article/<id>': 'Article:Article:show'

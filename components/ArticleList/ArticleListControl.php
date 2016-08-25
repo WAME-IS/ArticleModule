@@ -56,7 +56,11 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
     /** @var string */
     private $sort;
     
+    /** @var integer */
     private $page = 0;
+    
+    /** @var array */
+    private $categories = [];
 
     /** @var ArticleEntity[] */
     private $article;
@@ -214,16 +218,6 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
     {
         $this->orderBy = $name;
     }
-
-    /**
-     * Set category
-     * 
-     * @param type $category
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
-    }
     
     
     /**
@@ -231,10 +225,18 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
      */
     private function getArticles()
     {
-        $criteria = ['status' => ArticleRepository::STATUS_PUBLISHED];
-        $orderBy = [$this['sort']->getOrder()['value'] => 'ASC'];
+        $qb = $this->articleRepository->createQueryBuilder('a');
+        $qb->join(\Wame\CategoryModule\Entities\CategoryItemEntity::class, 'ci', \Doctrine\ORM\Query\Expr\Join::WITH, 'ci.item_id = a.id');
+        $qb->join(\Wame\CategoryModule\Entities\CategoryEntity::class, 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'ci.category_id = c.id');
+        $qb->andWhere('ci.type = :type')->setParameter('type', 'article');
+        $qb->andWhere($qb->expr()->in('ci.item_id', $this->categories));
+        $qb->orderBy('a.' . $this['sort']->getOrder()['value'], 'ASC');
+        
+        $articles = $qb->getQuery()->getResult();
 
-        $articles = $this->articleRepository->find($criteria, $orderBy);
+//        $criteria = ['status' => ArticleRepository::STATUS_PUBLISHED];
+//        $orderBy = [$this['sort']->getOrder()['value'] => 'ASC'];
+//        $articles = $this->articleRepository->find($criteria, $orderBy);
 
         $limit = $this->itemsPerPage;
         $offset = $limit * $this->getPage();
@@ -335,6 +337,7 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
         $this->paginatorVisible = $this->getComponentParameter('paginator_visible');
         $this->filterVisible = $this->getComponentParameter('filter_visible');
         $this->sortVisible = $this->getComponentParameter('sort_visible');
+        $this->categories = $this->getComponentParameter('categories');
     }
     
 }
