@@ -93,7 +93,7 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
     /**
      * Render
      */
-    public function render()
+    public function render($articles = null)
     {
         $this->setComponent();
 

@@ -18,7 +18,7 @@ class EditorFormContainer extends BaseFormContainer
 	{
 		$form = $this->getForm();
 		
-		$form->addEditor('editor', _('Editor'));
+		$form->addEditor('text', _('Text'));
     }
 
 
@@ -26,7 +26,7 @@ class EditorFormContainer extends BaseFormContainer
 	{
 		$form = $this->getForm();
 		
-		$form['editor']->setDefaultValue($object->articleEntity->text);
+		$form['text']->setDefaultValue($object->articleEntity->text);
 	}
 
 }

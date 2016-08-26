@@ -59,12 +59,6 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
 	/** @persistent */
     public $author;
 	
-	
-	public function __construct(\Wame\ArticleModule\Repositories\ArticleRepository $articleRepository)
-    {
-		parent::__construct();
-	}
-	
     
     /** actions ***************************************************************/
     
@@ -94,7 +88,7 @@ class ArticlePresenter extends \App\Core\Presenters\BasePresenter
     
 	public function renderDefault()
 	{
-		
+		$this->template->siteTitle = _('Articles');
 	}
 	
 	
