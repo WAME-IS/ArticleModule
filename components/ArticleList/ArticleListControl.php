@@ -226,11 +226,14 @@ class ArticleListControl extends \Wame\Core\Components\BaseControl
     private function getArticles()
     {
         $qb = $this->articleRepository->createQueryBuilder('a');
-        $qb->join(\Wame\CategoryModule\Entities\CategoryItemEntity::class, 'ci', \Doctrine\ORM\Query\Expr\Join::WITH, 'ci.item_id = a.id');
-        $qb->join(\Wame\CategoryModule\Entities\CategoryEntity::class, 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'ci.category_id = c.id');
-        $qb->andWhere('ci.type = :type')->setParameter('type', 'article');
-        $qb->andWhere($qb->expr()->in('ci.item_id', $this->categories));
-        $qb->orderBy('a.' . $this['sort']->getOrder()['value'], 'ASC');
+//        $qb->orderBy('a.' . $this['sort']->getOrder()['value'], 'ASC');
+        
+        if($this->categories) {
+            $qb->join(\Wame\CategoryModule\Entities\CategoryItemEntity::class, 'ci', \Doctrine\ORM\Query\Expr\Join::WITH, 'ci.item_id = a.id');
+            $qb->join(\Wame\CategoryModule\Entities\CategoryEntity::class, 'c', \Doctrine\ORM\Query\Expr\Join::WITH, 'ci.category_id = c.id');
+            $qb->andWhere('ci.type = :type')->setParameter('type', 'article');
+            $qb->andWhere($qb->expr()->in('ci.item_id', $this->categories));
+        }
         
         $articles = $qb->getQuery()->getResult();
 
