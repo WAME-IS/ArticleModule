@@ -2,19 +2,19 @@
     {position articleControlTop}
     
 	<header>
-		<h1>{$article->title}</h1>
+		<h1>{$entity->title}</h1>
 	</header>
 
-	<div id="author">{_'author'}: {$article->createUser->fullName}</div>
+	<div id="author">{_'author'}: {$entity->createUser->fullName}</div>
 
-	<p id="description">{$article->description}</p>
+	<p id="description">{$entity->description}</p>
 
 	<div>
-		{$article->text|noescape}
+		{$entity->text|noescape}
 	</div>
 
 	<footer>
-		<p>{_'Published'}: {$article->publishStartDate|date:'d.m.Y, H:i'}</p>
+		<p>{_'Published'}: {$entity->publishStartDate|date:'d.m.Y, H:i'}</p>
 	</footer>
 	
     {position articleControlBottom}

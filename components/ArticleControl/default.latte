@@ -2,11 +2,11 @@
     {position articleControlTop}
     
 	<header>
-		<h2><a href="{plink :Article:Article:show $article->id}">{$article->title}</a></h2>
+		<h2><a href="{plink :Article:Article:show $entity->id}">{$entity->title}</a></h2>
 	</header>
 
-	{if $article->createUser}<div id="author">{_'author'}: {$article->createUser->fullName}</div>{/if}
+	{if $entity->createUser}<div id="author">{_'author'}: {$entity->createUser->fullName}</div>{/if}
 
-	<p id="description">{$article->description}</p>
+	<p id="description">{$entity->description}</p>
     
 </article>
