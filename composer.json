@@ -14,7 +14,9 @@
         "wame/AdminModule": "*",
         "wame/MenuModule": "*",
         "wame/PermissionModule": "*",
-        "wame/UserModule": "*"
+        "wame/UserModule": "*",
+        "wame/CategoryModule": "*",
+        "wame/EditorFormControl": "*"
     },
     "autoload": {
         "classmap": [

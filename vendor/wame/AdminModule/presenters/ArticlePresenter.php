@@ -2,18 +2,12 @@
 
 namespace App\AdminModule\Presenters;
 
+use Kdyby\Doctrine\EntityManager;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\EditArticleForm;
 use Wame\ArticleModule\Repositories\ArticleRepository;
-use Wame\MenuModule\Forms\MenuItemForm;
-
-use Wame\DataGridControl\IDataGridControlFactory;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid;
-
-use Wame\GalleryModule\Controls\GalleryPicker2Control;
-
-
-use Kdyby\Doctrine\EntityManager;
+use Wame\MenuModule\Forms\MenuItemForm;
 
 class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 {	
@@ -34,9 +28,6 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 
 	/** @var MenuItemForm @inject */
 	public $menuItemForm;
-	
-	/** @var GalleryPicker2Control @inject */
-	public $galleryPicker2Control;
 	
 	
 	/** handlers **************************************************************/
@@ -124,17 +115,6 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 		$this->articleGrid->setDataSource($qb);
 		
 		return $this->articleGrid;
-	}
-	
-    /**
-     * Gallery Picker 2 component
-     * 
-     * @return type
-     */
-	protected function createComponentGalleryPicker2()
-	{
-		$control = $this->galleryPicker2Control;
-		return $control;
 	}
 	
 	/**
