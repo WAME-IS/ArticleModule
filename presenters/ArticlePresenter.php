@@ -30,7 +30,7 @@ class ArticlePresenter extends BasePresenter
     public function actionShow($id)
     {
         $articleControl = $this->IArticleControlFactory->create();
-        $articleControl->setArticleId($id);
+        $articleControl->setEntityId($id);
         $this->addComponent($articleControl, 'article');
     }
     
