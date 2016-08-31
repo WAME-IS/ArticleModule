@@ -3,7 +3,7 @@
 namespace Wame\ArticleModule\Components;
 
 use Wame\ArticleModule\Entities\ArticleEntity;
-use Wame\Core\Components\SingleEntityControl;
+use Wame\ChameleonComponents\Components\SingleEntityControl;
 use Wame\ListControl\Components\IEntityControlFactory;
 
 interface IArticleControlFactory extends IEntityControlFactory
