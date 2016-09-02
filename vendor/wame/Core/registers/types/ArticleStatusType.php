@@ -7,10 +7,6 @@ use Wame\Core\Registers\Types\StatusType;
 
 class ArticleStatusType extends StatusType
 {
-    public function getStatusName()
-    {
-        return "article";
-    }
 
     public function getTitle()
     {
