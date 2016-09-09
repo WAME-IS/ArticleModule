@@ -94,7 +94,7 @@ class CreateArticleForm extends FormFactory
         
 //        foreach($this->gs->getLanguages() as $lang => $fullLang) {
 		$articleLangEntity = new ArticleLangEntity();
-		$articleLangEntity->article = $articleEntity;
+		$articleLangEntity->setEntity($articleEntity);
 		$articleLangEntity->lang = $this->lang;
 		$articleLangEntity->title = $values['title'];
 		$articleLangEntity->slug = $values['slug']?:(Strings::webalize($values['title']));
