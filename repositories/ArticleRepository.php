@@ -3,10 +3,6 @@
 namespace Wame\ArticleModule\Repositories;
 
 use Doctrine\ORM\Query\Expr\Join;
-use h4kuna\Gettext\GettextSetup;
-use Kdyby\Doctrine\EntityManager;
-use Nette\DI\Container;
-use Nette\Security\User;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
 use Wame\Core\Exception\RepositoryException;
@@ -21,13 +17,9 @@ class ArticleRepository extends TranslatableRepository
     const STATUS_UNPUBLISHED = 2;
 
     
-    public function __construct(
-        Container $container, 
-        EntityManager $entityManager, 
-        GettextSetup $translator,
-        User $user
-    ) {
-        parent::__construct($container, $entityManager, $translator, $user, ArticleEntity::class);
+    public function __construct()
+    {
+        parent::__construct(ArticleEntity::class, ArticleLangEntity::class);
     }
 
     

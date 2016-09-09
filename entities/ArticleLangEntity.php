@@ -3,7 +3,7 @@
 namespace Wame\ArticleModule\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use Wame\Core\Entities\BaseEntity;
+use Wame\Core\Entities\BaseLangEntity;
 use Wame\Core\Entities\Columns;
 use Wame\RestApiModule\DataConverter\Annotations\noApi;
 
@@ -11,7 +11,7 @@ use Wame\RestApiModule\DataConverter\Annotations\noApi;
  * @ORM\Table(name="wame_article_lang")
  * @ORM\Entity
  */
-class ArticleLangEntity extends BaseEntity 
+class ArticleLangEntity extends BaseLangEntity 
 {
  	use Columns\Identifier;
 	use Columns\Description;
@@ -23,8 +23,8 @@ class ArticleLangEntity extends BaseEntity
 
 	/**
      * @noApi
-     * @ORM\ManyToOne(targetEntity="ArticleEntity", inversedBy="langs", fetch="LAZY")
-     * @ORM\JoinColumn(name="article_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ArticleEntity", inversedBy="langs")
+     * @ORM\JoinColumn(name="article_id", referencedColumnName="id")
      */
 	protected $article;
 
@@ -50,6 +50,12 @@ class ArticleLangEntity extends BaseEntity
 		 
 		return $this;
 	}
-	
+
+    /** {@inheritDoc} */
+    public function setEntity($entity)
+    {
+        $this->article = $entity;
+    }
+
 }
 

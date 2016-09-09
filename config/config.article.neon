@@ -12,7 +12,9 @@ services:
             - allow('moderator', 'article', 'delete')
 
     # Repositories
-    - Wame\ArticleModule\Repositories\ArticleRepository
+    ArticleRepository:
+        class: Wame\ArticleModule\Repositories\ArticleRepository
+        inject: yes
 
     # Factories
     - Wame\ArticleModule\Components\IArticleControlFactory
