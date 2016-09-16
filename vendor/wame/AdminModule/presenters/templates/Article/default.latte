@@ -1,11 +1,6 @@
 {block content}
 	<h1>{$siteTitle}</h1>
-	
-	<a n:if="count($articles) > 0" class="btn btn-success pull-right" n:href=":Admin:Article:create, 'id' => null">
-		<span class="fa fa-plus"></span>
-		{_'Create article'}
-	</a>
-
+    
 	{if count($articles) == 0}
 		<div class="lead text-muted">{_'You do not have create any articles.'}</div>
 		<a class="btn btn-success" n:href=":Admin:Article:create, 'id' => null">{_'Create first article'}</a>
