@@ -23,6 +23,7 @@ class ArticlePresenter extends BasePresenter
 
     public function actionDefault()
     {
+        $this->template->siteTitle = _('Articles');
         $articleListControl = $this->IArticleListControlFactory->create();
         $this->addComponent($articleListControl, 'articleList');
     }

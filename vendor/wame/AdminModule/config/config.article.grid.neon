@@ -1,12 +1,15 @@
 services:
-	ArticleGrid:
-		class: Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid
-		setup:
-			- add(Wame\DataGridControl\Columns\Id())
-			- add(Wame\DataGridControl\Columns\Title())
-			- add(Wame\DataGridControl\Columns\Published())
-			- add(Wame\DataGridControl\Columns\CreateUser())
-			- add(Wame\DataGridControl\Columns\Status())
-			- add(Wame\DataGridControl\Columns\CreateDate())
-			- add(Wame\DataGridControl\Actions\Edit())
-			- add(Wame\DataGridControl\Actions\Delete())
+    ArticleGrid:
+        class: Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid
+        setup:
+            - add(Wame\DataGridControl\Columns\Id(), null, {priority: 90})
+            - add(Wame\DataGridControl\Columns\Title(), null, {priority: 80})
+            - add(Wame\DataGridControl\Columns\Published(), null, {priority: 70})
+            - add(Wame\DataGridControl\Columns\CreateUser(), null, {priority: 60})
+            - add(Wame\DataGridControl\Columns\Status(), null, {priority: 50})
+            - add(Wame\DataGridControl\Columns\CreateDate(), null, {priority: 40})
+            - add(Wame\DataGridControl\Actions\Edit())
+            - add(Wame\DataGridControl\Actions\Delete())
+            - add(Wame\DataGridControl\ToolbarButtons\Add())
+            - add(Wame\DataGridControl\GroupActions\DeleteSelected())
+            - add(Wame\DataGridControl\GroupActions\ChangeStatusSelected())
