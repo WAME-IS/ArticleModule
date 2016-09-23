@@ -1,9 +1,14 @@
 {block content}
-	<h1>{$siteTitle}</h1>
-    
-	{if count($articles) == 0}
-		<div class="lead text-muted">{_'You do not have create any articles.'}</div>
-		<a class="btn btn-success" n:href=":Admin:Article:create, 'id' => null">{_'Create first article'}</a>
-	{else}
-		{control articleGrid}
-	{/if}
+
+{if count($articles) == 0}
+    <div class="empty-block">
+        <p>{_'You do not have create any articles.'}</p>
+
+        <a class="btn btn-success btn-lg" n:href=":Admin:Article:create, 'id' => null">
+            <i class="material-icons">add_circle_outline</i>
+            {_'Create first article'}
+        </a>
+    </div>
+{else}
+    {control articleGrid}
+{/if}
