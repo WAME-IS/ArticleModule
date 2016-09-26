@@ -2,3 +2,7 @@ router:
     defaultRoutes:
         '/[<lang>/]articles': 'Article:Article:default'
         '/[<lang>/]article/<id>': 'Article:Article:show'
+        '/[<lang>/]admin/article': 'Admin:Article:default'
+        '/[<lang>/]admin/article/create': 'Admin:Article:create'
+        '/[<lang>/]admin/article/edit/<id>': 'Admin:Article:edit'
+        '/[<lang>/]admin/article/delete/<id>': 'Admin:Article:delete'
