@@ -4,7 +4,6 @@ namespace Wame\ArticleModule\Components;
 
 use Nette\ComponentModel\IContainer;
 use Nette\DI\Container;
-use Wame\ArticleModule\Components\ArticleListControl;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ChameleonComponents\IO\DataLoaderControl;
 use Wame\ChameleonComponentsListControl\Components\ChameleonListControl;
