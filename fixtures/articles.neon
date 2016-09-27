@@ -1,0 +1,19 @@
+Wame\UserModule\Entities\UserEntity:
+    "user":
+        id: 1
+
+
+Wame\ArticleModule\Entities\ArticleEntity:
+    "article":
+        status: true
+        createUser: @user
+
+
+Wame\ArticleModule\Entities\ArticleLangEntity:
+    "lang":
+        lang: "sk"
+        title: "<words(4, true)>"
+        description: "<paragraph()>"
+        text: "<realText()>"
+        editDate: "<dateTime()>"
+        article: "@article"
