@@ -3,19 +3,20 @@
 namespace App\AdminModule\Presenters;
 
 use Kdyby\Doctrine\EntityManager;
-use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm;
-use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\EditArticleForm;
+//use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm;
+//use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\EditArticleForm;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 use Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid;
 use Wame\MenuModule\Forms\MenuItemForm;
+use Wame\DynamicObject\Vendor\Wame\AdminModule\Presenters\AdminFormPresenter;
 
-class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
+class ArticlePresenter extends AdminFormPresenter
 {	
-	/** @var CreateArticleForm @inject */
-	public $createArticleForm;
-	
-	/** @var EditArticleForm @inject */
-	public $editArticleForm;
+//	/** @var CreateArticleForm @inject */
+//	public $createArticleForm;
+//	
+//	/** @var EditArticleForm @inject */
+//	public $editArticleForm;
 
 	/** @var ArticleRepository @inject */
 	public $articleRepository;
@@ -29,9 +30,23 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	/** @var MenuItemForm @inject */
 	public $menuItemForm;
 	
+    
+    /** actions ***************************************************************/
+    
+    /**
+     * Action edit
+     */
+    public function actionEdit()
+    {
+        $this->entity = $this->articleRepository->get(['id' => $this->id]);
+    }
+    
 	
 	/** handlers **************************************************************/
 	
+    /**
+     * Handle delete
+     */
 	public function handleDelete()
 	{
 		$this->articleRepository->delete(['id' => $this->id]);
@@ -43,19 +58,26 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 	
 	/** renders ***************************************************************/
 	
+    /**
+     * Render default
+     */
 	public function renderDefault()
 	{
 		$this->template->siteTitle = _('Articles');
 		$this->template->articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
 	}
 	
-	
+	/**
+     * Render create
+     */
 	public function renderCreate()
 	{
 		$this->template->siteTitle = _('Create new article');
 	}
 	
-	
+	/**
+     * Render edit
+     */
 	public function renderEdit()
 	{
 		$this->template->siteTitle = _('Edit article');
@@ -150,5 +172,14 @@ class ArticlePresenter extends \App\AdminModule\Presenters\BasePresenter
 
 		return $form;
 	}
-	
+
+    
+    /** implements ************************************************************/
+    
+    /** {@inheritDoc} */
+    protected function getFormBuilderServiceAlias()
+    {
+        return "Admin.ArticleFormBuilder";
+    }
+
 }
