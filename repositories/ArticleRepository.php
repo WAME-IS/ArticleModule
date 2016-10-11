@@ -31,7 +31,6 @@ class ArticleRepository extends TranslatableRepository
     public function getStatusList()
     {
         return [
-            self::STATUS_REMOVE => _('Delete'),
             self::STATUS_PUBLISHED => _('Published'),
             self::STATUS_UNPUBLISHED => _('Unpublished')
         ];
