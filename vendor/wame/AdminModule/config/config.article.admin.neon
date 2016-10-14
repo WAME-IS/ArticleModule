@@ -6,33 +6,13 @@ services:
             - setRepository(@ArticleRepository)
             - add(@Wame\DynamicObject\Forms\Containers\ITitleContainerFactory, 'TitleContainer', {priority: 90})
 #            - add(@Wame\DynamicObject\Forms\Containers\ISlugContainerFactory, 'SlugContainer', {priority: 80})
-            - add(@Wame\DynamicObject\Forms\Containers\IPublishDateContainerFactory, 'PublishDateContainer', {priority: 70})
-            - add(@Wame\DynamicObject\Forms\Containers\IStatusContainerFactory, 'StatusContainer', {priority: 60})
-            - add(@Wame\DynamicObject\Forms\Containers\IDescriptionContainerFactory, 'DescriptionContainer', {priority: 50})
-            - add(@Wame\DynamicObject\Forms\Containers\ITextContainerFactory, 'TextContainer', {priority: 40})
+            - add(@Wame\DynamicObject\Forms\Containers\IDescriptionContainerFactory, 'DescriptionContainer', {priority: 60})
+            - add(@Wame\DynamicObject\Forms\Containers\ITextContainerFactory, 'TextContainer', {priority: 50})
+            - add(@Wame\DynamicObject\Forms\Groups\IPublishGroupFactory, 'PublishGroup', {priority: 40})
+            - add(@Wame\DynamicObject\Forms\Containers\IStatusContainerFactory, 'StatusContainer', {priority: 38})
+            - add(@Wame\DynamicObject\Forms\Containers\IPublishDateContainerFactory, 'PublishDateContainer', {priority: 35})
             - add(@Wame\DynamicObject\Forms\Containers\ISubmitContainerFactory, 'SubmitContainer', {priority: 0})
 
-#    # Create article in administration form
-#    CreateArticleForm:
-#        class: Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm
-#        setup:
-#            - addFormContainer(Wame\ArticleModule\Forms\TitleFormContainer(), 'TitleFormContainer', 99)
-#            - addFormContainer(Wame\ArticleModule\Forms\UrlFormContainer(), 'UrlFormContainer', 98)
-#            - addFormContainer(Wame\ArticleModule\Forms\PublishedFormContainer(), 'PublishedFormContainer', 97)
-#            - addFormContainer(Wame\ArticleModule\Forms\StatusFormContainer(), 'StatusFormContainer', 96)
-#            - addFormContainer(Wame\ArticleModule\Forms\DescriptionFormContainer(), 'DescriptionFormContainer', 95)
-#            - addFormContainer(Wame\ArticleModule\Forms\EditorFormContainer(), 'EditorFormContainer', 93)
-#
-#    # Edit article in administration form
-#    EditArticleForm:
-#        class: Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\EditArticleForm
-#        setup:
-#            - addFormContainer(Wame\ArticleModule\Forms\TitleFormContainer(), 'TitleFormContainer', 99)
-#            - addFormContainer(Wame\ArticleModule\Forms\UrlFormContainer(), 'UrlFormContainer', 98)
-#            - addFormContainer(Wame\ArticleModule\Forms\PublishedFormContainer(), 'PublishedFormContainer', 97)
-#            - addFormContainer(Wame\ArticleModule\Forms\StatusFormContainer(), 'StatusFormContainer', 96)
-#            - addFormContainer(Wame\ArticleModule\Forms\DescriptionFormContainer(), 'DescriptionFormContainer', 95)
-#            - addFormContainer(Wame\ArticleModule\Forms\EditorFormContainer(), 'EditorFormContainer', 93)
 
     # Grids
     ArticleGrid:
