@@ -6,7 +6,7 @@ services:
             - setRepository(@ArticleRepository)
             - add(@Wame\DynamicObject\Forms\Containers\ITitleContainerFactory, 'TitleContainer', {priority: 90})
 #            - add(@Wame\DynamicObject\Forms\Containers\ISlugContainerFactory, 'SlugContainer', {priority: 80})
-            - add(@Wame\DynamicObject\Forms\Containers\IDescriptionContainerFactory, 'DescriptionContainer', {priority: 60})
+            - add(@Wame\DynamicObject\Forms\Containers\IDescriptionEditorContainerFactory, 'DescriptionEditorContainer', {priority: 60})
             - add(@Wame\DynamicObject\Forms\Containers\ITextContainerFactory, 'TextContainer', {priority: 50})
             - add(@Wame\DynamicObject\Forms\Groups\IPublishGroupFactory, 'PublishGroup', {priority: 40})
             - add(@Wame\DynamicObject\Forms\Containers\IStatusContainerFactory, 'StatusContainer', {priority: 38})
