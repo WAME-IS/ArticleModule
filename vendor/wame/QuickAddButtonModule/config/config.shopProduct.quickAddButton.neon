@@ -1,0 +1,4 @@
+services:
+    QuickAddButtonRegister:
+        setup:
+            - add(Wame\ArticleModule\Vendor\Wame\QuickAddButtonModule\Components\QuickAddButtonControl\Article())
