@@ -2,44 +2,17 @@
 
 namespace App\AdminModule\Presenters;
 
-use Kdyby\Doctrine\EntityManager;
-//use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm;
-//use Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\EditArticleForm;
 use Wame\ArticleModule\Repositories\ArticleRepository;
-use Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid;
 use Wame\MenuModule\Forms\MenuItemForm;
 use Wame\DynamicObject\Vendor\Wame\AdminModule\Presenters\AdminFormPresenter;
 
 class ArticlePresenter extends AdminFormPresenter
-{	
-//	/** @var CreateArticleForm @inject */
-//	public $createArticleForm;
-//	
-//	/** @var EditArticleForm @inject */
-//	public $editArticleForm;
-
+{
 	/** @var ArticleRepository @inject */
-	public $articleRepository;
-	
-	/** @var EntityManager @inject */
-	public $entityManager;
-	
-	/** @var ArticleGrid @inject */
-	public $articleGrid;
+	public $repository;
 
 	/** @var MenuItemForm @inject */
 	public $menuItemForm;
-	
-    
-    /** actions ***************************************************************/
-    
-    /**
-     * Action edit
-     */
-    public function actionEdit()
-    {
-        $this->entity = $this->articleRepository->get(['id' => $this->id]);
-    }
     
 	
 	/** handlers **************************************************************/
@@ -49,7 +22,7 @@ class ArticlePresenter extends AdminFormPresenter
      */
 	public function handleDelete()
 	{
-		$this->articleRepository->delete(['id' => $this->id]);
+		$this->repository->delete(['id' => $this->id]);
 		
 		$this->flashMessage(_('Article has been successfully deleted'), 'success');
 		$this->redirect(':Admin:Article:', ['id' => null]);
@@ -64,7 +37,7 @@ class ArticlePresenter extends AdminFormPresenter
 	public function renderDefault()
 	{
 		$this->template->siteTitle = _('Articles');
-		$this->template->articles = $this->articleRepository->find(['status NOT IN (?)' => [ArticleRepository::STATUS_REMOVE]]);
+        $this->template->count = $this->count;
 	}
 	
 	/**
@@ -101,43 +74,6 @@ class ArticlePresenter extends AdminFormPresenter
 	
 	
 	/** components ************************************************************/
-	
-	/**
-	 * Create article form component
-	 * 
-	 * @return CreateArticleForm	form
-	 */
-	protected function createComponentCreateArticleForm() 
-	{
-		$form = $this->createArticleForm->build();
-		
-		return $form;
-	}
-	
-	/**
-	 * Edit article form component
-	 * 
-	 * @return EditUserForm		form
-	 */
-	protected function createComponentEditArticleForm() 
-	{
-		$form = $this->editArticleForm->setId($this->id)->build();
-
-		return $form;
-	}
-	
-    /**
-     * Article grid component
-     * 
-     * @return type
-     */
-	protected function createComponentArticleGrid()
-	{
-        $qb = $this->articleRepository->createQueryBuilder('a');
-		$this->articleGrid->setDataSource($qb);
-		
-		return $this->articleGrid;
-	}
 	
 	/**
 	 * Menu item form component
@@ -180,6 +116,12 @@ class ArticlePresenter extends AdminFormPresenter
     protected function getFormBuilderServiceAlias()
     {
         return "Admin.ArticleFormBuilder";
+    }
+    
+    /** {@inheritDoc} */
+    protected function getGridServiceAlias()
+    {
+        return "Admin.ArticleGrid";
     }
 
 }

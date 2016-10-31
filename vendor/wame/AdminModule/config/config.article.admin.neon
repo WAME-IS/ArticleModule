@@ -15,8 +15,8 @@ services:
 
 
     # Grids
-    ArticleGrid:
-        class: Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ArticleGrid
+    Admin.ArticleGrid:
+        class: \Wame\AdminModule\Vendor\Wame\DataGridControl\AdminDataGridControl
         setup:
             - add(Wame\DataGridControl\Columns\Id(), null, {priority: 90})
             - add(Wame\DataGridControl\Columns\Title(), null, {priority: 80})

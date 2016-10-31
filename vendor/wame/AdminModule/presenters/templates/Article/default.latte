@@ -1,6 +1,6 @@
 {block content}
 
-{if count($articles) == 0}
+{if $count == 0}
     <div class="empty-block">
         <p>{_'You do not have create any articles.'}</p>
 
@@ -10,5 +10,5 @@
         </a>
     </div>
 {else}
-    {control articleGrid}
+    {control grid}
 {/if}
