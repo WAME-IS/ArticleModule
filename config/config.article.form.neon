@@ -1,8 +1,4 @@
 services:
-#	# Forms
-#	ArticleForm:
-#		class: Wame\ArticleModule\Forms\ArticleForm
-
 	# Factories
 	- Wame\ArticleModule\Forms\ITitleFormContainerFactory
 	- Wame\ArticleModule\Forms\IUrlFormContainerFactory
@@ -14,28 +10,6 @@ services:
 	- Wame\ArticleModule\Forms\ISortFormContainerFactory
 	- Wame\ArticleModule\Forms\IPaginatorVisibilityFormContainerFactory
 	- Wame\ArticleModule\Forms\IFilterVisibilityFormContainerFactory
-
-	# Create article in administration form
-	CreateArticleForm:
-		class: Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\CreateArticleForm
-		setup:
-			- addFormContainer(Wame\ArticleModule\Forms\TitleFormContainer(), 'TitleFormContainer', 99)
-			- addFormContainer(Wame\ArticleModule\Forms\UrlFormContainer(), 'UrlFormContainer', 98)
-			- addFormContainer(Wame\ArticleModule\Forms\PublishedFormContainer(), 'PublishedFormContainer', 97)
-			- addFormContainer(Wame\ArticleModule\Forms\StatusFormContainer(), 'StatusFormContainer', 96)
-			- addFormContainer(Wame\ArticleModule\Forms\DescriptionFormContainer(), 'DescriptionFormContainer', 95)
-			- addFormContainer(Wame\ArticleModule\Forms\EditorFormContainer(), 'EditorFormContainer', 93)
-
-	# Edit article in administration form
-	EditArticleForm:
-		class: Wame\ArticleModule\Vendor\Wame\AdminModule\Forms\EditArticleForm
-		setup:
-			- addFormContainer(Wame\ArticleModule\Forms\TitleFormContainer(), 'TitleFormContainer', 99)
-			- addFormContainer(Wame\ArticleModule\Forms\UrlFormContainer(), 'UrlFormContainer', 98)
-			- addFormContainer(Wame\ArticleModule\Forms\PublishedFormContainer(), 'PublishedFormContainer', 97)
-			- addFormContainer(Wame\ArticleModule\Forms\StatusFormContainer(), 'StatusFormContainer', 96)
-			- addFormContainer(Wame\ArticleModule\Forms\DescriptionFormContainer(), 'DescriptionFormContainer', 95)
-			- addFormContainer(Wame\ArticleModule\Forms\EditorFormContainer(), 'EditorFormContainer', 93)
 
 	ArticleListForm:
 		class: Wame\ArticleModule\Forms\ArticleListForm
