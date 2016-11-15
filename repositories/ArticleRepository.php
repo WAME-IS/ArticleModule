@@ -7,6 +7,7 @@ use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
 use Wame\Core\Exception\RepositoryException;
 use Wame\LanguageModule\Repositories\TranslatableRepository;
+use Wame\Utils\Date;
 
 use Nette\Application\BadRequestException;
 
@@ -117,11 +118,11 @@ class ArticleRepository extends TranslatableRepository
             throw new BadRequestException(_('Article is unpublished or removed.'));
         }
 
-        if ($article->publishStartDate != null && strtotime($article->publishStartDate) < time()) {
+        if ($article->publishStartDate != null && strtotime(Date::toString($article->publishStartDate)) < time()) {
             throw new BadRequestException(_('Article has not been published.'));
         }
 
-        if ($article->publishEndDate != null && strtotime($article->publishEndDate) > time()) {
+        if ($article->publishEndDate != null && strtotime(Date::toString($article->publishEndDate)) > time()) {
             throw new BadRequestException(_('Out of time of article publication.'));
         }
 
@@ -172,7 +173,7 @@ class ArticleRepository extends TranslatableRepository
 
         $search->setParameter('phrase', '%' . $phrase . '%');
 
-        return $search->getQuery()->getResult();
+        return $search->getQuery()->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
     }
     
 }
