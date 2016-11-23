@@ -5,6 +5,7 @@ namespace App\ArticleModule\Presenters;
 use App\Core\Presenters\BasePresenter;
 use Wame\ArticleModule\Components\IArticleControlFactory;
 use Wame\ArticleModule\Components\IArticleListControlFactory;
+use Wame\ArticleModule\Components\ArticleControl;
 
 class ArticlePresenter extends BasePresenter
 {
@@ -13,6 +14,9 @@ class ArticlePresenter extends BasePresenter
 
     /** @var IArticleControlFactory */
     private $IArticleControlFactory;
+    
+    /** @var ArticleControl */
+    private $articleControl;
 
     
     public function injectArticleList(IArticleListControlFactory $IArticleListControlFactory, IArticleControlFactory $IArticleControlFactory)
@@ -21,18 +25,37 @@ class ArticlePresenter extends BasePresenter
         $this->IArticleControlFactory = $IArticleControlFactory;
     }
 
+    
+    /** Execution *************************************************************/
+    
     public function actionDefault()
     {
-        $this->template->siteTitle = _('Articles');
         $articleListControl = $this->IArticleListControlFactory->create();
         $this->addComponent($articleListControl, 'articleList');
     }
 
     public function actionShow()
     {
-        $articleControl = $this->IArticleControlFactory->create();
-        $articleControl->setEntityId($this->id);
-        $this->addComponent($articleControl, 'article');
+        $this->articleControl = $this->IArticleControlFactory->create();
+        $this->articleControl->setEntityId($this->id);
+        $this->addComponent($this->articleControl, 'article');
+    }
+    
+    
+    /** Interaction ***********************************************************/
+    
+    
+    /** Rendering *************************************************************/
+    
+    public function renderDefault()
+    {
+        $this->template->siteTitle = _('Articles');
+    }
+    
+    
+    public function renderShow()
+    {
+        $this->template->siteTitle = $this->articleControl->getEntity()->getTitle();
     }
     
 }
