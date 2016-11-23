@@ -8,13 +8,13 @@ use Wame\ArticleModule\Components\IArticleListControlFactory;
 
 class ArticlePresenter extends BasePresenter
 {
-
     /** @var IArticleListControlFactory */
     private $IArticleListControlFactory;
 
     /** @var IArticleControlFactory */
     private $IArticleControlFactory;
 
+    
     public function injectArticleList(IArticleListControlFactory $IArticleListControlFactory, IArticleControlFactory $IArticleControlFactory)
     {
         $this->IArticleListControlFactory = $IArticleListControlFactory;
@@ -28,10 +28,10 @@ class ArticlePresenter extends BasePresenter
         $this->addComponent($articleListControl, 'articleList');
     }
 
-    public function actionShow($id)
+    public function actionShow()
     {
         $articleControl = $this->IArticleControlFactory->create();
-        $articleControl->setEntityId($id);
+        $articleControl->setEntityId($this->id);
         $this->addComponent($articleControl, 'article');
     }
     
