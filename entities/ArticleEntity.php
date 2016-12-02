@@ -18,9 +18,9 @@ class ArticleEntity extends TranslatableEntity
 	use Columns\CreateDate;
 	use Columns\CreateUser;
 	use Columns\Status;
-	
+
 	/**
-	 * @ORM\OneToMany(targetEntity="ArticleLangEntity", mappedBy="article")
+	 * @ORM\OneToMany(targetEntity="ArticleLangEntity", mappedBy="article", cascade={"persist"})
 	 */
 	protected $langs;
 
@@ -35,8 +35,8 @@ class ArticleEntity extends TranslatableEntity
 	 * @ORM\Column(name="publish_end_date", type="datetime", nullable=true)
 	 */
 	protected $publishEndDate;
-	
-    
+
+
 	/** get ************************************************************/
 
 	public function getPublishStartDate()
@@ -49,26 +49,26 @@ class ArticleEntity extends TranslatableEntity
 		return $this->publishEndDate;
 	}
 
-	
+
 	/** set ************************************************************/
 
 	public function setPublishStartDate($publishStartDate)
 	{
 		$this->publishStartDate = $publishStartDate;
-		 
+
 		return $this;
 	}
 
 	public function setPublishEndDate($publishEndDate)
 	{
 		$this->publishEndDate = $publishEndDate;
-		 
+
 		return $this;
 	}
-	
+
 	public function getCreateUserId()
 	{
 		return $this->getCreateUser()->id;
 	}
-    
+
 }
