@@ -2,10 +2,11 @@
 
 namespace Wame\ArticleModule\Repositories;
 
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr\Join;
 use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ArticleModule\Entities\ArticleLangEntity;
-use Wame\Core\Exception\RepositoryException;
+use Wame\LanguageModule\Entities\TranslatableEntity;
 use Wame\LanguageModule\Repositories\TranslatableRepository;
 use Wame\Utils\Date;
 
@@ -45,7 +46,7 @@ class ArticleRepository extends TranslatableRepository
      */
     public function getStatus($status)
     {
-        return $this->getStatusList($status);
+        return $this->getStatusList()[$status];
     }
 
     /**
@@ -63,15 +64,15 @@ class ArticleRepository extends TranslatableRepository
 
     /**
      * Add article
-     * 
-     * @param ArticleEntity $articleEntity		article entity
-     * @throws Exception\ArticleNotCreatedException
+     *
+     * @param ArticleEntity $articleEntity article entity
+     * @return ArticleEntity
      */
     public function create($articleEntity)
     {
         $this->entityManager->persist($articleEntity);
-        $this->entityManager->persist($articleEntity->langs);
         $this->entityManager->flush();
+
         return $articleEntity;
     }
 
@@ -100,14 +101,14 @@ class ArticleRepository extends TranslatableRepository
 
     /**
      * Get article by criteria
-     * return article or exception
-     * 
+     *
      * @param array $criteria
      * @return ArticleEntity
-     * @throws RepositoryException
+     * @throws BadRequestException
      */
     public function getArticle($criteria)
     {
+        /** @var ArticleEntity $article */
         $article = $this->get($criteria);
 
         if (!$article) {
@@ -135,6 +136,7 @@ class ArticleRepository extends TranslatableRepository
     /**
      * @api {get} /article/:id Get article by id
      * @param int $id
+     * @return ArticleEntity
      */
     public function getArticleById($id)
     {
@@ -143,7 +145,12 @@ class ArticleRepository extends TranslatableRepository
 
     /**
      * @api {get} /article/ Get all articles
-     * @param int $id
+     * @param array $criteria
+     * @param array $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return TranslatableEntity[]
+     * @internal param int $id
      */
     public function find($criteria = [], $orderBy = [], $limit = null, $offset = null)
     {
@@ -155,6 +162,7 @@ class ArticleRepository extends TranslatableRepository
      * @param array $columns
      * @param string $phrase
      * @param string $select
+     * @return array
      */
     public function findLike($columns = [], $phrase = null, $select = '*')
     {
@@ -173,7 +181,7 @@ class ArticleRepository extends TranslatableRepository
 
         $search->setParameter('phrase', '%' . $phrase . '%');
 
-        return $search->getQuery()->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        return $search->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
     
 }
