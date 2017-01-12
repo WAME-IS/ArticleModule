@@ -11,12 +11,17 @@
     ],
     "require": {
         "wame/Core": "*",
-        "wame/AdminModule": "*",
-        "wame/MenuModule": "*",
         "wame/PermissionModule": "*",
         "wame/UserModule": "*",
+        "wame/DynamicObject": "*",
         "wame/CategoryModule": "*",
         "wame/EditorFormControl": "*"
+    },
+    "softRequire": {
+        "wame/AdminModule": "*",
+        "wame/MenuModule": "*",
+        "wame/ComponentModule": "*",
+        "wame/QuickAddButtonModule": "*"
     },
     "autoload": {
         "classmap": [
