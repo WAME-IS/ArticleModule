@@ -29,6 +29,8 @@ services:
         class: Wame\ArticleModule\Commands\CreateArticlesCommand
         tags: [kdyby.console.command]
 
+
+
 doctrine:
     metadata:
         Wame\ArticleModule\Entities: %appDir%/../vendor/wame/ArticleModule/entities
