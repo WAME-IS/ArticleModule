@@ -21,12 +21,16 @@ class ArticleListControl extends ChameleonListControl implements DataLoaderContr
     public function __construct(Container $container, IArticleControlFactory $IArticleControlFactory, IArticleEmptyListControl $IArticleEmptyListControl, IContainer $parent = NULL, $name = NULL)
     {
         parent::__construct($container, $parent, $name);
+
         $this->setComponentFactory($IArticleControlFactory);
         $this->setNoItemsFactory($IArticleEmptyListControl);
     }
 
+
+    /** {@inheritdoc} */
     public function getListType()
     {
         return ArticleEntity::class;
     }
+
 }

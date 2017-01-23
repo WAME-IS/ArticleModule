@@ -14,6 +14,23 @@ services:
             - add(@Wame\DynamicObject\Forms\Containers\ISubmitContainerFactory, 'SubmitContainer', {priority: 0})
 
 
+    # OLD Form containers
+    - Wame\ArticleModule\Forms\ITitleFormContainerFactory
+    - Wame\ArticleModule\Forms\IUrlFormContainerFactory
+    - Wame\ArticleModule\Forms\IPublishedFormContainerFactory
+    - Wame\ArticleModule\Forms\IStatusFormContainerFactory
+    - Wame\ArticleModule\Forms\IDescriptionFormContainerFactory
+    - Wame\ArticleModule\Forms\ITextFormContainerFactory
+    - Wame\ArticleModule\Forms\ILimitFormContainerFactory
+    - Wame\ArticleModule\Forms\ISortFormContainerFactory
+    - Wame\ArticleModule\Forms\IPaginatorVisibilityFormContainerFactory
+    - Wame\ArticleModule\Forms\IFilterVisibilityFormContainerFactory
+
+    # OLD Forms
+    ArticleListForm:
+        class: Wame\ArticleModule\Forms\ArticleListForm
+
+
     # Grids
     Admin.ArticleGrid:
         class: \Wame\AdminModule\Vendor\Wame\DataGridControl\AdminDataGridControl
