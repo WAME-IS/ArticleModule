@@ -57,13 +57,13 @@ class ArticlePresenter extends BasePresenter
     {
         $this->template->siteTitle = $this->articleControl->getEntity()->getTitle();
     }
-    
+
+
+    /** Implements ************************************************************/
     
     public function getEntity()
     {
-        if($this->articleControl) {
-            return $this->articleControl->getEntity();
-        }
+        return $this->articleControl ? $this->articleControl->getEntity() : null;
     }
     
 }
