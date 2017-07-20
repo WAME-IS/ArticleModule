@@ -7,12 +7,13 @@ use Nette\DI\Container;
 use Wame\ArticleModule\Repositories\ArticleRepository;
 use Wame\ListControl\Components\EmptyListControl;
 
+
 interface IArticleEmptyListControl
 {
-
     /** @return ArticleEmptyListControl */
     public function create();
 }
+
 
 class ArticleEmptyListControl extends EmptyListControl
 {
@@ -31,7 +32,7 @@ class ArticleEmptyListControl extends EmptyListControl
     /** {@inheritdoc} */
     protected function create()
     {
-        $this->getPresenter()->redirect(":Article:article:");
+        $this->getPresenter()->redirect(':Article:article:');
     }
 
 }

@@ -6,6 +6,7 @@ use Wame\ArticleModule\Entities\ArticleEntity;
 use Wame\ChameleonComponents\Components\SingleEntityControl;
 use Wame\ListControl\Components\IEntityControlFactory;
 
+
 interface IArticleControlFactory extends IEntityControlFactory
 {
     /**
@@ -14,6 +15,7 @@ interface IArticleControlFactory extends IEntityControlFactory
      */
     public function create($entity = null);
 }
+
 
 class ArticleControl extends SingleEntityControl
 {

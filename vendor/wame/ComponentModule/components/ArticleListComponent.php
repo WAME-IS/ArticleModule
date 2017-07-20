@@ -71,13 +71,13 @@ class ArticleListComponent implements IComponent
 
     public function getLinkCreate()
     {
-        return $this->linkGenerator->link('Admin:ArticleList:create');
+        return $this->linkGenerator->link('Admin:ArticleListComponent:create');
     }
 
 
     public function getLinkDetail($componentEntity)
     {
-        return $this->linkGenerator->link('Admin:ArticleList:edit', ['id' => $componentEntity->id]);
+        return $this->linkGenerator->link('Admin:ArticleListComponent:edit', ['id' => $componentEntity->id]);
     }
 
 

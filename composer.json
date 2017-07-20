@@ -5,23 +5,27 @@
     "homepage": "http://wame.sk/cms-wame-admin",
     "authors": [
         {
-            "name": "Wame",
+            "name": "WAME s.r.o.",
             "homepage": "http://wame.sk"
         }
     ],
+    "repositories": [
+        { "type": "composer", "url": "http://packages.wame.sk" }
+    ],
+    "config": { "secure-http": false },
     "require": {
-        "wame/Core": "*",
-        "wame/PermissionModule": "*",
-        "wame/UserModule": "*",
-        "wame/DynamicObject": "*",
-        "wame/CategoryModule": "*",
-        "wame/EditorFormControl": "*"
+        "wame/Core": ">=0.0.1",
+        "wame/PermissionModule": ">=0.0.1",
+        "wame/UserModule": ">=0.0.1",
+        "wame/DynamicObject": ">=0.0.1",
+        "wame/CategoryModule": ">=0.0.1",
+        "wame/EditorFormControl": ">=0.0.1"
     },
     "softRequire": {
-        "wame/AdminModule": "*",
-        "wame/MenuModule": "*",
-        "wame/ComponentModule": "*",
-        "wame/QuickAddButtonModule": "*"
+        "wame/AdminModule": ">=0.0.1",
+        "wame/MenuModule": ">=0.0.1",
+        "wame/ComponentModule": ">=0.0.1",
+        "wame/QuickAddButtonModule": ">=0.0.1"
     },
     "autoload": {
         "classmap": [
