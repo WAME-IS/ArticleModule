@@ -12,10 +12,10 @@ class ArticleStatusType extends StatusType
     {
         return _('Article');
     }
-    
+
     public function getEntityName()
     {
         return ArticleEntity::class;
     }
-    
+
 }
