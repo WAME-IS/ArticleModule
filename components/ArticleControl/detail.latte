@@ -4,18 +4,16 @@
 	<header>
 		<h1>{$entity->title}</h1>
 	</header>
+    
+    {block metaHeaderInfo}{/block}
 
-	<div id="author">{_'author'}: {$entity->createUser->fullName}</div>
-
-	<p id="description">{$entity->description}</p>
+	<p id="description">{$entity->description|noescape}</p>
 
 	<div>
 		{$entity->text|noescape}
 	</div>
-
-	<footer>
-		<p>{_'Published'}: {$entity->publishStartDate|date:'d.m.Y, H:i'}</p>
-	</footer>
+    
+    {block metaFooterInfo}{/block}
 	
     {position articleControlBottom}
 </article>

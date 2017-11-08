@@ -1,0 +1,12 @@
+{layout 'detail.latte'}
+
+{block metaHeaderInfo}
+    <div id="author">{_'author'}: {$entity->createUser->fullName}</div>
+{/block}
+
+{block metaFooterInfo}
+    <footer>
+		<p>{_'Published'}: {$entity->publishStartDate|date:'d.m.Y, H:i'}</p>
+	</footer>
+{/block}
+
