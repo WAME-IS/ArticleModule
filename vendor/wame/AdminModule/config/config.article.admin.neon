@@ -26,6 +26,7 @@ services:
     - Wame\ArticleModule\Forms\IPaginatorVisibilityFormContainerFactory
     - Wame\ArticleModule\Forms\IFilterVisibilityFormContainerFactory
 
+
     # OLD Forms
     ArticleListForm:
         class: Wame\ArticleModule\Forms\ArticleListForm
@@ -46,3 +47,15 @@ services:
             - add(Wame\ArticleModule\Vendor\Wame\AdminModule\Grids\ToolbarButtons\Add())
             - add(Wame\DataGridControl\GroupActions\DeleteSelected())
             - add(Wame\DataGridControl\GroupActions\ChangeStatusSelected())
+
+
+    # Commands
+    PositionAdminArticleRightPanelCommand:
+        class: Wame\ArticleModule\Vendor\Wame\AdminModule\Commands\PositionAdminArticleRightPanelCommand
+        tags: [kdyby.console.command]
+
+
+    # Registers
+    AdminPositionRegister:
+        setup:
+            - add(@PositionAdminArticleRightPanelCommand, 'PositionAdminArticleRightPanelCommand')
