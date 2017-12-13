@@ -77,13 +77,13 @@ class ArticleMenuItem implements IMenuItem
 	
 	public function getLinkUpdate($menuEntity)
 	{
-		return $this->linkGenerator->link('Admin:Article:menuItem', ['id' => $menuEntity->id, 'm' => $menuEntity->component->id]);
+		return $this->linkGenerator->link('Admin:Article:menuItem', ['id' => $menuEntity->getId(), 'm' => $menuEntity->getComponent()->getId()]);
 	}
 	
 	
 	public function getLink($menuEntity)
 	{
-		return $this->linkGenerator->link('Article:Article:show', ['id' => $menuEntity->langs[$this->lang]->slug, 'lang' => $this->lang]);
+		return $this->linkGenerator->link('Article:Article:show', ['id' => $menuEntity->getValue(), 'lang' => $this->lang]);
 	}
 	
 }

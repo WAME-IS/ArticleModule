@@ -33,8 +33,8 @@ class ArticleFormContainer extends BaseFormContainer
 	{
 		$form = $this->getForm();
 
-		$form['value']->setDefaultValue($object->menuEntity->value);
-		$form['alternative_title']->setDefaultValue($object->menuEntity->langs[$object->lang]->alternativeTitle);
+		$form['value']->setDefaultValue($object->menuEntity->getValue());
+		$form['alternative_title']->setDefaultValue($object->menuEntity->getAlternativeTitle());
 	}
 
 }
