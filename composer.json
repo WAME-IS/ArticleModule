@@ -1,5 +1,5 @@
 {
-    "name": "wameis/ArticleModule",
+    "name": "wame/ArticleModule",
     "version": "0.0.2",
     "description": "CMS WAME admin",
     "homepage": "http://wame.sk/cms-wame-admin",
@@ -14,18 +14,18 @@
     ],
     "config": { "secure-http": false },
     "require": {
-        "wameis/Core": ">=0.0.1",
-        "wameis/PermissionModule": ">=0.0.1",
-        "wameis/UserModule": ">=0.0.1",
-        "wameis/DynamicObject": ">=0.0.1",
-        "wameis/CategoryModule": ">=0.0.1",
-        "wameis/EditorFormControl": ">=0.0.1"
+        "wame/Core": ">=0.0.1",
+        "wame/PermissionModule": ">=0.0.1",
+        "wame/UserModule": ">=0.0.1",
+        "wame/DynamicObject": ">=0.0.1",
+        "wame/CategoryModule": ">=0.0.1",
+        "wame/EditorFormControl": ">=0.0.1"
     },
     "softRequire": {
-        "wameis/AdminModule": ">=0.0.1",
-        "wameis/MenuModule": ">=0.0.1",
-        "wameis/ComponentModule": ">=0.0.1",
-        "wameis/QuickAddButtonModule": ">=0.0.1"
+        "wame/AdminModule": ">=0.0.1",
+        "wame/MenuModule": ">=0.0.1",
+        "wame/ComponentModule": ">=0.0.1",
+        "wame/QuickAddButtonModule": ">=0.0.1"
     },
     "autoload": {
         "classmap": [
