@@ -115,16 +115,16 @@ class ArticleRepository extends TranslatableRepository
             throw new BadRequestException(_('Article not found.'));
         }
 
-        if ($article->status != self::STATUS_PUBLISHED) {
+        if ($article->getStatus() != self::STATUS_PUBLISHED) {
             throw new BadRequestException(_('Article is unpublished or removed.'));
         }
 
-        if ($article->publishStartDate != null && strtotime(Date::toString($article->publishStartDate)) < time()) {
-            throw new BadRequestException(_('Article has not been published.'));
+        if ($article->getPublishStartDate() != null && strtotime(Date::toString($article->getPublishStartDate())) > time()) {
+            throw new BadRequestException(_('This article publish start date is bigger than current date.'));
         }
 
-        if ($article->publishEndDate != null && strtotime(Date::toString($article->publishEndDate)) > time()) {
-            throw new BadRequestException(_('Out of time of article publication.'));
+        if ($article->getPublishEndDate() != null && strtotime(Date::toString($article->getPublishEndDate())) < time()) {
+            throw new BadRequestException(_('This article has ended publish end date.'));
         }
 
         return $article;
