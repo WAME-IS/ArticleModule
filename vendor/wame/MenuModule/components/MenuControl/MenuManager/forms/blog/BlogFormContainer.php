@@ -27,7 +27,7 @@ class BlogFormContainer extends BaseFormContainer
 	{
 		$form = $this->getForm();
 
-		$form['title']->setDefaultValue($object->menuEntity->langs[$object->lang]->title);
+		$form['title']->setDefaultValue($object->menuEntity->title);
 	}
 
 }
